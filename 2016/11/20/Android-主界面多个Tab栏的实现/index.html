@@ -1,0 +1,352 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+    <!--Setting-->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+    <meta http-equiv="Cache-Control" content="no-siteapp">
+    <meta name="renderer" content="webkit|ie-comp|ie-stand">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="format-detection" content="telephone=no,email=no,adress=no">
+    <meta name="browsermode" content="application">
+    <meta name="screen-orientation" content="portrait">
+    <link rel="dns-prefetch" href="https://github.com/smartsean/smartsean.github.io">
+    <!--SEO-->
+
+
+
+<meta name="robots" content="all" />
+<meta name="google" content="all" />
+<meta name="googlebot" content="all" />
+<meta name="verify" content="all" />
+    <!--Title-->
+
+
+<title> Android 主界面多个Tab栏的实现 | SmartSean的小站</title>
+
+
+    <link rel="alternate" href="/atom.xml" title="SmartSean的小站" type="application/atom+xml">
+
+
+    <link rel="icon" href="/favicon.ico">
+
+    
+
+
+
+<link rel="stylesheet" href="//cdn.bootcss.com/bootstrap/3.3.4/css/bootstrap.min.css?rev=3.3.4">
+<link rel="stylesheet" href="//cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.min.css">
+<link rel="stylesheet" href="/css/style.css?rev=@@hash">
+
+
+
+
+    
+    <div class="hide">
+    	<script src="https://s4.cnzz.com/z_stat.php?id=1263868967&web_id=1263868967" language="JavaScript"></script>
+    </div>
+
+
+
+
+
+
+    
+</head>
+
+
+<!--[if lte IE 8]>
+<style>
+    html{ font-size: 1em }
+</style>
+<![endif]-->
+<!--[if lte IE 9]>
+<div style="ie">你使用的浏览器版本过低，为了你更好的阅读体验，请更新浏览器的版本或者使用其他现代浏览器，比如Chrome、Firefox、Safari等。</div>
+<![endif]-->
+
+<body>
+    <header class="main-header"  style="background-image:url(http://7xpw2b.com1.z0.glb.clouddn.com/hexo-sinppet/img/banner2.jpg)"  >
+    <div class="main-header-box">
+        <a class="header-avatar" href="/" title="">
+            <img src="/img/avatar.jpg" alt="logo头像">
+        </a>
+        <div class="branding">
+        	<!--<h2 class="text-hide">Snippet主题,从未如此简单有趣</h2>-->
+            
+                <h2> 记录生活，记录代码 </h2>
+             
+    	</div>
+    </div>
+</header>
+    <nav class="main-navigation">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="navbar-header"><span class="nav-toggle-button collapsed" data-toggle="collapse" data-target="#main-menu" id="mnav">
+                    <span class="sr-only">Toggle navigation</span>
+                    <i class="fa fa-bars"></i>
+                    </span>
+                </div>
+                <div class="collapse navbar-collapse" id="main-menu">
+                    <ul class="menu">
+                        
+                            <li role="presentation"><a href="/"><i class="fa fa-fw "></i>首页</a>
+                            </li>
+                        
+                            <li role="presentation"><a href="/categories/Android/"><i class="fa fa-fw "></i>Android</a>
+                            </li>
+                        
+                            <li role="presentation"><a href="/categories/工具/"><i class="fa fa-fw "></i>工具</a>
+                            </li>
+                        
+                            <li role="presentation"><a href="/categories/我/"><i class="fa fa-fw "></i>我</a>
+                            </li>
+                        
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</nav>
+    <section class="content-wrap">
+        <div class="container">
+            <div class="row">
+                <main class="col-md-8 main-content m-post">
+                    <p id="process"></p>
+<article class="post">
+    <div class="post-head">
+        <h1 id=" Android 主界面多个Tab栏的实现">
+            
+	             Android 主界面多个Tab栏的实现
+            
+        </h1>
+        <div class="post-meta">
+    
+    
+    <span class="categories-meta fa-wrap">
+        <i class="fa fa-folder-open-o"></i>
+        <span>Android</span>
+    </span>
+    
+    
+    <span class="fa-wrap">
+        <i class="fa fa-tags"></i>
+        <span class="tags-meta">
+            
+            Android
+            
+        </span>
+    </span>
+    
+    
+    <span class="fa-wrap">
+        <i class="fa fa-clock-o"></i>
+        <span class="date-meta">2016/11/20</span>
+    </span>
+</div>
+
+            
+            
+            <p class="fa fa-exclamation-triangle warning">
+                本文于<strong>421</strong>天之前发表，文中内容可能已经过时。
+            </p>
+        
+    </div>
+    
+    <div class="post-body post-content">
+        <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><pre><code>现在比较流行的就是类似qq或者微信上的布局，都是在底部都几个Tab栏，点击不同的Tab栏可以切换不同的页面，大概的实现原理就是使用RadioGroup包裹几个RadioButton来实现的，而不同的页面展示则是放置一个FrameLayout来实现的。
+</code></pre><h3 id="效果图："><a href="#效果图：" class="headerlink" title="效果图："></a>效果图：</h3><p><img src="http://img.blog.csdn.net/20161120182644420" alt="这里写图片描述"></p>
+<h3 id="1-代码布局："><a href="#1-代码布局：" class="headerlink" title="1.代码布局："></a>1.代码布局：</h3><p>顶部设置了标题，使用的是现在都在用的toolBar，可以在切换不同页面的时候设置不同的标题。然后下面放了一个Radiogroup，里面包裹了四个RadioButton实现不同页面的切换。里面的View控件是设置的水平的分割线，使页面好看点<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br></pre></td><td class="code"><pre><span class="line">&lt;?xml version=&quot;1.0&quot; encoding=&quot;utf-8&quot;?&gt;</span><br><span class="line">&lt;RelativeLayout xmlns:android=&quot;http://schemas.android.com/apk/res/android&quot;</span><br><span class="line">    android:layout_width=&quot;match_parent&quot;</span><br><span class="line">    android:layout_height=&quot;match_parent&quot;&gt;</span><br><span class="line">    &lt;android.support.v7.widget.Toolbar</span><br><span class="line">        xmlns:toolbar=&quot;http://schemas.android.com/apk/res-auto&quot;</span><br><span class="line">        android:id=&quot;@+id/index_title_tb&quot;</span><br><span class="line">        android:layout_width=&quot;match_parent&quot;</span><br><span class="line">        android:layout_height=&quot;48dp&quot;</span><br><span class="line">        android:background=&quot;@color/colorPrimaryDark&quot;</span><br><span class="line">        toolbar:popupTheme=&quot;@style/ThemeOverlay.AppCompat.Light&quot;</span><br><span class="line">        toolbar:theme=&quot;@style/ThemeOverlay.AppCompat.Dark.ActionBar&quot;&gt;</span><br><span class="line"></span><br><span class="line">        &lt;TextView</span><br><span class="line">            android:id=&quot;@+id/index_title_tv&quot;</span><br><span class="line">            style=&quot;@style/title_text_style&quot;</span><br><span class="line">            android:layout_width=&quot;wrap_content&quot;</span><br><span class="line">            android:layout_height=&quot;wrap_content&quot;</span><br><span class="line">            android:layout_gravity=&quot;center&quot;</span><br><span class="line">            android:textColor=&quot;@color/white&quot;</span><br><span class="line">            android:text=&quot;我是标题&quot;/&gt;</span><br><span class="line">    &lt;/android.support.v7.widget.Toolbar&gt;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    &lt;View</span><br><span class="line">        android:id=&quot;@+id/index_title_divider&quot;</span><br><span class="line">        android:layout_width=&quot;match_parent&quot;</span><br><span class="line">        android:layout_height=&quot;1dp&quot;</span><br><span class="line">        android:layout_below=&quot;@id/index_title_tb&quot;</span><br><span class="line">        android:background=&quot;@drawable/common_horizontal_divider&quot;/&gt;</span><br><span class="line">    &lt;RadioGroup</span><br><span class="line">        android:id=&quot;@+id/index_bottom_navigation_rg&quot;</span><br><span class="line">        android:layout_width=&quot;match_parent&quot;</span><br><span class="line">        android:layout_height=&quot;44dp&quot;</span><br><span class="line">        android:layout_alignParentBottom=&quot;true&quot;</span><br><span class="line">        android:background=&quot;@color/white&quot;</span><br><span class="line">        android:orientation=&quot;horizontal&quot;&gt;</span><br><span class="line"></span><br><span class="line">        &lt;RadioButton</span><br><span class="line">            android:id=&quot;@+id/index_tab_a_rb&quot;</span><br><span class="line">            style=&quot;@style/Index_tab_style&quot;</span><br><span class="line">            android:drawableTop=&quot;@drawable/index_equipment_tab_sel&quot;</span><br><span class="line">            android:text=&quot;@string/index_tab_equipment&quot;/&gt;</span><br><span class="line"></span><br><span class="line">        &lt;RadioButton</span><br><span class="line">            android:id=&quot;@+id/index_tab_b_rb&quot;</span><br><span class="line">            style=&quot;@style/Index_tab_style&quot;</span><br><span class="line">            android:drawableTop=&quot;@drawable/index_bill_tab_sel&quot;</span><br><span class="line">            android:text=&quot;@string/index_tab_bill&quot;/&gt;</span><br><span class="line"></span><br><span class="line">        &lt;RadioButton</span><br><span class="line">            android:id=&quot;@+id/index_tab_c_rb&quot;</span><br><span class="line">            style=&quot;@style/Index_tab_style&quot;</span><br><span class="line">            android:drawableTop=&quot;@drawable/index_contract_tab_sel&quot;</span><br><span class="line">            android:text=&quot;@string/index_tab_contract&quot;/&gt;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">        &lt;RadioButton</span><br><span class="line">            android:id=&quot;@+id/index_tab_d_rb&quot;</span><br><span class="line">            style=&quot;@style/Index_tab_style&quot;</span><br><span class="line">            android:drawableTop=&quot;@drawable/index_setting_tab_sel&quot;</span><br><span class="line">            android:text=&quot;@string/index_tab_setting&quot;/&gt;</span><br><span class="line"></span><br><span class="line">    &lt;/RadioGroup&gt;</span><br><span class="line"></span><br><span class="line">    &lt;View</span><br><span class="line">        android:id=&quot;@+id/index_bottom_divider&quot;</span><br><span class="line">        android:layout_width=&quot;match_parent&quot;</span><br><span class="line">        android:layout_height=&quot;1dp&quot;</span><br><span class="line">        android:layout_above=&quot;@id/index_bottom_navigation_rg&quot;</span><br><span class="line">        android:background=&quot;@drawable/common_horizontal_divider&quot;/&gt;</span><br><span class="line"></span><br><span class="line">    &lt;FrameLayout</span><br><span class="line">        android:id=&quot;@+id/index_content_fl&quot;</span><br><span class="line">        android:layout_width=&quot;match_parent&quot;</span><br><span class="line">        android:layout_height=&quot;match_parent&quot;</span><br><span class="line">        android:layout_above=&quot;@id/index_bottom_divider&quot;</span><br><span class="line">        android:layout_below=&quot;@id/index_title_divider&quot;</span><br><span class="line">        android:background=&quot;@color/white&quot;/&gt;</span><br><span class="line"></span><br><span class="line">&lt;/RelativeLayout&gt;</span><br></pre></td></tr></table></figure></p>
+<h3 id="2-Java代码控制不同页面切换"><a href="#2-Java代码控制不同页面切换" class="headerlink" title="2.Java代码控制不同页面切换"></a>2.Java代码控制不同页面切换</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br><span class="line">143</span><br><span class="line">144</span><br><span class="line">145</span><br><span class="line">146</span><br><span class="line">147</span><br><span class="line">148</span><br><span class="line">149</span><br><span class="line">150</span><br><span class="line">151</span><br><span class="line">152</span><br><span class="line">153</span><br><span class="line">154</span><br><span class="line">155</span><br><span class="line">156</span><br><span class="line">157</span><br><span class="line">158</span><br><span class="line">159</span><br><span class="line">160</span><br><span class="line">161</span><br><span class="line">162</span><br><span class="line">163</span><br><span class="line">164</span><br><span class="line">165</span><br><span class="line">166</span><br><span class="line">167</span><br><span class="line">168</span><br><span class="line">169</span><br><span class="line">170</span><br><span class="line">171</span><br><span class="line">172</span><br><span class="line">173</span><br><span class="line">174</span><br><span class="line">175</span><br><span class="line">176</span><br><span class="line">177</span><br><span class="line">178</span><br><span class="line">179</span><br><span class="line">180</span><br><span class="line">181</span><br><span class="line">182</span><br><span class="line">183</span><br><span class="line">184</span><br><span class="line">185</span><br><span class="line">186</span><br><span class="line">187</span><br><span class="line">188</span><br><span class="line">189</span><br><span class="line">190</span><br><span class="line">191</span><br><span class="line">192</span><br><span class="line">193</span><br><span class="line">194</span><br><span class="line">195</span><br><span class="line">196</span><br><span class="line">197</span><br><span class="line">198</span><br><span class="line">199</span><br></pre></td><td class="code"><pre><span class="line">package com.css.demo;</span><br><span class="line"></span><br><span class="line">import android.content.Context;</span><br><span class="line">import android.os.Bundle;</span><br><span class="line">import android.support.v4.app.FragmentTransaction;</span><br><span class="line">import android.widget.CompoundButton;</span><br><span class="line">import android.widget.RadioButton;</span><br><span class="line">import android.widget.TextView;</span><br><span class="line"></span><br><span class="line">import com.css.demo.ui.index.TabA;</span><br><span class="line">import com.css.demo.ui.index.TabB;</span><br><span class="line">import com.css.demo.ui.index.TabC;</span><br><span class="line">import com.css.demo.ui.index.TabD;</span><br><span class="line">import com.css.demo.utils.L;</span><br><span class="line"></span><br><span class="line">import butterknife.Bind;</span><br><span class="line">import butterknife.ButterKnife;</span><br><span class="line"></span><br><span class="line">/**</span><br><span class="line"> * Created by cssch on 2016/10/11.</span><br><span class="line"> */</span><br><span class="line"></span><br><span class="line">public class IndexActivity extends BaseIndexActivity &#123;</span><br><span class="line"></span><br><span class="line">    @Bind(R.id.index_tab_a_rb)//第一页tab按钮</span><br><span class="line">            RadioButton indexTabARb;</span><br><span class="line"></span><br><span class="line">    @Bind(R.id.index_tab_b_rb)//第二页tab按钮</span><br><span class="line">            RadioButton indexTabBRb;</span><br><span class="line"></span><br><span class="line">    @Bind(R.id.index_tab_c_rb)//第三页tab按钮</span><br><span class="line">            RadioButton indexTabCRb;</span><br><span class="line"></span><br><span class="line">    @Bind(R.id.index_tab_d_rb)//第四页tab按钮</span><br><span class="line">            RadioButton indexTabDRb;</span><br><span class="line"></span><br><span class="line">    @Bind(R.id.index_title_tv)//标题</span><br><span class="line">            TextView indexTitleTv;</span><br><span class="line"></span><br><span class="line">    private static final int TABA = 1;//第一页标记</span><br><span class="line">    private static final int TABB = 2;//第二页标记</span><br><span class="line">    private static final int TABC = 3;//第三页标记</span><br><span class="line">    private static final int TABD = 4;//第四页标记</span><br><span class="line"></span><br><span class="line">    //这里的是四个Fragment的说明</span><br><span class="line">    private TabA tabA;//第一页</span><br><span class="line">    private TabB tabB;//第二页</span><br><span class="line">    private TabC tabC;//第三页</span><br><span class="line">    private TabD tabD;//第四页</span><br><span class="line"></span><br><span class="line">    private Context context;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    @Override</span><br><span class="line">    public void onCreate(Bundle savedInstanceState) &#123;</span><br><span class="line">        super.onCreate(savedInstanceState);</span><br><span class="line">        L.d(&quot;myname&quot;.toString());</span><br><span class="line">        setContentView(R.layout.index);</span><br><span class="line">        ButterKnife.bind(this);</span><br><span class="line">        context = IndexActivity.this;</span><br><span class="line">        //设置四个Tab栏的监听</span><br><span class="line">        indexTabARb.setOnCheckedChangeListener(new OnNaviCheckChangeListener(TABA));</span><br><span class="line">        indexTabBRb.setOnCheckedChangeListener(new OnNaviCheckChangeListener(TABB));</span><br><span class="line">        indexTabCRb.setOnCheckedChangeListener(new OnNaviCheckChangeListener(TABC));</span><br><span class="line">        indexTabDRb.setOnCheckedChangeListener(new OnNaviCheckChangeListener(TABD));</span><br><span class="line">        //设置默认的显示页面为b页面</span><br><span class="line">        indexTabBRb.setChecked(true);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    /**</span><br><span class="line">     * 监听事件的实现</span><br><span class="line">     */</span><br><span class="line">    class OnNaviCheckChangeListener implements CompoundButton.OnCheckedChangeListener &#123;</span><br><span class="line"></span><br><span class="line">        private int position;</span><br><span class="line"></span><br><span class="line">        public OnNaviCheckChangeListener(int position) &#123;</span><br><span class="line"></span><br><span class="line">            this.position = position;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        @Override</span><br><span class="line">        public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) &#123;</span><br><span class="line"></span><br><span class="line">            if (isChecked) &#123;</span><br><span class="line"></span><br><span class="line">                changeTab(position);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    /**</span><br><span class="line">     * @param position 切换tab</span><br><span class="line">     */</span><br><span class="line">    public void changeTab(int position) &#123;</span><br><span class="line"></span><br><span class="line">        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();</span><br><span class="line">        hideFragments(transaction);</span><br><span class="line">        switch (position) &#123;</span><br><span class="line">            case TABA:</span><br><span class="line">                changeToTabA(transaction);</span><br><span class="line">                break;</span><br><span class="line">            case TABB:</span><br><span class="line">                changeToTabB(transaction);</span><br><span class="line">                break;</span><br><span class="line">            case TABC:</span><br><span class="line">                changeToTabC(transaction);</span><br><span class="line">                break;</span><br><span class="line">            case TABD:</span><br><span class="line">                changeToTabD(transaction);</span><br><span class="line">                break;</span><br><span class="line">            default:</span><br><span class="line">                changeToTabA(transaction);</span><br><span class="line">                break;</span><br><span class="line">        &#125;</span><br><span class="line">        transaction.commitAllowingStateLoss();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    /**</span><br><span class="line">     * 跳转到tabA</span><br><span class="line">     *</span><br><span class="line">     * @param transaction</span><br><span class="line">     */</span><br><span class="line">    private void changeToTabA(FragmentTransaction transaction) &#123;</span><br><span class="line">        indexTitleTv.setText(&quot;TabA页面&quot;);</span><br><span class="line">        if (tabA == null) &#123;</span><br><span class="line">            tabA = new TabA();</span><br><span class="line">            transaction.add(R.id.index_content_fl, tabA);</span><br><span class="line">        &#125; else &#123;</span><br><span class="line">            transaction.show(tabA);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    /**</span><br><span class="line">     * 跳转到tabB</span><br><span class="line">     *</span><br><span class="line">     * @param transaction</span><br><span class="line">     */</span><br><span class="line">    private void changeToTabB(FragmentTransaction transaction) &#123;</span><br><span class="line">        indexTitleTv.setText(&quot;TabB页面&quot;);</span><br><span class="line">        if (tabB == null) &#123;</span><br><span class="line">            tabB = new TabB();</span><br><span class="line">            transaction.add(R.id.index_content_fl, tabB);</span><br><span class="line">        &#125; else &#123;</span><br><span class="line">            transaction.show(tabB);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    /**</span><br><span class="line">     * 跳转到tabC</span><br><span class="line">     *</span><br><span class="line">     * @param transaction</span><br><span class="line">     */</span><br><span class="line">    private void changeToTabC(FragmentTransaction transaction) &#123;</span><br><span class="line">        indexTitleTv.setText(&quot;TabC页面&quot;);</span><br><span class="line">        if (tabC == null) &#123;</span><br><span class="line">            tabC = new TabC();</span><br><span class="line">            transaction.add(R.id.index_content_fl, tabC);</span><br><span class="line">        &#125; else &#123;</span><br><span class="line">            transaction.show(tabC);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    /**</span><br><span class="line">     * 跳转到tabD</span><br><span class="line">     *</span><br><span class="line">     * @param transaction</span><br><span class="line">     */</span><br><span class="line">    private void changeToTabD(FragmentTransaction transaction) &#123;</span><br><span class="line">        indexTitleTv.setText(&quot;TabD页面&quot;);</span><br><span class="line">        if (tabD == null) &#123;</span><br><span class="line">            tabD = new TabD();</span><br><span class="line">            transaction.add(R.id.index_content_fl, tabD);</span><br><span class="line">        &#125; else &#123;</span><br><span class="line">            transaction.show(tabD);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    /**</span><br><span class="line">     * @param transaction 隐藏所有fragment</span><br><span class="line">     */</span><br><span class="line">    private void hideFragments(FragmentTransaction transaction) &#123;</span><br><span class="line"></span><br><span class="line">        if (tabA != null &amp;&amp; !tabA.isHidden()) &#123;</span><br><span class="line">            transaction.hide(tabA);</span><br><span class="line">        &#125;</span><br><span class="line">        if (tabB != null &amp;&amp; !tabB.isHidden()) &#123;</span><br><span class="line">            transaction.hide(tabB);</span><br><span class="line">        &#125;</span><br><span class="line">        if (tabC != null &amp;&amp; !tabC.isHidden()) &#123;</span><br><span class="line">            transaction.hide(tabC);</span><br><span class="line">        &#125;</span><br><span class="line">        if (tabD != null &amp;&amp; !tabD.isHidden()) &#123;</span><br><span class="line">            transaction.hide(tabD);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h3><p>总体来说还是挺简单的，当然还可以使用其他的方式进行布局，有兴趣的朋友可以研究下。如果想用这种方式的话，你只用把里面的资源文件改成自己使用的资源文件就可以在自己的项目中使用了。当然，我这个命名还不是很规范，大家可以规范下命名。</p>
+<p>特此记录！</p>
+
+    </div>
+
+    <div class="post-footer">   
+        <div>
+            
+                转载声明：商业转载请联系作者获得授权,非商业转载请注明出处 © <a href="" target="_blank">Snippet</a>
+            
+        </div>
+        <div>
+            
+        </div>  
+    </div>
+</article>
+
+<div class="article-nav prev-next-wrap clearfix">
+    
+        <a href="/2016/11/20/Android-修改密码或者手机号事务实现/" class="pre-post btn btn-default"><i class="fa fa-angle-left fa-fw"></i>上一篇</a>
+    
+    
+        <a href="/2016/11/20/Android-使用CheckBox实现好看的开关按钮/" class="next-post btn btn-default">下一篇<i class="fa fa-angle-right fa-fw"></i></a>
+    
+</div>
+
+
+    <div id="comments">
+        
+	
+<div id="lv-container" data-id="city" data-uid="MTAyMC8zMzA1MS85NjEz">
+  <script type="text/javascript">
+     (function(d, s) {
+         var j, e = d.getElementsByTagName(s)[0];
+         if (typeof LivereTower === 'function') { return; }
+         j = d.createElement(s);
+         j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+         j.async = true;
+         e.parentNode.insertBefore(j, e);
+     })(document, 'script');
+  </script>
+</div>
+
+
+    </div>
+
+
+
+
+
+                </main>
+                
+    <aside class="col-md-4 sidebar">
+        
+        
+    <div class="widget">    
+        <h3 class="title">搜索</h3>
+        <div id="search-form">
+            <div id="result-mask" class="hide"></div>
+            <div class="search-area">
+                
+                    <input id="search-key" type="search" autocomplete="off" placeholder="搜点什么呢?">
+                    <button type="button" class="search-form-submit" id="search-local">站内搜索</button>
+                
+                
+            </div>
+            <div id="result-wrap" class="hide">
+                <div id="search-result"></div>
+            </div>
+            <div class="hide">
+                <template id="search-tpl">
+                    <div class="item">
+                        <a href="/{path}" title="{title}">
+                            <div class="title">{title}</div>
+                            <div class="content">{content}</div>
+                        </a>
+                    </div>
+                </template>
+            </div>
+        </div>
+    </div>
+
+        
+        
+    <div class="widget notification">
+        <h3 class="title">网站公告</h3>
+        <div>
+            <p>暂无公告~ <br/>
+        </div>
+    </div>
+
+        
+        
+    <div class="widget">
+      <h3 class="title">社交</h3> 
+        <div class="content social">
+            
+	            <a href="https://github.com/smartsean" rel="external nofollow" title="Github" target="_blank">
+			    	<i class="git fa fa-git"></i>
+			    </a>
+            
+        </div>
+    </div>
+
+
+        
+        
+    <div class="widget">
+        <h3 class="title">分类</h3>
+        <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/Android/"><i class="fa" aria-hidden="true">Android</i></a><span class="category-list-count">32</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Ionic/"><i class="fa" aria-hidden="true">Ionic</i></a><span class="category-list-count">6</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Ionic/其他/"><i class="fa" aria-hidden="true">其他</i></a><span class="category-list-count">6</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/工具/"><i class="fa" aria-hidden="true">工具</i></a><span class="category-list-count">3</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/工具/我/"><i class="fa" aria-hidden="true">我</i></a><span class="category-list-count">1</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/我/"><i class="fa" aria-hidden="true">我</i></a><span class="category-list-count">3</span></li></ul>
+    </div>
+
+
+        
+        
+    <div class="widget">
+      <h3 class="title">归档</h3>
+        <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/09/"><i class="fa" aria-hidden="true">九月 2017</i></a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/05/"><i class="fa" aria-hidden="true">五月 2017</i></a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/04/"><i class="fa" aria-hidden="true">四月 2017</i></a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/03/"><i class="fa" aria-hidden="true">三月 2017</i></a><span class="archive-list-count">7</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/02/"><i class="fa" aria-hidden="true">二月 2017</i></a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/01/"><i class="fa" aria-hidden="true">一月 2017</i></a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/12/"><i class="fa" aria-hidden="true">十二月 2016</i></a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/11/"><i class="fa" aria-hidden="true">十一月 2016</i></a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/10/"><i class="fa" aria-hidden="true">十月 2016</i></a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/09/"><i class="fa" aria-hidden="true">九月 2016</i></a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/08/"><i class="fa" aria-hidden="true">八月 2016</i></a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/06/"><i class="fa" aria-hidden="true">六月 2016</i></a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/04/"><i class="fa" aria-hidden="true">四月 2016</i></a><span class="archive-list-count">10</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/03/"><i class="fa" aria-hidden="true">三月 2016</i></a><span class="archive-list-count">3</span></li></ul>
+    </div>
+
+
+        
+        
+  <div class="widget">
+    <h3 class="title">标签云</h3>
+    <div class="content tag-cloud">
+        <a href="/tags/Android/" style="font-size: 20px;">Android</a> <a href="/tags/AndroidStudio/" style="font-size: 12.5px;">AndroidStudio</a> <a href="/tags/Git/" style="font-size: 10px;">Git</a> <a href="/tags/Ionic/" style="font-size: 17.5px;">Ionic</a> <a href="/tags/Java/" style="font-size: 12.5px;">Java</a> <a href="/tags/Java-Java基础/" style="font-size: 10px;">Java Java基础</a> <a href="/tags/工具/" style="font-size: 12.5px;">工具</a> <a href="/tags/异常/" style="font-size: 12.5px;">异常</a> <a href="/tags/我/" style="font-size: 15px;">我</a> <a href="/tags/模拟器/" style="font-size: 10px;">模拟器</a> <a href="/tags/自定义View/" style="font-size: 10px;">自定义View</a>
+    </div>
+  </div>
+
+
+        
+        
+    <div class="widget">
+        <h3 class="title">友链</h3>
+        <div class="content friends-link">
+        
+            <a href="http://www.shenliyang.com" class="fa" target="_blank">个人博客</a>
+        
+        </div>
+    </div>
+
+
+        
+    </aside>
+
+            </div>
+        </div>
+    </section>
+    <footer class="main-footer">
+    <div class="container">
+        <div class="row">
+        </div>
+    </div>
+</footer>
+
+<a id="back-to-top" class="hide">
+	<i class="fa fa-chevron-up"></i>
+</a>
+
+
+
+
+    <div class="copyright">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12"> 
+                <span>Copyright &copy; 2017
+                </span> | 
+                <span>
+                    Powered by <a href="//hexo.io" class="copyright-links" target="_blank" rel="nofollow">Hexo</a>
+                </span> | 
+                <span>
+                    Theme by <a href="//github.com/shenliyang/hexo-theme-snippet.git" class="copyright-links" target="_blank" rel="nofollow">Snippet</a>
+                </span>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+	<script src="/js/search.js?rev=@@hash"></script>
+
+
+<script src="/js/app.js?rev=@@hash"></script>
+
+
+</body>
+</html>

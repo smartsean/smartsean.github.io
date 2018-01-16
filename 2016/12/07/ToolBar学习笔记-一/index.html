@@ -1,0 +1,399 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+    <!--Setting-->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+    <meta http-equiv="Cache-Control" content="no-siteapp">
+    <meta name="renderer" content="webkit|ie-comp|ie-stand">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="format-detection" content="telephone=no,email=no,adress=no">
+    <meta name="browsermode" content="application">
+    <meta name="screen-orientation" content="portrait">
+    <link rel="dns-prefetch" href="https://github.com/smartsean/smartsean.github.io">
+    <!--SEO-->
+
+
+
+<meta name="robots" content="all" />
+<meta name="google" content="all" />
+<meta name="googlebot" content="all" />
+<meta name="verify" content="all" />
+    <!--Title-->
+
+
+<title>ToolBar学习笔记(一) | SmartSean的小站</title>
+
+
+    <link rel="alternate" href="/atom.xml" title="SmartSean的小站" type="application/atom+xml">
+
+
+    <link rel="icon" href="/favicon.ico">
+
+    
+
+
+
+<link rel="stylesheet" href="//cdn.bootcss.com/bootstrap/3.3.4/css/bootstrap.min.css?rev=3.3.4">
+<link rel="stylesheet" href="//cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.min.css">
+<link rel="stylesheet" href="/css/style.css?rev=@@hash">
+
+
+
+
+    
+    <div class="hide">
+    	<script src="https://s4.cnzz.com/z_stat.php?id=1263868967&web_id=1263868967" language="JavaScript"></script>
+    </div>
+
+
+
+
+
+
+    
+</head>
+
+
+<!--[if lte IE 8]>
+<style>
+    html{ font-size: 1em }
+</style>
+<![endif]-->
+<!--[if lte IE 9]>
+<div style="ie">你使用的浏览器版本过低，为了你更好的阅读体验，请更新浏览器的版本或者使用其他现代浏览器，比如Chrome、Firefox、Safari等。</div>
+<![endif]-->
+
+<body>
+    <header class="main-header"  style="background-image:url(http://7xpw2b.com1.z0.glb.clouddn.com/hexo-sinppet/img/banner2.jpg)"  >
+    <div class="main-header-box">
+        <a class="header-avatar" href="/" title="">
+            <img src="/img/avatar.jpg" alt="logo头像">
+        </a>
+        <div class="branding">
+        	<!--<h2 class="text-hide">Snippet主题,从未如此简单有趣</h2>-->
+            
+                <h2> 记录生活，记录代码 </h2>
+             
+    	</div>
+    </div>
+</header>
+    <nav class="main-navigation">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="navbar-header"><span class="nav-toggle-button collapsed" data-toggle="collapse" data-target="#main-menu" id="mnav">
+                    <span class="sr-only">Toggle navigation</span>
+                    <i class="fa fa-bars"></i>
+                    </span>
+                </div>
+                <div class="collapse navbar-collapse" id="main-menu">
+                    <ul class="menu">
+                        
+                            <li role="presentation"><a href="/"><i class="fa fa-fw "></i>首页</a>
+                            </li>
+                        
+                            <li role="presentation"><a href="/categories/Android/"><i class="fa fa-fw "></i>Android</a>
+                            </li>
+                        
+                            <li role="presentation"><a href="/categories/工具/"><i class="fa fa-fw "></i>工具</a>
+                            </li>
+                        
+                            <li role="presentation"><a href="/categories/我/"><i class="fa fa-fw "></i>我</a>
+                            </li>
+                        
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</nav>
+    <section class="content-wrap">
+        <div class="container">
+            <div class="row">
+                <main class="col-md-8 main-content m-post">
+                    <p id="process"></p>
+<article class="post">
+    <div class="post-head">
+        <h1 id="ToolBar学习笔记(一)">
+            
+	            ToolBar学习笔记(一)
+            
+        </h1>
+        <div class="post-meta">
+    
+    
+    <span class="categories-meta fa-wrap">
+        <i class="fa fa-folder-open-o"></i>
+        <span>Android</span>
+    </span>
+    
+    
+    <span class="fa-wrap">
+        <i class="fa fa-tags"></i>
+        <span class="tags-meta">
+            
+            Android
+            
+        </span>
+    </span>
+    
+    
+    <span class="fa-wrap">
+        <i class="fa fa-clock-o"></i>
+        <span class="date-meta">2016/12/07</span>
+    </span>
+</div>
+
+            
+            
+            <p class="fa fa-exclamation-triangle warning">
+                本文于<strong>404</strong>天之前发表，文中内容可能已经过时。
+            </p>
+        
+    </div>
+    
+    <div class="post-body post-content">
+        <blockquote>
+<p>现在项目中一般都会使用标题栏，谷歌在2014年推出了新的app bar—ToolBar，代替了以前使用的ActionBar。在做项目中会经常用到这个ToolBar，虽然用的很多，但是自己对它如何用还不是很明白，今天就来简单的学习下这个控件的使用。</p>
+</blockquote>
+<h1 id="效果图"><a href="#效果图" class="headerlink" title="效果图"></a>效果图</h1><p><img src="https://app.yinxiang.com/shard/s69/res/3561cd5b-0929-4c0e-80d9-9702b91d58b2" alt="效果图"></p>
+<h2 id="1-修改app的style"><a href="#1-修改app的style" class="headerlink" title="1. 修改app的style"></a>1. 修改app的style</h2><p>我们如果要使用ToolBar，需要先把原来的ActionBar隐藏起来，就先要设置App的主题为<code>Theme.AppCompat.Light.NoActionBar</code>这种主题，就需要在<code>values/style.xml</code>里面修改Apptheme<br>的Parent或者parent的parent为<code>Theme.AppCompat.Light.NoActionBar</code>，这样的话才能使用ToolBar得到我们想要的效果。</p>
+<h2 id="2-在布局中使用ToolBar达到效果图"><a href="#2-在布局中使用ToolBar达到效果图" class="headerlink" title="2. 在布局中使用ToolBar达到效果图"></a>2. 在布局中使用ToolBar达到效果图</h2><h3 id="1-标题"><a href="#1-标题" class="headerlink" title="1.标题"></a>1.标题</h3><p>首先在布局文件<code>activity_main.xml</code>中：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">&lt;android.support.v7.widget.Toolbar</span><br><span class="line">     android:id=&quot;@+id/toolbar&quot;</span><br><span class="line">     android:layout_width=&quot;match_parent&quot;</span><br><span class="line">     android:layout_height=&quot;48dp&quot;</span><br><span class="line">     android:background=&quot;#ffffff&quot;</span><br><span class="line">     android:gravity=&quot;center&quot;</span><br><span class="line">     app:titleTextColor=&quot;#1d1d1d&quot;&gt;</span><br><span class="line"></span><br><span class="line">     &lt;TextView</span><br><span class="line">         android:layout_width=&quot;wrap_content&quot;</span><br><span class="line">         android:layout_height=&quot;wrap_content&quot;</span><br><span class="line">         android:layout_gravity=&quot;center&quot;</span><br><span class="line">         android:text=&quot;工作&quot;</span><br><span class="line">         android:textColor=&quot;#1d1d1d&quot;</span><br><span class="line">         android:textSize=&quot;16sp&quot; /&gt;</span><br><span class="line"> &lt;/android.support.v7.widget.Toolbar&gt;</span><br></pre></td></tr></table></figure></p>
+<blockquote>
+<p>需要说明的是，ToolBar其实也是一个ViewGroup，他的布局和LinearLayout类似，所以在使用的过程中，可以使用<code>android:layout_gravity=&quot;center&quot;</code>来让<code>TextView</code>居中显示</p>
+</blockquote>
+<p>这个时候的标题栏是这样的：<br><img src="https://app.yinxiang.com/shard/s69/res/d7096a02-62b3-4865-b0b6-e2f7d21af88b" alt="Alt text"></p>
+<h3 id="2-右侧按钮"><a href="#2-右侧按钮" class="headerlink" title="2. 右侧按钮"></a>2. 右侧按钮</h3><p>标题栏已经居中显示了，但是我们可能还需要在右侧需要一个按钮来进行一定的操作，比如下面的<label style="color:red">按钮</label>操作<br><img src="https://app.yinxiang.com/shard/s69/res/49d83b05-b16a-481b-afde-3f6437c8fadb" alt="Alt text"></p>
+<p>这个怎么实现呢，看下面的代码：</p>
+<h4 id="第一种实现"><a href="#第一种实现" class="headerlink" title="第一种实现"></a>第一种实现</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">    &lt;android.support.v7.widget.Toolbar</span><br><span class="line">        android:id=&quot;@+id/toolbar&quot;</span><br><span class="line">        android:layout_width=&quot;match_parent&quot;</span><br><span class="line">        android:layout_height=&quot;48dp&quot;</span><br><span class="line">        android:background=&quot;#ffffff&quot;</span><br><span class="line">        android:gravity=&quot;center&quot;</span><br><span class="line">        app:titleTextColor=&quot;#1d1d1d&quot;&gt;</span><br><span class="line">        &lt;RelativeLayout</span><br><span class="line">            android:layout_width=&quot;match_parent&quot;</span><br><span class="line">            android:layout_height=&quot;match_parent&quot;&gt;</span><br><span class="line">        &lt;TextView</span><br><span class="line">            android:layout_width=&quot;wrap_content&quot;</span><br><span class="line">            android:layout_height=&quot;wrap_content&quot;</span><br><span class="line">            android:layout_centerInParent=&quot;true&quot;</span><br><span class="line">            android:layout_gravity=&quot;center&quot;</span><br><span class="line">            android:text=&quot;工作&quot;</span><br><span class="line">            android:textColor=&quot;#1d1d1d&quot;</span><br><span class="line">            android:textSize=&quot;16sp&quot; /&gt;</span><br><span class="line">            &lt;TextView</span><br><span class="line">                android:layout_width=&quot;wrap_content&quot;</span><br><span class="line">                android:layout_height=&quot;wrap_content&quot;</span><br><span class="line">                android:layout_centerInParent=&quot;true&quot;</span><br><span class="line">                android:layout_alignParentRight=&quot;true&quot;</span><br><span class="line">                android:layout_marginRight=&quot;12dp&quot;</span><br><span class="line">                android:text=&quot;按钮&quot;</span><br><span class="line">                android:textColor=&quot;#1d1d1d&quot;</span><br><span class="line">                android:textSize=&quot;14sp&quot; /&gt;</span><br><span class="line">        &lt;/RelativeLayout&gt;</span><br><span class="line">    &lt;/android.support.v7.widget.Toolbar&gt;</span><br><span class="line">```   </span><br><span class="line">   </span><br><span class="line">  &gt;  这里在ToolBar的自定义区放入了一个RelativeLayout，在RelativeLayout里面放置了一个标题和右侧的按钮，右侧的按钮是可以随意定制的，</span><br><span class="line">#### 第二种实现</span><br><span class="line">我们可以利用菜单选项menu来实现这种效果，</span><br><span class="line">1. 首先在res目录下新建menu文件夹，在该文件夹下面建立menu.main.xml，代码如下：</span><br></pre></td></tr></table></figure>
+<p><menu xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto" xmlns:tools="http://schemas.android.com/tools" tools:context=".MainActivity"><br>    <item android:id="@+id/action_share" android:orderincategory="90" android:title="按钮" app:showasaction="ifRoom"><br></item></menu><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">2. 在`MainActivity.java`中重写`onCreateOptionsMenu`方法如下所示：</span><br></pre></td></tr></table></figure></p>
+<p>@Override<br>    public boolean onCreateOptionsMenu(Menu menu) {<br>        // Inflate the menu; this adds items to the action bar if it is present.<br>        getMenuInflater().inflate(R.menu.menu_main, menu);<br>        return true;<br>    }<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">### 3. 左侧的返回箭头</span><br><span class="line">首先，你得先准备一个返回箭头的图标，然后以下两种都行，都可以实现显示小箭头，并且点击小箭头返回</span><br><span class="line">#### 第一种方案</span><br></pre></td></tr></table></figure></p>
+<p>//设置小箭头<br>        toolbar.setNavigationIcon(R.drawable.common_back_ic);<br>        //设置小箭头点击事件<br>        toolbar.setNavigationOnClickListener(new View.OnClickListener() {<br>            @Override<br>            public void onClick(View v) {<br>                finish();<br>            }<br>        });<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">这种方案是只能在当前的Activity中使用，达不到复用的目的。</span><br><span class="line"></span><br><span class="line">#### 第二种方案</span><br><span class="line">在日常的开发中，通常我们会写一个基类，让所有的Activity都继承于这个基类，便于统一管理和减少代码量。</span><br><span class="line">所以我们可以在改基类（比如：`BaseActivity.java`）中写入以下方法：</span><br></pre></td></tr></table></figure></p>
+<p>/**</p>
+<pre><code> * 设置左上角back按钮
+ */
+public void setBackArrow() {
+
+    final Drawable upArrow = getResources().getDrawable(R.drawable.common_back_ic);
+    getSupportActionBar().setHomeAsUpIndicator(upArrow);
+    getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+    getSupportActionBar().setDisplayShowHomeEnabled(true);
+}
+</code></pre><p>/**</p>
+<pre><code> * 点击左上角的返回按钮，结束本Activity
+ * home就是左上角的小箭头，在toolbar上
+ *
+ * @param item
+ * @return
+ */
+@Override
+public boolean onOptionsItemSelected(MenuItem item) {
+
+    if (item.getItemId() == android.R.id.home) {
+        basefinish();
+        return true;
+    }
+    return super.onOptionsItemSelected(item);
+}
+</code></pre><p>/**</p>
+<pre><code> * 抽象方法，用于结束activity
+ */
+public abstract void basefinish();
+</code></pre><p> @Override<br>    public void onBackPressed() {</p>
+<pre><code>    basefinish();
+}
+</code></pre><p>```</p>
+<p>这样的话，我们在的其他<code>Activity</code>只要继承于这个<code>BaseActivity</code>，就需要实现抽象方法，抽象方法会实现返回操作，我们每次只用调用 setBackArrow()这个方法就可以很方便的实现返回小箭头的功能了。简直不能更方便啦！</p>
+<p>到此就实现了ToolBar的基本使用，建立了自己的一个标题栏，效果和上面是一样的：<br><img src="https://app.yinxiang.com/shard/s69/res/3561cd5b-0929-4c0e-80d9-9702b91d58b2" alt="Alt text"></p>
+<p>特此记录！</p>
+
+    </div>
+
+    <div class="post-footer">   
+        <div>
+            
+                转载声明：商业转载请联系作者获得授权,非商业转载请注明出处 © <a href="" target="_blank">Snippet</a>
+            
+        </div>
+        <div>
+            
+        </div>  
+    </div>
+</article>
+
+<div class="article-nav prev-next-wrap clearfix">
+    
+        <a href="/2016/12/14/解决魅族手机不能Toast提示的方法/" class="pre-post btn btn-default"><i class="fa fa-angle-left fa-fw"></i>上一篇</a>
+    
+    
+        <a href="/2016/11/22/四步教你理解回调/" class="next-post btn btn-default">下一篇<i class="fa fa-angle-right fa-fw"></i></a>
+    
+</div>
+
+
+    <div id="comments">
+        
+	
+<div id="lv-container" data-id="city" data-uid="MTAyMC8zMzA1MS85NjEz">
+  <script type="text/javascript">
+     (function(d, s) {
+         var j, e = d.getElementsByTagName(s)[0];
+         if (typeof LivereTower === 'function') { return; }
+         j = d.createElement(s);
+         j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+         j.async = true;
+         e.parentNode.insertBefore(j, e);
+     })(document, 'script');
+  </script>
+</div>
+
+
+    </div>
+
+
+
+
+
+                </main>
+                
+    <aside class="col-md-4 sidebar">
+        
+        
+    <div class="widget">    
+        <h3 class="title">搜索</h3>
+        <div id="search-form">
+            <div id="result-mask" class="hide"></div>
+            <div class="search-area">
+                
+                    <input id="search-key" type="search" autocomplete="off" placeholder="搜点什么呢?">
+                    <button type="button" class="search-form-submit" id="search-local">站内搜索</button>
+                
+                
+            </div>
+            <div id="result-wrap" class="hide">
+                <div id="search-result"></div>
+            </div>
+            <div class="hide">
+                <template id="search-tpl">
+                    <div class="item">
+                        <a href="/{path}" title="{title}">
+                            <div class="title">{title}</div>
+                            <div class="content">{content}</div>
+                        </a>
+                    </div>
+                </template>
+            </div>
+        </div>
+    </div>
+
+        
+        
+    <div class="widget notification">
+        <h3 class="title">网站公告</h3>
+        <div>
+            <p>暂无公告~ <br/>
+        </div>
+    </div>
+
+        
+        
+    <div class="widget">
+      <h3 class="title">社交</h3> 
+        <div class="content social">
+            
+	            <a href="https://github.com/smartsean" rel="external nofollow" title="Github" target="_blank">
+			    	<i class="git fa fa-git"></i>
+			    </a>
+            
+        </div>
+    </div>
+
+
+        
+        
+    <div class="widget">
+        <h3 class="title">分类</h3>
+        <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/Android/"><i class="fa" aria-hidden="true">Android</i></a><span class="category-list-count">32</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Ionic/"><i class="fa" aria-hidden="true">Ionic</i></a><span class="category-list-count">6</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Ionic/其他/"><i class="fa" aria-hidden="true">其他</i></a><span class="category-list-count">6</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/工具/"><i class="fa" aria-hidden="true">工具</i></a><span class="category-list-count">3</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/工具/我/"><i class="fa" aria-hidden="true">我</i></a><span class="category-list-count">1</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/我/"><i class="fa" aria-hidden="true">我</i></a><span class="category-list-count">3</span></li></ul>
+    </div>
+
+
+        
+        
+    <div class="widget">
+      <h3 class="title">归档</h3>
+        <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/09/"><i class="fa" aria-hidden="true">九月 2017</i></a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/05/"><i class="fa" aria-hidden="true">五月 2017</i></a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/04/"><i class="fa" aria-hidden="true">四月 2017</i></a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/03/"><i class="fa" aria-hidden="true">三月 2017</i></a><span class="archive-list-count">7</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/02/"><i class="fa" aria-hidden="true">二月 2017</i></a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/01/"><i class="fa" aria-hidden="true">一月 2017</i></a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/12/"><i class="fa" aria-hidden="true">十二月 2016</i></a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/11/"><i class="fa" aria-hidden="true">十一月 2016</i></a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/10/"><i class="fa" aria-hidden="true">十月 2016</i></a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/09/"><i class="fa" aria-hidden="true">九月 2016</i></a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/08/"><i class="fa" aria-hidden="true">八月 2016</i></a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/06/"><i class="fa" aria-hidden="true">六月 2016</i></a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/04/"><i class="fa" aria-hidden="true">四月 2016</i></a><span class="archive-list-count">10</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/03/"><i class="fa" aria-hidden="true">三月 2016</i></a><span class="archive-list-count">3</span></li></ul>
+    </div>
+
+
+        
+        
+  <div class="widget">
+    <h3 class="title">标签云</h3>
+    <div class="content tag-cloud">
+        <a href="/tags/Android/" style="font-size: 20px;">Android</a> <a href="/tags/AndroidStudio/" style="font-size: 12.5px;">AndroidStudio</a> <a href="/tags/Git/" style="font-size: 10px;">Git</a> <a href="/tags/Ionic/" style="font-size: 17.5px;">Ionic</a> <a href="/tags/Java/" style="font-size: 12.5px;">Java</a> <a href="/tags/Java-Java基础/" style="font-size: 10px;">Java Java基础</a> <a href="/tags/工具/" style="font-size: 12.5px;">工具</a> <a href="/tags/异常/" style="font-size: 12.5px;">异常</a> <a href="/tags/我/" style="font-size: 15px;">我</a> <a href="/tags/模拟器/" style="font-size: 10px;">模拟器</a> <a href="/tags/自定义View/" style="font-size: 10px;">自定义View</a>
+    </div>
+  </div>
+
+
+        
+        
+    <div class="widget">
+        <h3 class="title">友链</h3>
+        <div class="content friends-link">
+        
+            <a href="http://www.shenliyang.com" class="fa" target="_blank">个人博客</a>
+        
+        </div>
+    </div>
+
+
+        
+    </aside>
+
+            </div>
+        </div>
+    </section>
+    <footer class="main-footer">
+    <div class="container">
+        <div class="row">
+        </div>
+    </div>
+</footer>
+
+<a id="back-to-top" class="hide">
+	<i class="fa fa-chevron-up"></i>
+</a>
+
+
+
+
+    <div class="copyright">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12"> 
+                <span>Copyright &copy; 2017
+                </span> | 
+                <span>
+                    Powered by <a href="//hexo.io" class="copyright-links" target="_blank" rel="nofollow">Hexo</a>
+                </span> | 
+                <span>
+                    Theme by <a href="//github.com/shenliyang/hexo-theme-snippet.git" class="copyright-links" target="_blank" rel="nofollow">Snippet</a>
+                </span>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+	<script src="/js/search.js?rev=@@hash"></script>
+
+
+<script src="/js/app.js?rev=@@hash"></script>
+
+
+</body>
+</html>

@@ -1,0 +1,373 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+    <!--Setting-->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+    <meta http-equiv="Cache-Control" content="no-siteapp">
+    <meta name="renderer" content="webkit|ie-comp|ie-stand">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="format-detection" content="telephone=no,email=no,adress=no">
+    <meta name="browsermode" content="application">
+    <meta name="screen-orientation" content="portrait">
+    <link rel="dns-prefetch" href="https://github.com/smartsean/smartsean.github.io">
+    <!--SEO-->
+
+
+
+<meta name="robots" content="all" />
+<meta name="google" content="all" />
+<meta name="googlebot" content="all" />
+<meta name="verify" content="all" />
+    <!--Title-->
+
+
+<title>Android基础---PopupWindow实现漂亮的搜索 | SmartSean的小站</title>
+
+
+    <link rel="alternate" href="/atom.xml" title="SmartSean的小站" type="application/atom+xml">
+
+
+    <link rel="icon" href="/favicon.ico">
+
+    
+
+
+
+<link rel="stylesheet" href="//cdn.bootcss.com/bootstrap/3.3.4/css/bootstrap.min.css?rev=3.3.4">
+<link rel="stylesheet" href="//cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.min.css">
+<link rel="stylesheet" href="/css/style.css?rev=@@hash">
+
+
+
+
+    
+    <div class="hide">
+    	<script src="https://s4.cnzz.com/z_stat.php?id=1263868967&web_id=1263868967" language="JavaScript"></script>
+    </div>
+
+
+
+
+
+
+    
+</head>
+
+
+<!--[if lte IE 8]>
+<style>
+    html{ font-size: 1em }
+</style>
+<![endif]-->
+<!--[if lte IE 9]>
+<div style="ie">你使用的浏览器版本过低，为了你更好的阅读体验，请更新浏览器的版本或者使用其他现代浏览器，比如Chrome、Firefox、Safari等。</div>
+<![endif]-->
+
+<body>
+    <header class="main-header"  style="background-image:url(http://7xpw2b.com1.z0.glb.clouddn.com/hexo-sinppet/img/banner2.jpg)"  >
+    <div class="main-header-box">
+        <a class="header-avatar" href="/" title="">
+            <img src="/img/avatar.jpg" alt="logo头像">
+        </a>
+        <div class="branding">
+        	<!--<h2 class="text-hide">Snippet主题,从未如此简单有趣</h2>-->
+            
+                <h2> 记录生活，记录代码 </h2>
+             
+    	</div>
+    </div>
+</header>
+    <nav class="main-navigation">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="navbar-header"><span class="nav-toggle-button collapsed" data-toggle="collapse" data-target="#main-menu" id="mnav">
+                    <span class="sr-only">Toggle navigation</span>
+                    <i class="fa fa-bars"></i>
+                    </span>
+                </div>
+                <div class="collapse navbar-collapse" id="main-menu">
+                    <ul class="menu">
+                        
+                            <li role="presentation"><a href="/"><i class="fa fa-fw "></i>首页</a>
+                            </li>
+                        
+                            <li role="presentation"><a href="/categories/Android/"><i class="fa fa-fw "></i>Android</a>
+                            </li>
+                        
+                            <li role="presentation"><a href="/categories/工具/"><i class="fa fa-fw "></i>工具</a>
+                            </li>
+                        
+                            <li role="presentation"><a href="/categories/我/"><i class="fa fa-fw "></i>我</a>
+                            </li>
+                        
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</nav>
+    <section class="content-wrap">
+        <div class="container">
+            <div class="row">
+                <main class="col-md-8 main-content m-post">
+                    <p id="process"></p>
+<article class="post">
+    <div class="post-head">
+        <h1 id="Android基础---PopupWindow实现漂亮的搜索">
+            
+	            Android基础---PopupWindow实现漂亮的搜索
+            
+        </h1>
+        <div class="post-meta">
+    
+    
+    <span class="categories-meta fa-wrap">
+        <i class="fa fa-folder-open-o"></i>
+        <span>Android</span>
+    </span>
+    
+    
+    <span class="fa-wrap">
+        <i class="fa fa-tags"></i>
+        <span class="tags-meta">
+            
+            Android
+            
+        </span>
+    </span>
+    
+    
+    <span class="fa-wrap">
+        <i class="fa fa-clock-o"></i>
+        <span class="date-meta">2017/04/21</span>
+    </span>
+</div>
+
+            
+            
+    </div>
+    
+    <div class="post-body post-content">
+        <p>当初做毕业设计的时候，就在毕业设计 App 上面实现了该功能，当初只是简单的堆积代码，代码都是从别处拷贝了，对具体代码的意思也不是很清楚，现在做了一个简单的开源项目，也实现了该搜索功能，现在对 PopupWindow 有了更新的认识。</p>
+<p>本文会一步一步的教你实现效果图中的效果，包会。。。如果还是不会的话，欢饮点击下面的链接去看看我的项目中怎么用的。</p>
+<p>我的开源项目：<a href="https://github.com/Seancss/GankIo">Gank.io客户端</a><br>App 下载地址 ：<a href="https://pan.baidu.com/s/1pLsIpnH" target="_blank" rel="noopener">App下载</a>    密码：ckgd</p>
+<h2 id="效果图"><a href="#效果图" class="headerlink" title="效果图"></a>效果图</h2><p><img src="http://upload-images.jianshu.io/upload_images/1744889-1d80f727c89e8049.gif?imageMogr2/auto-orient/strip" alt="搜索框"></p>
+<h2 id="一步步的具体实现"><a href="#一步步的具体实现" class="headerlink" title="一步步的具体实现"></a>一步步的具体实现</h2><h3 id="1-搜索框和搜索按钮的背景"><a href="#1-搜索框和搜索按钮的背景" class="headerlink" title="1. 搜索框和搜索按钮的背景"></a>1. 搜索框和搜索按钮的背景</h3><p>在 drawable 文件夹下新建文件 editsharp.xml<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">&lt;?xml version=&quot;1.0&quot; encoding=&quot;utf-8&quot;?&gt;</span><br><span class="line">&lt;shape xmlns:android=&quot;http://schemas.android.com/apk/res/android&quot;</span><br><span class="line">    android:shape=&quot;rectangle&quot;&gt;</span><br><span class="line"></span><br><span class="line">    &lt;gradient</span><br><span class="line">        android:angle=&quot;45&quot;</span><br><span class="line">        android:endColor=&quot;#CCCCCC&quot;</span><br><span class="line">        android:startColor=&quot;#CCCCCC&quot; /&gt;</span><br><span class="line">    &lt;padding</span><br><span class="line">        android:bottom=&quot;7dp&quot;</span><br><span class="line">        android:left=&quot;7dp&quot;</span><br><span class="line">        android:right=&quot;7dp&quot;</span><br><span class="line">        android:top=&quot;7dp&quot; /&gt;</span><br><span class="line">    &lt;!-- 设置圆角矩形 --&gt;</span><br><span class="line">    &lt;corners android:radius=&quot;32dp&quot; /&gt;</span><br><span class="line">    &lt;solid android:color=&quot;#FFFFFF&quot; /&gt;</span><br><span class="line"></span><br><span class="line">&lt;/shape&gt;</span><br></pre></td></tr></table></figure></p>
+<h3 id="2-修改-EditText-光标的颜色"><a href="#2-修改-EditText-光标的颜色" class="headerlink" title="2.修改 EditText 光标的颜色"></a>2.修改 EditText 光标的颜色</h3><p>在 drawable 文件夹下新建文件 color_cursor.xml<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">&lt;?xml version=&quot;1.0&quot; encoding=&quot;utf-8&quot;?&gt;</span><br><span class="line">&lt;shape xmlns:android=&quot;http://schemas.android.com/apk/res/android&quot; android:shape=&quot;rectangle&quot;&gt;</span><br><span class="line">    &lt;size android:width=&quot;1dp&quot; /&gt;</span><br><span class="line">    &lt;solid android:color=&quot;@color/colorPrimary&quot;  /&gt;</span><br><span class="line">&lt;/shape&gt;</span><br></pre></td></tr></table></figure></p>
+<h3 id="3-新建-PopupWindow-的布局文件"><a href="#3-新建-PopupWindow-的布局文件" class="headerlink" title="3.新建 PopupWindow 的布局文件"></a>3.新建 PopupWindow 的布局文件</h3><p>在 layout文件夹下新建文件 search_popup.xml<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br></pre></td><td class="code"><pre><span class="line">&lt;?xml version=&quot;1.0&quot; encoding=&quot;utf-8&quot;?&gt;</span><br><span class="line">&lt;RelativeLayout xmlns:android=&quot;http://schemas.android.com/apk/res/android&quot;</span><br><span class="line">    android:layout_width=&quot;match_parent&quot;</span><br><span class="line">    android:layout_height=&quot;@dimen/common_toolbar_height&quot;</span><br><span class="line">    android:background=&quot;@color/colorPrimary&quot;&gt;</span><br><span class="line"></span><br><span class="line">    &lt;RelativeLayout</span><br><span class="line">        android:layout_marginLeft=&quot;12dp&quot;</span><br><span class="line">        android:id=&quot;@+id/select_type_rl&quot;</span><br><span class="line">        android:layout_width=&quot;wrap_content&quot;</span><br><span class="line">        android:layout_height=&quot;match_parent&quot;&gt;</span><br><span class="line"></span><br><span class="line">        &lt;TextView</span><br><span class="line">            android:id=&quot;@+id/select_type_tv&quot;</span><br><span class="line">            android:layout_width=&quot;wrap_content&quot;</span><br><span class="line">            android:layout_height=&quot;wrap_content&quot;</span><br><span class="line">            android:layout_centerInParent=&quot;true&quot;</span><br><span class="line">            android:drawableRight=&quot;@drawable/toward_bottom_ic&quot;</span><br><span class="line">            android:gravity=&quot;center_vertical&quot;</span><br><span class="line">            android:text=&quot;@string/all_text&quot;</span><br><span class="line">            android:textColor=&quot;@color/white&quot; /&gt;</span><br><span class="line">    &lt;/RelativeLayout&gt;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    &lt;EditText</span><br><span class="line">        android:id=&quot;@+id/search_et&quot;</span><br><span class="line">        android:layout_width=&quot;wrap_content&quot;</span><br><span class="line">        android:layout_height=&quot;wrap_content&quot;</span><br><span class="line">        android:layout_centerVertical=&quot;true&quot;</span><br><span class="line">        android:layout_gravity=&quot;center_vertical&quot;</span><br><span class="line">        android:layout_toLeftOf=&quot;@+id/search_bt&quot;</span><br><span class="line">        android:layout_toRightOf=&quot;@+id/select_type_rl&quot;</span><br><span class="line">        android:background=&quot;@drawable/editsharp&quot;</span><br><span class="line">        android:drawableLeft=&quot;@drawable/common_search_ic&quot;</span><br><span class="line">        android:hint=&quot;请输入关键字...&quot;</span><br><span class="line">        android:imeOptions=&quot;actionSearch&quot;</span><br><span class="line">        android:inputType=&quot;text&quot;</span><br><span class="line">        android:singleLine=&quot;true&quot;</span><br><span class="line">        android:textCursorDrawable=&quot;@drawable/color_cursor&quot;</span><br><span class="line">        android:textSize=&quot;14sp&quot; /&gt;</span><br><span class="line"></span><br><span class="line">    &lt;Button</span><br><span class="line">        android:id=&quot;@+id/search_bt&quot;</span><br><span class="line">        android:layout_width=&quot;56dp&quot;</span><br><span class="line">        android:layout_height=&quot;wrap_content&quot;</span><br><span class="line">        android:layout_alignBottom=&quot;@+id/search_et&quot;</span><br><span class="line">        android:layout_alignParentRight=&quot;true&quot;</span><br><span class="line">        android:layout_alignTop=&quot;@+id/search_et&quot;</span><br><span class="line">        android:layout_marginLeft=&quot;12dp&quot;</span><br><span class="line">        android:layout_marginRight=&quot;12dp&quot;</span><br><span class="line">        android:background=&quot;@drawable/editsharp&quot;</span><br><span class="line">        android:text=&quot;搜索&quot;</span><br><span class="line">        android:textColor=&quot;@color/colorPrimary&quot;</span><br><span class="line">        android:textSize=&quot;14sp&quot; /&gt;</span><br><span class="line"></span><br><span class="line">&lt;/RelativeLayout&gt;</span><br></pre></td></tr></table></figure></p>
+<h3 id="4-为-PopupWindow-设置的动画"><a href="#4-为-PopupWindow-设置的动画" class="headerlink" title="4. 为 PopupWindow 设置的动画"></a>4. 为 PopupWindow 设置的动画</h3><p>在 res 下面新建 anim 文件夹。</p>
+<ul>
+<li><p>新建 inuptodown.xml</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;</span><br><span class="line">&lt;set xmlns:android=&quot;http://schemas.android.com/apk/res/android&quot; &gt;</span><br><span class="line">    &lt;translate</span><br><span class="line">        android:duration=&quot;100&quot;</span><br><span class="line">        android:fromYDelta=&quot;-100%&quot;</span><br><span class="line">        android:toYDelta=&quot;0&quot; /&gt;</span><br><span class="line">&lt;/set&gt;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>新建 outdowntoup.xml</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;</span><br><span class="line">&lt;set xmlns:android=&quot;http://schemas.android.com/apk/res/android&quot;&gt;</span><br><span class="line">    &lt;translate</span><br><span class="line">        android:duration=&quot;100&quot;</span><br><span class="line">        android:fromYDelta=&quot;0&quot;</span><br><span class="line">        android:toYDelta=&quot;-100%&quot; /&gt;</span><br><span class="line">&lt;/set&gt;</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<p>然后在 styles 文件里面添加：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">&lt;!--淡入淡出效果--&gt;</span><br><span class="line">&lt;style name=&quot;AnimBottom&quot; parent=&quot;@android:style/Animation&quot;&gt;</span><br><span class="line">    &lt;item name=&quot;android:windowEnterAnimation&quot;&gt;@anim/inuptodown&lt;/item&gt;</span><br><span class="line">    &lt;item name=&quot;android:windowExitAnimation&quot;&gt;@anim/outdowntoup&lt;/item&gt;</span><br><span class="line">&lt;/style&gt;</span><br></pre></td></tr></table></figure></p>
+<h3 id="4-初始化-PopupWindow"><a href="#4-初始化-PopupWindow" class="headerlink" title="4.初始化 PopupWindow"></a>4.初始化 PopupWindow</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br></pre></td><td class="code"><pre><span class="line">/**</span><br><span class="line">     * 初始化PopupWindow</span><br><span class="line">     */</span><br><span class="line">    protected void initPopupWindow() &#123;</span><br><span class="line">        final View view = getLayoutInflater().inflate(R.layout.search_popup, null, false);</span><br><span class="line">        int height = commonTitleTb.getHeight(); //  获取当前页面ToolBar的高度</span><br><span class="line">        final EditText searchEt = (EditText) view.findViewById(R.id.search_et);</span><br><span class="line">        popupWindow = new PopupWindow(view, ViewGroup.LayoutParams.MATCH_PARENT, height, true);</span><br><span class="line">        final TextView selectTypeTv = (TextView) view.findViewById(R.id.select_type_tv);</span><br><span class="line">        final RelativeLayout selectTypeRl = (RelativeLayout) view.findViewById(R.id.select_type_rl);</span><br><span class="line">        popupWindow.setFocusable(true);//设置外部点击取消</span><br><span class="line">        popupWindow.setBackgroundDrawable(new BitmapDrawable());// 不设置的话不能关闭此 PopupWindow</span><br><span class="line">        popupWindow.setAnimationStyle(R.style.AnimBottom);</span><br><span class="line">        view.setOnTouchListener(new View.OnTouchListener() &#123;</span><br><span class="line">            @Override</span><br><span class="line">            public boolean onTouch(View v, MotionEvent event) &#123;</span><br><span class="line">                if (popupWindow != null &amp;&amp; popupWindow.isShowing()) &#123;</span><br><span class="line">                    popupWindow.dismiss();</span><br><span class="line">                    popupWindow = null;</span><br><span class="line">                &#125;</span><br><span class="line">                return false;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;);</span><br><span class="line"></span><br><span class="line">        searchEt.setOnEditorActionListener(new TextView.OnEditorActionListener() &#123;</span><br><span class="line">            @Override</span><br><span class="line">            public boolean onEditorAction(TextView v, int actionId,</span><br><span class="line">                                          KeyEvent event) &#123;</span><br><span class="line">                if (actionId == EditorInfo.IME_ACTION_SEARCH) &#123;</span><br><span class="line">                    String searchContent = searchEt.getText().toString();</span><br><span class="line">                    if (TextUtils.isEmpty(searchContent)) &#123;</span><br><span class="line">                        return false;</span><br><span class="line">                    &#125; else &#123;</span><br><span class="line">                        // todo someThing</span><br><span class="line">                        // getSearchData(selectType, searchContent);</span><br><span class="line">                    &#125;</span><br><span class="line">                    popupWindow.dismiss();</span><br><span class="line">                &#125;</span><br><span class="line">                return false;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;);</span><br><span class="line">        selectTypeRl.setOnClickListener(new View.OnClickListener() &#123;</span><br><span class="line">            @Override</span><br><span class="line">            public void onClick(View v) &#123;</span><br><span class="line">                // todo someThing</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;);</span><br><span class="line"></span><br><span class="line">        view.findViewById(R.id.search_bt).setOnClickListener(new View.OnClickListener() &#123;</span><br><span class="line">            @Override</span><br><span class="line">            public void onClick(View v) &#123;</span><br><span class="line">                // todo someThing</span><br><span class="line">                popupWindow.dismiss();</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;);</span><br><span class="line">        // PopupWindow的消失事件监听，消失的时候，关闭软键盘</span><br><span class="line">        popupWindow.setOnDismissListener(new PopupWindow.OnDismissListener() &#123;</span><br><span class="line">            @Override</span><br><span class="line">            public void onDismiss() &#123;</span><br><span class="line">                KeyBoardUtils.closeKeybord(context);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;);</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+<p>获取 PopupWindow 实例<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">/**</span><br><span class="line"> * 获取PopipWinsow实例</span><br><span class="line"> */</span><br><span class="line">private void getPopupWindow() &#123;</span><br><span class="line">    if (null != popupWindow) &#123;</span><br><span class="line">        popupWindow.dismiss();</span><br><span class="line">        return;</span><br><span class="line">    &#125; else &#123;</span><br><span class="line">        initPopupWindow();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<h3 id="5-调用-PopupWindow"><a href="#5-调用-PopupWindow" class="headerlink" title="5.调用 PopupWindow"></a>5.调用 PopupWindow</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">getPopupWindow();</span><br><span class="line"><span class="comment">// 设置相对View的偏移，1、相对的view，2、相对view的x方向偏移，3、相对view的y方向偏移</span></span><br><span class="line">popupWindow.showAsDropDown(<span class="keyword">new</span> View(<span class="keyword">this</span>), <span class="number">0</span>, ScreenUtils.getStatusHeight(MainActivity.<span class="keyword">this</span>));</span><br><span class="line"><span class="comment">//打开软键盘</span></span><br><span class="line">KeyBoardUtils.openKeyboard(<span class="keyword">new</span> Handler(), <span class="number">0</span>, context);</span><br></pre></td></tr></table></figure>
+<p>至此就可以完成效果图中的效果了。</p>
+<p>与此相关的有：</p>
+<p><a href="http://www.jianshu.com/p/506509eaa64c" target="_blank" rel="noopener">我的第一个开源项目</a><br><a href="http://www.jianshu.com/p/a63ec8d7eb39" target="_blank" rel="noopener">Android基础之—工具类 持续更新中…</a><br><a href="http://www.jianshu.com/p/9cf7091a60f4" target="_blank" rel="noopener">Android基础—淡入淡出、上下弹出动画的</a><br><a href="http://www.jcodecraeer.com/a/anzhuokaifa/androidkaifa/2014/0702/1627.html" target="_blank" rel="noopener">Android PopupWindow详解</a></p>
+<blockquote>
+<ul>
+<li>我的博客：<a href="http://www.smartsean.cn/" target="_blank" rel="noopener">博客传送门</a></li>
+<li>我的简书：<a href="http://www.jianshu.com/u/b58209d17f98" target="_blank" rel="noopener">简书传送门</a></li>
+<li>我的CSDN：<a href="http://blog.csdn.net/sean_css" target="_blank" rel="noopener">CSDN传送门</a></li>
+<li>我的GitHub：<a href="https://github.com/Seancss">GitHub传送门</a></li>
+</ul>
+</blockquote>
+
+    </div>
+
+    <div class="post-footer">   
+        <div>
+            
+                转载声明：商业转载请联系作者获得授权,非商业转载请注明出处 © <a href="" target="_blank">Snippet</a>
+            
+        </div>
+        <div>
+            
+        </div>  
+    </div>
+</article>
+
+<div class="article-nav prev-next-wrap clearfix">
+    
+        <a href="/2017/05/09/Java多线程/" class="pre-post btn btn-default"><i class="fa fa-angle-left fa-fw"></i>上一篇</a>
+    
+    
+        <a href="/2017/04/19/我的第一个开源项目/" class="next-post btn btn-default">下一篇<i class="fa fa-angle-right fa-fw"></i></a>
+    
+</div>
+
+
+    <div id="comments">
+        
+	
+<div id="lv-container" data-id="city" data-uid="MTAyMC8zMzA1MS85NjEz">
+  <script type="text/javascript">
+     (function(d, s) {
+         var j, e = d.getElementsByTagName(s)[0];
+         if (typeof LivereTower === 'function') { return; }
+         j = d.createElement(s);
+         j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+         j.async = true;
+         e.parentNode.insertBefore(j, e);
+     })(document, 'script');
+  </script>
+</div>
+
+
+    </div>
+
+
+
+
+
+                </main>
+                
+    <aside class="col-md-4 sidebar">
+        
+        
+    <div class="widget">    
+        <h3 class="title">搜索</h3>
+        <div id="search-form">
+            <div id="result-mask" class="hide"></div>
+            <div class="search-area">
+                
+                    <input id="search-key" type="search" autocomplete="off" placeholder="搜点什么呢?">
+                    <button type="button" class="search-form-submit" id="search-local">站内搜索</button>
+                
+                
+            </div>
+            <div id="result-wrap" class="hide">
+                <div id="search-result"></div>
+            </div>
+            <div class="hide">
+                <template id="search-tpl">
+                    <div class="item">
+                        <a href="/{path}" title="{title}">
+                            <div class="title">{title}</div>
+                            <div class="content">{content}</div>
+                        </a>
+                    </div>
+                </template>
+            </div>
+        </div>
+    </div>
+
+        
+        
+    <div class="widget notification">
+        <h3 class="title">网站公告</h3>
+        <div>
+            <p>暂无公告~ <br/>
+        </div>
+    </div>
+
+        
+        
+    <div class="widget">
+      <h3 class="title">社交</h3> 
+        <div class="content social">
+            
+	            <a href="https://github.com/smartsean" rel="external nofollow" title="Github" target="_blank">
+			    	<i class="git fa fa-git"></i>
+			    </a>
+            
+        </div>
+    </div>
+
+
+        
+        
+    <div class="widget">
+        <h3 class="title">分类</h3>
+        <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/Android/"><i class="fa" aria-hidden="true">Android</i></a><span class="category-list-count">32</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Ionic/"><i class="fa" aria-hidden="true">Ionic</i></a><span class="category-list-count">6</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Ionic/其他/"><i class="fa" aria-hidden="true">其他</i></a><span class="category-list-count">6</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/工具/"><i class="fa" aria-hidden="true">工具</i></a><span class="category-list-count">3</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/工具/我/"><i class="fa" aria-hidden="true">我</i></a><span class="category-list-count">1</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/我/"><i class="fa" aria-hidden="true">我</i></a><span class="category-list-count">3</span></li></ul>
+    </div>
+
+
+        
+        
+    <div class="widget">
+      <h3 class="title">归档</h3>
+        <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/09/"><i class="fa" aria-hidden="true">九月 2017</i></a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/05/"><i class="fa" aria-hidden="true">五月 2017</i></a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/04/"><i class="fa" aria-hidden="true">四月 2017</i></a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/03/"><i class="fa" aria-hidden="true">三月 2017</i></a><span class="archive-list-count">7</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/02/"><i class="fa" aria-hidden="true">二月 2017</i></a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/01/"><i class="fa" aria-hidden="true">一月 2017</i></a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/12/"><i class="fa" aria-hidden="true">十二月 2016</i></a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/11/"><i class="fa" aria-hidden="true">十一月 2016</i></a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/10/"><i class="fa" aria-hidden="true">十月 2016</i></a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/09/"><i class="fa" aria-hidden="true">九月 2016</i></a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/08/"><i class="fa" aria-hidden="true">八月 2016</i></a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/06/"><i class="fa" aria-hidden="true">六月 2016</i></a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/04/"><i class="fa" aria-hidden="true">四月 2016</i></a><span class="archive-list-count">10</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/03/"><i class="fa" aria-hidden="true">三月 2016</i></a><span class="archive-list-count">3</span></li></ul>
+    </div>
+
+
+        
+        
+  <div class="widget">
+    <h3 class="title">标签云</h3>
+    <div class="content tag-cloud">
+        <a href="/tags/Android/" style="font-size: 20px;">Android</a> <a href="/tags/AndroidStudio/" style="font-size: 12.5px;">AndroidStudio</a> <a href="/tags/Git/" style="font-size: 10px;">Git</a> <a href="/tags/Ionic/" style="font-size: 17.5px;">Ionic</a> <a href="/tags/Java/" style="font-size: 12.5px;">Java</a> <a href="/tags/Java-Java基础/" style="font-size: 10px;">Java Java基础</a> <a href="/tags/工具/" style="font-size: 12.5px;">工具</a> <a href="/tags/异常/" style="font-size: 12.5px;">异常</a> <a href="/tags/我/" style="font-size: 15px;">我</a> <a href="/tags/模拟器/" style="font-size: 10px;">模拟器</a> <a href="/tags/自定义View/" style="font-size: 10px;">自定义View</a>
+    </div>
+  </div>
+
+
+        
+        
+    <div class="widget">
+        <h3 class="title">友链</h3>
+        <div class="content friends-link">
+        
+            <a href="http://www.shenliyang.com" class="fa" target="_blank">个人博客</a>
+        
+        </div>
+    </div>
+
+
+        
+    </aside>
+
+            </div>
+        </div>
+    </section>
+    <footer class="main-footer">
+    <div class="container">
+        <div class="row">
+        </div>
+    </div>
+</footer>
+
+<a id="back-to-top" class="hide">
+	<i class="fa fa-chevron-up"></i>
+</a>
+
+
+
+
+    <div class="copyright">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12"> 
+                <span>Copyright &copy; 2017
+                </span> | 
+                <span>
+                    Powered by <a href="//hexo.io" class="copyright-links" target="_blank" rel="nofollow">Hexo</a>
+                </span> | 
+                <span>
+                    Theme by <a href="//github.com/shenliyang/hexo-theme-snippet.git" class="copyright-links" target="_blank" rel="nofollow">Snippet</a>
+                </span>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+	<script src="/js/search.js?rev=@@hash"></script>
+
+
+<script src="/js/app.js?rev=@@hash"></script>
+
+
+</body>
+</html>
