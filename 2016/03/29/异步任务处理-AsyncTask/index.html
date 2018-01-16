@@ -1,0 +1,386 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+    <!--Setting-->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+    <meta http-equiv="Cache-Control" content="no-siteapp">
+    <meta name="renderer" content="webkit|ie-comp|ie-stand">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="format-detection" content="telephone=no,email=no,adress=no">
+    <meta name="browsermode" content="application">
+    <meta name="screen-orientation" content="portrait">
+    <link rel="dns-prefetch" href="https://github.com/smartsean/smartsean.github.io">
+    <!--SEO-->
+
+
+
+<meta name="robots" content="all" />
+<meta name="google" content="all" />
+<meta name="googlebot" content="all" />
+<meta name="verify" content="all" />
+    <!--Title-->
+
+
+<title>异步任务处理---AsyncTask | SmartSean的小站</title>
+
+
+    <link rel="alternate" href="/atom.xml" title="SmartSean的小站" type="application/atom+xml">
+
+
+    <link rel="icon" href="/favicon.ico">
+
+    
+
+
+
+<link rel="stylesheet" href="//cdn.bootcss.com/bootstrap/3.3.4/css/bootstrap.min.css?rev=3.3.4">
+<link rel="stylesheet" href="//cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.min.css">
+<link rel="stylesheet" href="/css/style.css?rev=@@hash">
+
+
+
+
+    
+    <div class="hide">
+    	<script src="https://s4.cnzz.com/z_stat.php?id=1263868967&web_id=1263868967" language="JavaScript"></script>
+    </div>
+
+
+
+
+
+
+    
+</head>
+
+
+<!--[if lte IE 8]>
+<style>
+    html{ font-size: 1em }
+</style>
+<![endif]-->
+<!--[if lte IE 9]>
+<div style="ie">你使用的浏览器版本过低，为了你更好的阅读体验，请更新浏览器的版本或者使用其他现代浏览器，比如Chrome、Firefox、Safari等。</div>
+<![endif]-->
+
+<body>
+    <header class="main-header"  style="background-image:url(http://7xpw2b.com1.z0.glb.clouddn.com/hexo-sinppet/img/banner2.jpg)"  >
+    <div class="main-header-box">
+        <a class="header-avatar" href="/" title="">
+            <img src="/img/avatar.jpg" alt="logo头像">
+        </a>
+        <div class="branding">
+        	<!--<h2 class="text-hide">Snippet主题,从未如此简单有趣</h2>-->
+            
+                <h2> 记录生活，记录代码 </h2>
+             
+    	</div>
+    </div>
+</header>
+    <nav class="main-navigation">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="navbar-header"><span class="nav-toggle-button collapsed" data-toggle="collapse" data-target="#main-menu" id="mnav">
+                    <span class="sr-only">Toggle navigation</span>
+                    <i class="fa fa-bars"></i>
+                    </span>
+                </div>
+                <div class="collapse navbar-collapse" id="main-menu">
+                    <ul class="menu">
+                        
+                            <li role="presentation"><a href="/"><i class="fa fa-fw "></i>首页</a>
+                            </li>
+                        
+                            <li role="presentation"><a href="/categories/Android/"><i class="fa fa-fw "></i>Android</a>
+                            </li>
+                        
+                            <li role="presentation"><a href="/categories/工具/"><i class="fa fa-fw "></i>工具</a>
+                            </li>
+                        
+                            <li role="presentation"><a href="/categories/我/"><i class="fa fa-fw "></i>我</a>
+                            </li>
+                        
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</nav>
+    <section class="content-wrap">
+        <div class="container">
+            <div class="row">
+                <main class="col-md-8 main-content m-post">
+                    <p id="process"></p>
+<article class="post">
+    <div class="post-head">
+        <h1 id="异步任务处理---AsyncTask">
+            
+	            异步任务处理---AsyncTask
+            
+        </h1>
+        <div class="post-meta">
+    
+    
+    <span class="categories-meta fa-wrap">
+        <i class="fa fa-folder-open-o"></i>
+        <span>Android</span>
+    </span>
+    
+    
+    <span class="fa-wrap">
+        <i class="fa fa-tags"></i>
+        <span class="tags-meta">
+            
+            Android
+            
+        </span>
+    </span>
+    
+    
+    <span class="fa-wrap">
+        <i class="fa fa-clock-o"></i>
+        <span class="date-meta">2016/03/29</span>
+    </span>
+</div>
+
+            
+            
+            <p class="fa fa-exclamation-triangle warning">
+                本文于<strong>657</strong>天之前发表，文中内容可能已经过时。
+            </p>
+        
+    </div>
+    
+    <div class="post-body post-content">
+        <p>今天学习了AsyncTask的基本用法，现在进行一个总结：<br>    首先要知道为什么异步任务：</p>
+<blockquote>
+<p>1、Android单线程模型<br>2、 耗时的操作要放在非主线程中进行，避免主线程堵塞</p>
+</blockquote>
+<p>   其次要知道AsyncTask的作用：</p>
+<blockquote>
+<p>1、在子线程中更新UI<br>2、封装、简化异步操作</p>
+</blockquote>
+<p>接下来看下AsyncTask的基本用法：<br>    由于AsyncTask是一个抽象类，所以如果我们想使用它，就必须创建一个子类去继承它，在继承时我们必须为AsyncTask类指定三个泛型参数，如果传入Void，则表示不传入参数</p>
+<blockquote>
+<p>1、Params：在执行时传入要传入的参数，可用于在后台任务中使用<br>2、Progress：后台任务执行时，如果需要在界面上显示当前的进度，则使用指定的泛型作为进度单位<br>3、Result：当任务执行执行完毕后，如果需要对结果进行返回，使用这里指定的泛型作为返回值类型</p>
+</blockquote>
+<p>然后我们需要构建AsyncTask子类的回调方法：</p>
+<ol>
+<li>onPrexecute()执行后台操作前调用，一般执行初始化操作，在doInBackground方法前执行</li>
+<li>doInBackground(Params…)<strong>必须重写</strong>，在这里执行异步任务；耗时操作写在这里，可调用publishProgress(Progress…)方法返回当前的执行进度</li>
+<li>onProgressUpdate(Progress…)当在doInBackground调用doInBackground()后很快被调用对UI操作，这个可以不写（没有在doInBackground中调用）</li>
+<li>onPostExecute(Result)：当doInBackground方法结束执行，系统自动调用该方法，接收的值就是doInBackground最后返回的值；</li>
+</ol>
+<p>说下使用AsyncTask的注意事项</p>
+<blockquote>
+<p>1、必须在UI线程中创建AsyncTask实例<br>2、必须在UI线程中调用AsyncTask的execute()方法<br>3、重写的四个方法是系统自动调用的，不要手动去调用<br>4、每个AsyncTask只能被执行一次，多次调用将会引发异常</p>
+</blockquote>
+<p>下面开始实例：<strong>使用AsyncTask加载图片</strong><br>首选我们创建布局：image.xml用于显示图片IMageView和加载进度ProgressBar</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">&lt;?xml version=&quot;1.0&quot; encoding=&quot;utf-8&quot;?&gt;</span><br><span class="line">&lt;RelativeLayout xmlns:android=&quot;http://schemas.android.com/apk/res/android&quot;</span><br><span class="line">    android:layout_width=&quot;match_parent&quot;</span><br><span class="line">    android:padding=&quot;16dp&quot;</span><br><span class="line">    android:layout_height=&quot;match_parent&quot;&gt;</span><br><span class="line"></span><br><span class="line">    &lt;ImageView</span><br><span class="line">        android:id=&quot;@+id/image&quot;</span><br><span class="line">        android:layout_width=&quot;match_parent&quot;</span><br><span class="line">        android:layout_height=&quot;match_parent&quot; /&gt;</span><br><span class="line">    &lt;ProgressBar</span><br><span class="line">        android:id=&quot;@+id/progrssBar&quot;</span><br><span class="line">        android:visibility=&quot;gone&quot;</span><br><span class="line">        android:layout_centerInParent=&quot;true&quot;</span><br><span class="line">        android:layout_width=&quot;wrap_content&quot;</span><br><span class="line">        android:layout_height=&quot;wrap_content&quot; /&gt;</span><br><span class="line">&lt;/RelativeLayout&gt;</span><br></pre></td></tr></table></figure>
+<p>新建活动ImageTest</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br></pre></td><td class="code"><pre><span class="line">package com.asynctask.css.asynctask;</span><br><span class="line"></span><br><span class="line">import android.app.Activity;</span><br><span class="line">import android.graphics.Bitmap;</span><br><span class="line">import android.graphics.BitmapFactory;</span><br><span class="line">import android.os.AsyncTask;</span><br><span class="line">import android.os.Bundle;</span><br><span class="line">import android.view.View;</span><br><span class="line">import android.widget.ImageView;</span><br><span class="line">import android.widget.ProgressBar;</span><br><span class="line">import java.io.BufferedInputStream;</span><br><span class="line">import java.io.IOException;</span><br><span class="line">import java.net.URL;//手动导入</span><br><span class="line">import java.io.InputStream;</span><br><span class="line">import java.net.URLConnection;</span><br><span class="line"></span><br><span class="line">/**</span><br><span class="line"> * Created by css on 2016/3/28.</span><br><span class="line"> */</span><br><span class="line">public class ImageTest extends Activity &#123;</span><br><span class="line"></span><br><span class="line">    private ImageView mImageView;</span><br><span class="line">    private ProgressBar mProgressBar;</span><br><span class="line">    MyAsynvTask mtask;</span><br><span class="line"></span><br><span class="line">    //定义静态的String类型的URL用于存储要加载图片的地址</span><br><span class="line">    private static String URL = &quot;http://pic.mmfile.net/2013/08/1315595G7-2.jpg&quot;;</span><br><span class="line"></span><br><span class="line">    @Override</span><br><span class="line">    protected void onCreate(Bundle savedInstanceState) &#123;</span><br><span class="line">        super.onCreate(savedInstanceState);</span><br><span class="line">        setContentView(R.layout.image);</span><br><span class="line">        mImageView = (ImageView) findViewById(R.id.image);</span><br><span class="line">        mProgressBar = (ProgressBar) findViewById(R.id.progrssBar);</span><br><span class="line"></span><br><span class="line">        //当调用execute之后，进行异步操作</span><br><span class="line">        mtask = new MyAsynvTask();</span><br><span class="line">        mtask.execute(URL);</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line">//    新建内部类MyAsynvTask继承AsyncTask，设置传递进去的参数，</span><br><span class="line">//    1、第一个参数表示加载图片的地址，所以传入String，</span><br><span class="line">//    2、第二个参数表示不需要显示返回进度，使用Void，</span><br><span class="line">//    3、第三个参数表示最后返回Bitmap</span><br><span class="line">    class MyAsynvTask extends AsyncTask&lt;String,Void,Bitmap&gt;</span><br><span class="line">    &#123;</span><br><span class="line">//      1、系统调用该方法，对异步操作进行初始化操作，这里显示ProgressBar</span><br><span class="line">        @Override</span><br><span class="line">        protected void onPreExecute() &#123;</span><br><span class="line">            super.onPreExecute();</span><br><span class="line">            mProgressBar.setVisibility(View.VISIBLE);</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">//      2、开始真正的异步操作处理，都在子线程中处理，放置任意的耗时操作，最后返回指定的类型</span><br><span class="line">        @Override</span><br><span class="line">        protected Bitmap doInBackground(String... params) &#123;</span><br><span class="line">            String url = params[0];//可以传递不止一个参数进来，以数组的形式存在，取出对应的URL</span><br><span class="line">            Bitmap bitmap = null;</span><br><span class="line"></span><br><span class="line">            URLConnection connection ;  //定义网络连接对象</span><br><span class="line">            InputStream is;             //用于获取数据的输入流</span><br><span class="line">            //访问网络的费时操作</span><br><span class="line">            try &#123;</span><br><span class="line">                connection = new URL(url).openConnection(); //此处需要手动导入URL包，获取网络连接对象</span><br><span class="line">                is = connection.getInputStream();           //获取输入流</span><br><span class="line">                BufferedInputStream bis = new BufferedInputStream(is);</span><br><span class="line">                //加入睡眠时间，晚点执行</span><br><span class="line">//                try &#123;</span><br><span class="line">//                    Thread.sleep(3000);</span><br><span class="line">//                &#125; catch (InterruptedException e) &#123;</span><br><span class="line">//                    e.printStackTrace();</span><br><span class="line">//                &#125;</span><br><span class="line">                //使用BitmapFactory的decodeStream方法可以很方便的把bis输入流转换为Bitmap</span><br><span class="line">                bitmap = BitmapFactory.decodeStream(bis);</span><br><span class="line">                is.close();//关闭输入流</span><br><span class="line">                bis.close();</span><br><span class="line">            &#125;</span><br><span class="line">            catch (IOException e)</span><br><span class="line">            &#123;</span><br><span class="line">                e.printStackTrace();</span><br><span class="line">            &#125;</span><br><span class="line">            //将bitmap作为返回值传递到onPostExecute中，在onPostExecute进行UI更新</span><br><span class="line">            return bitmap;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">//      3、运行在主线程，任意进行UI操作onPostExecute在本方法中操作UI，把图像设置到ImageView</span><br><span class="line">        @Override</span><br><span class="line">        protected void onPostExecute(Bitmap bitmap) &#123;</span><br><span class="line">            super.onPostExecute(bitmap);</span><br><span class="line">            mProgressBar.setVisibility(View.GONE);  //隐藏ProgressBar</span><br><span class="line">            mImageView.setImageBitmap(bitmap);      //显示图片</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>写完活动之后立马注册活动，养成好习惯；</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;activity android:name=&quot;.ImageTest&quot;&gt;&lt;/activity&gt;</span><br></pre></td></tr></table></figure>
+<p>最后在主活动里面点击Button实现加载图片，剩下的点击Button就省略了，很简单。<br>看下运行效果：<br>1、MainActivity主界面</p>
+<p><img src="http://img.blog.csdn.net/20160328191457571" alt="主界面"></p>
+<p>2、加载过程中ProgressBar显示界面</p>
+<p><img src="http://img.blog.csdn.net/20160328191600181" alt="加载界面"></p>
+<p>3、加载成功图片显示界面</p>
+<p><img src="http://img.blog.csdn.net/20160328191638041" alt="这里写图片描述"></p>
+<p>最后说下AsyncTask的取消：<br>    AsyncTaskc是通过线程池执行的，如果前面的线程没有执行完，再去点击开启一个新的线程的时候就会出现空白，即新线程并没有执行，而是等待上一个线程执行完之后才开始执行的；那么怎么解决这个问题呢？<br>    需要通过让AsyncTask的声明周期和activity的声明周期保持一致，在activity的onpause方法中加入如下代码：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">@Override</span><br><span class="line">  protected void onPause() &#123;</span><br><span class="line">      super.onPause();</span><br><span class="line">      if (mTask != null &amp;&amp; mTask.getStatus() == AsyncTask.Status.RUNNING)</span><br><span class="line">      &#123;</span><br><span class="line">          //cancel方法只是将AsyncTask标记为cancel状态，并不是真正的取消线程的执行</span><br><span class="line">          mTask.cancel(true);</span><br><span class="line">      &#125;</span><br><span class="line">  &#125;</span><br></pre></td></tr></table></figure>
+<p>仅仅写这些事不够的，因为.cancel方法只是对该线程进行标示，并没有取消该线程，还要加上下面的代码</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">if(isCancelled())</span><br><span class="line">&#123;</span><br><span class="line">    break;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>具体的参考代码，下载地址：<a href="http://download.csdn.net/detail/dghfhjgjhgk/9474775" target="_blank" rel="noopener">AsyncTask小例子</a></p>
+
+    </div>
+
+    <div class="post-footer">   
+        <div>
+            
+                转载声明：商业转载请联系作者获得授权,非商业转载请注明出处 © <a href="" target="_blank">Snippet</a>
+            
+        </div>
+        <div>
+            
+        </div>  
+    </div>
+</article>
+
+<div class="article-nav prev-next-wrap clearfix">
+    
+        <a href="/2016/03/29/Android组件之广播（Broadcast）/" class="pre-post btn btn-default"><i class="fa fa-angle-left fa-fw"></i>上一篇</a>
+    
+    
+        <a href="/2016/03/29/Android-UI模板设计-TopBar-标题栏/" class="next-post btn btn-default">下一篇<i class="fa fa-angle-right fa-fw"></i></a>
+    
+</div>
+
+
+    <div id="comments">
+        
+	
+<div id="lv-container" data-id="city" data-uid="MTAyMC8zMzA1MS85NjEz">
+  <script type="text/javascript">
+     (function(d, s) {
+         var j, e = d.getElementsByTagName(s)[0];
+         if (typeof LivereTower === 'function') { return; }
+         j = d.createElement(s);
+         j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+         j.async = true;
+         e.parentNode.insertBefore(j, e);
+     })(document, 'script');
+  </script>
+</div>
+
+
+    </div>
+
+
+
+
+
+                </main>
+                
+    <aside class="col-md-4 sidebar">
+        
+        
+    <div class="widget">    
+        <h3 class="title">搜索</h3>
+        <div id="search-form">
+            <div id="result-mask" class="hide"></div>
+            <div class="search-area">
+                
+                    <input id="search-key" type="search" autocomplete="off" placeholder="搜点什么呢?">
+                    <button type="button" class="search-form-submit" id="search-local">站内搜索</button>
+                
+                
+            </div>
+            <div id="result-wrap" class="hide">
+                <div id="search-result"></div>
+            </div>
+            <div class="hide">
+                <template id="search-tpl">
+                    <div class="item">
+                        <a href="/{path}" title="{title}">
+                            <div class="title">{title}</div>
+                            <div class="content">{content}</div>
+                        </a>
+                    </div>
+                </template>
+            </div>
+        </div>
+    </div>
+
+        
+        
+    <div class="widget notification">
+        <h3 class="title">网站公告</h3>
+        <div>
+            <p>暂无公告~ <br/>
+        </div>
+    </div>
+
+        
+        
+    <div class="widget">
+      <h3 class="title">社交</h3> 
+        <div class="content social">
+            
+	            <a href="https://github.com/smartsean" rel="external nofollow" title="Github" target="_blank">
+			    	<i class="git fa fa-git"></i>
+			    </a>
+            
+        </div>
+    </div>
+
+
+        
+        
+    <div class="widget">
+        <h3 class="title">分类</h3>
+        <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/Android/"><i class="fa" aria-hidden="true">Android</i></a><span class="category-list-count">7</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/工具/"><i class="fa" aria-hidden="true">工具</i></a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/我/"><i class="fa" aria-hidden="true">我</i></a><span class="category-list-count">2</span></li></ul>
+    </div>
+
+
+        
+        
+    <div class="widget">
+      <h3 class="title">归档</h3>
+        <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/09/"><i class="fa" aria-hidden="true">九月 2017</i></a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/04/"><i class="fa" aria-hidden="true">四月 2017</i></a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/03/"><i class="fa" aria-hidden="true">三月 2017</i></a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/10/"><i class="fa" aria-hidden="true">十月 2016</i></a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/04/"><i class="fa" aria-hidden="true">四月 2016</i></a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/03/"><i class="fa" aria-hidden="true">三月 2016</i></a><span class="archive-list-count">3</span></li></ul>
+    </div>
+
+
+        
+        
+  <div class="widget">
+    <h3 class="title">标签云</h3>
+    <div class="content tag-cloud">
+        <a href="/tags/Android/" style="font-size: 20px;">Android</a> <a href="/tags/AndroidStudio/" style="font-size: 15px;">AndroidStudio</a> <a href="/tags/Git/" style="font-size: 10px;">Git</a> <a href="/tags/工具/" style="font-size: 15px;">工具</a> <a href="/tags/我/" style="font-size: 15px;">我</a> <a href="/tags/自定义View/" style="font-size: 10px;">自定义View</a>
+    </div>
+  </div>
+
+
+        
+        
+    <div class="widget">
+        <h3 class="title">友链</h3>
+        <div class="content friends-link">
+        
+            <a href="http://www.shenliyang.com" class="fa" target="_blank">个人博客</a>
+        
+        </div>
+    </div>
+
+
+        
+    </aside>
+
+            </div>
+        </div>
+    </section>
+    <footer class="main-footer">
+    <div class="container">
+        <div class="row">
+        </div>
+    </div>
+</footer>
+
+<a id="back-to-top" class="hide">
+	<i class="fa fa-chevron-up"></i>
+</a>
+
+
+
+
+    <div class="copyright">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12"> 
+                <span>Copyright &copy; 2017
+                </span> | 
+                <span>
+                    Powered by <a href="//hexo.io" class="copyright-links" target="_blank" rel="nofollow">Hexo</a>
+                </span> | 
+                <span>
+                    Theme by <a href="//github.com/shenliyang/hexo-theme-snippet.git" class="copyright-links" target="_blank" rel="nofollow">Snippet</a>
+                </span>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+	<script src="/js/search.js?rev=@@hash"></script>
+
+
+<script src="/js/app.js?rev=@@hash"></script>
+
+
+</body>
+</html>

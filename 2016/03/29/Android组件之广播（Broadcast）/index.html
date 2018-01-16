@@ -1,0 +1,372 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+    <!--Setting-->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+    <meta http-equiv="Cache-Control" content="no-siteapp">
+    <meta name="renderer" content="webkit|ie-comp|ie-stand">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="format-detection" content="telephone=no,email=no,adress=no">
+    <meta name="browsermode" content="application">
+    <meta name="screen-orientation" content="portrait">
+    <link rel="dns-prefetch" href="https://github.com/smartsean/smartsean.github.io">
+    <!--SEO-->
+
+
+
+<meta name="robots" content="all" />
+<meta name="google" content="all" />
+<meta name="googlebot" content="all" />
+<meta name="verify" content="all" />
+    <!--Title-->
+
+
+<title>Android组件之广播（Broadcast） | SmartSean的小站</title>
+
+
+    <link rel="alternate" href="/atom.xml" title="SmartSean的小站" type="application/atom+xml">
+
+
+    <link rel="icon" href="/favicon.ico">
+
+    
+
+
+
+<link rel="stylesheet" href="//cdn.bootcss.com/bootstrap/3.3.4/css/bootstrap.min.css?rev=3.3.4">
+<link rel="stylesheet" href="//cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.min.css">
+<link rel="stylesheet" href="/css/style.css?rev=@@hash">
+
+
+
+
+    
+    <div class="hide">
+    	<script src="https://s4.cnzz.com/z_stat.php?id=1263868967&web_id=1263868967" language="JavaScript"></script>
+    </div>
+
+
+
+
+
+
+    
+</head>
+
+
+<!--[if lte IE 8]>
+<style>
+    html{ font-size: 1em }
+</style>
+<![endif]-->
+<!--[if lte IE 9]>
+<div style="ie">你使用的浏览器版本过低，为了你更好的阅读体验，请更新浏览器的版本或者使用其他现代浏览器，比如Chrome、Firefox、Safari等。</div>
+<![endif]-->
+
+<body>
+    <header class="main-header"  style="background-image:url(http://7xpw2b.com1.z0.glb.clouddn.com/hexo-sinppet/img/banner2.jpg)"  >
+    <div class="main-header-box">
+        <a class="header-avatar" href="/" title="">
+            <img src="/img/avatar.jpg" alt="logo头像">
+        </a>
+        <div class="branding">
+        	<!--<h2 class="text-hide">Snippet主题,从未如此简单有趣</h2>-->
+            
+                <h2> 记录生活，记录代码 </h2>
+             
+    	</div>
+    </div>
+</header>
+    <nav class="main-navigation">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="navbar-header"><span class="nav-toggle-button collapsed" data-toggle="collapse" data-target="#main-menu" id="mnav">
+                    <span class="sr-only">Toggle navigation</span>
+                    <i class="fa fa-bars"></i>
+                    </span>
+                </div>
+                <div class="collapse navbar-collapse" id="main-menu">
+                    <ul class="menu">
+                        
+                            <li role="presentation"><a href="/"><i class="fa fa-fw "></i>首页</a>
+                            </li>
+                        
+                            <li role="presentation"><a href="/categories/Android/"><i class="fa fa-fw "></i>Android</a>
+                            </li>
+                        
+                            <li role="presentation"><a href="/categories/工具/"><i class="fa fa-fw "></i>工具</a>
+                            </li>
+                        
+                            <li role="presentation"><a href="/categories/我/"><i class="fa fa-fw "></i>我</a>
+                            </li>
+                        
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</nav>
+    <section class="content-wrap">
+        <div class="container">
+            <div class="row">
+                <main class="col-md-8 main-content m-post">
+                    <p id="process"></p>
+<article class="post">
+    <div class="post-head">
+        <h1 id="Android组件之广播（Broadcast）">
+            
+	            Android组件之广播（Broadcast）
+            
+        </h1>
+        <div class="post-meta">
+    
+    
+    <span class="categories-meta fa-wrap">
+        <i class="fa fa-folder-open-o"></i>
+        <span>Android</span>
+    </span>
+    
+    
+    <span class="fa-wrap">
+        <i class="fa fa-tags"></i>
+        <span class="tags-meta">
+            
+            Android
+            
+        </span>
+    </span>
+    
+    
+    <span class="fa-wrap">
+        <i class="fa fa-clock-o"></i>
+        <span class="date-meta">2016/03/29</span>
+    </span>
+</div>
+
+            
+            
+            <p class="fa fa-exclamation-triangle warning">
+                本文于<strong>657</strong>天之前发表，文中内容可能已经过时。
+            </p>
+        
+    </div>
+    
+    <div class="post-body post-content">
+        <h1 id="四大组件之广播（Broadcast）"><a href="#四大组件之广播（Broadcast）" class="headerlink" title="四大组件之广播（Broadcast）"></a>四大组件之广播（Broadcast）</h1><pre><code>最近学习了安卓四大组件之广播的用法。下面简单的总结下：
+</code></pre><p>广播其实是一种信息的传递，主要分为标准广播和有序广播。下面举例描述下，</p>
+<h2 id="广播分类"><a href="#广播分类" class="headerlink" title="广播分类"></a>广播分类</h2><h3 id="标准广播"><a href="#标准广播" class="headerlink" title="标准广播"></a>标准广播</h3><p>在我们的日常工作中，如果单位要告诉全体员工周末全体加班，只需要给全体员工发一个邮件出去，这样员工就能收到周末加班的邮件，就可以在周末来加班了，这种方式是全体员工都能收到，不能被截断，这就是标准广播；<br><strong>特点：</strong></p>
+<pre><code>1. 同级别接收先后是随机的（无序的）
+2. 级别低的后接收到广播
+3. 接收器不能截断广播的继续传播，也不能处理广播
+4. 同级别动态注册（代码中注册）高于静态注册（AndroidManifest中注册）
+</code></pre><h3 id="有序广播"><a href="#有序广播" class="headerlink" title="有序广播"></a>有序广播</h3><p>有些时候，单位的老大并不想直接给全体员工都发邮件，那么邮件走向可能就是这样的情况，老大—总经理—副总经理—项目经理等等，这样加班的信息是根据职位的高低（广播的优先级）一级一级的传递的，到每一级都可以被继续传递或者停止传递，所以这种信息是有可能被截断的这就是有序广播。<br><strong>特点：</strong></p>
+<ol>
+<li>同级别接收是随机的</li>
+<li>能截断广播的继续传播，高级别的接收到广播之后，可以截断传播，是通过intent-filter中的priority声明的，范围是-1000到1000</li>
+<li>能接收广播。也可以处理广播</li>
+<li>同级别动态注册（代码中注册）高于静态注册（AndroidManifest中注册）<h2 id="广播接收器的注册"><a href="#广播接收器的注册" class="headerlink" title="广播接收器的注册"></a>广播接收器的注册</h2>注册广播一般有两种方式<h3 id="1-在代码中注册（动态注册）"><a href="#1-在代码中注册（动态注册）" class="headerlink" title="1. 在代码中注册（动态注册）"></a>1. 在代码中注册（动态注册）</h3>顾名思义，就是在代码中注册的，比如在一个button的点击事件中点击时：<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br></pre></td><td class="code"><pre><span class="line">package com.css.sean.broadcasttest;</span><br><span class="line"></span><br><span class="line">import android.content.BroadcastReceiver;</span><br><span class="line">import android.content.Context;</span><br><span class="line">import android.content.Intent;</span><br><span class="line">import android.content.IntentFilter;</span><br><span class="line">import android.net.ConnectivityManager;</span><br><span class="line">import android.net.NetworkInfo;</span><br><span class="line">import android.support.v7.app.AppCompatActivity;</span><br><span class="line">import android.os.Bundle;</span><br><span class="line">import android.widget.Toast;</span><br><span class="line"></span><br><span class="line">public class MainActivity extends AppCompatActivity &#123;</span><br><span class="line"></span><br><span class="line">    private IntentFilter intentFilter;//用于处理过滤特定的intent</span><br><span class="line">    private NetworkChangeReceiver networkChangeReceiver;//广播接收器</span><br><span class="line"></span><br><span class="line">    @Override</span><br><span class="line">    protected void onCreate(Bundle savedInstanceState) &#123;</span><br><span class="line">        super.onCreate(savedInstanceState);</span><br><span class="line">        setContentView(R.layout.activity_main);</span><br><span class="line">        intentFilter = new IntentFilter();</span><br><span class="line">        //指定过滤器的action，这里传入的是网络状态发生改变时发出的广播</span><br><span class="line">        intentFilter.addAction(&quot;android.net.conn.CONNECTIVITY_CHANGE&quot;);</span><br><span class="line">        networkChangeReceiver = new NetworkChangeReceiver();</span><br><span class="line">        registerReceiver(networkChangeReceiver, intentFilter);//注册广播</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    @Override</span><br><span class="line">    protected void onDestroy() &#123;</span><br><span class="line">        super.onDestroy();</span><br><span class="line">        unregisterReceiver(networkChangeReceiver);//用完之后取消注册</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    //用于监听网络状态的广播接收器</span><br><span class="line">    private class NetworkChangeReceiver extends BroadcastReceiver &#123;</span><br><span class="line">        @Override</span><br><span class="line">        public void onReceive(Context context, Intent intent) &#123;</span><br><span class="line">            //ConnectivityManager是系统服务类，专门用来管理网络连接的</span><br><span class="line">            ConnectivityManager connectivityManager = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);</span><br><span class="line">            NetworkInfo networkInfo = connectivityManager.getActiveNetworkInfo();</span><br><span class="line">            if (networkInfo != null &amp;&amp; networkInfo.isAvailable()) &#123;</span><br><span class="line">                Toast.makeText(MainActivity.this, &quot;网络状态可用！&quot;, Toast.LENGTH_SHORT).show();</span><br><span class="line">            &#125; else &#123;</span><br><span class="line">                Toast.makeText(MainActivity.this, &quot;网络状态不可用！&quot;, Toast.LENGTH_SHORT).show();</span><br><span class="line">            &#125;</span><br><span class="line"></span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+</ol>
+<h3 id="2-在配置文件AndroidManifest中注册（静态注册）"><a href="#2-在配置文件AndroidManifest中注册（静态注册）" class="headerlink" title="2. 在配置文件AndroidManifest中注册（静态注册）"></a>2. 在配置文件AndroidManifest中注册（静态注册）</h3><p>动态注册时必须程序在运行时才能注册的，有一定的局限性，如果我们需要在程序还没启动的时候就可以接收到注册的广播，就需要静态注册了，下面用接收开机启动开举例：<br>首先创建一个广播类：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">public class BootCompleteReceiver extends BroadcastReceiver &#123;</span><br><span class="line">    @Override</span><br><span class="line">    public void onReceive(Context context, Intent intent) &#123;</span><br><span class="line">        Toast.makeText(context,&quot;开机启动广播&quot;,Toast.LENGTH_SHORT).show();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>然后再配置文件中注册：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">&lt;receiver android:name=&quot;.BootCompleteReceiver&quot;&gt;</span><br><span class="line">           &lt;intent-filter&gt;</span><br><span class="line">               &lt;action android:name=&quot;android.intent.action.BOOT_COMPLETED&quot;&gt;&lt;/action&gt;</span><br><span class="line">           &lt;/intent-filter&gt;</span><br><span class="line">       &lt;/receiver&gt;</span><br></pre></td></tr></table></figure></p>
+<h2 id="发送广播"><a href="#发送广播" class="headerlink" title="发送广播"></a>发送广播</h2><p>广播接收器不仅可以接收系统发出的广播，也可以接收自定义的广播。</p>
+<h3 id="发送标准广播"><a href="#发送标准广播" class="headerlink" title="发送标准广播"></a>发送标准广播</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">//创建一个intent，带有参数就是Filter的action</span><br><span class="line">Intent intent = new Intent(&quot;com.sean.css.MY_BROADCAST&quot;);</span><br><span class="line">//发送广播</span><br><span class="line">sendBroadcast(intent);</span><br></pre></td></tr></table></figure>
+<p>是不是很简单，只需要两行代码，但是别忘了，这只是发出的广播，还要去写一个广播接收器去接受这个广播，然后去执行的操作，并且大家intent是可以传递数据的，当然也可以在intent中加入参数进行传递，这样就可以在广播接收器中拿到这个参数了</p>
+<h3 id="发送有序广播"><a href="#发送有序广播" class="headerlink" title="发送有序广播"></a>发送有序广播</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">//创建一个intent，带有参数就是Filter的action</span><br><span class="line">Intent intent = new Intent(&quot;com.sean.css.MY_BROADCAST&quot;);</span><br><span class="line">//发送广播</span><br><span class="line">sendOrderBroadcast(intent,null);</span><br></pre></td></tr></table></figure>
+<p>看起来和发送普通广播也差不多，主要就是在发送的时候方法变了，并且参数也变成了两个，第二个参数是与权限有关的字符串，前面说过，有序广播是有顺序的，所以是涉及到多个广播接收器的，只需要在我们注册广播接收器的时候加入以下代码：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">//动态注册</span><br><span class="line"> intentFilter.setPriority(100);</span><br><span class="line"> //静态注册</span><br><span class="line"> &lt;intent-filter  android:priority=&quot;200&quot;&gt;</span><br><span class="line">                &lt;action android:name=&quot;android.intent.action.BOOT_COMPLETED&quot;&gt;&lt;/action&gt;</span><br><span class="line">            &lt;/intent-filter&gt;</span><br></pre></td></tr></table></figure></p>
+<p>这样priority为200的会先收到广播，然后priority为100的后收到广播，如果先收到的广播在执行完自己操作后执行abortBroadcast()；那么优先级为100的就收不到该广播了。</p>
+<h2 id="本地广播"><a href="#本地广播" class="headerlink" title="本地广播"></a>本地广播</h2><p>前面我们发出的广播，不仅仅是我们自己的程序可以收到，其他的应用程序也可以收到，这样的话有可能会引起一定的安全问题，比如其他的应用程序可以一直向我们的程序发送垃圾广播，干扰我们程序的正常运行。幸好Android中有一个本地广播的机制，如果使用本地广播管理，那么只能在本地接收、发送广播。使用起来非常方便，只需要在发送或者接收的时候调用LocalBroadcastManager就行了，比如：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">//发送</span><br><span class="line">localBroadcastManager.sendBroadcast(inetnt);</span><br><span class="line">//接收</span><br><span class="line">localBroadcastManager.registerReceiver(localReceiver,intentFilter);</span><br></pre></td></tr></table></figure></p>
+<h2 id="注意事项"><a href="#注意事项" class="headerlink" title="注意事项"></a>注意事项</h2><p>BroadcastReceiver的生命周期只有10秒左右，不能再里面做一些耗时的操作，如果要做耗时的操作，应该通过发送Intent给Service，由Service来完成耗时操作，并且不能在BroadcastReceiver中使用子线程</p>
+<p>我在博客园的小例子：<a href="http://www.cnblogs.com/csschn/p/5258535.html" target="_blank" rel="noopener">广播实现强制下线</a></p>
+
+    </div>
+
+    <div class="post-footer">   
+        <div>
+            
+                转载声明：商业转载请联系作者获得授权,非商业转载请注明出处 © <a href="" target="_blank">Snippet</a>
+            
+        </div>
+        <div>
+            
+        </div>  
+    </div>
+</article>
+
+<div class="article-nav prev-next-wrap clearfix">
+    
+        <a href="/2016/04/06/Android-获得Bitmap/" class="pre-post btn btn-default"><i class="fa fa-angle-left fa-fw"></i>上一篇</a>
+    
+    
+        <a href="/2016/03/29/异步任务处理-AsyncTask/" class="next-post btn btn-default">下一篇<i class="fa fa-angle-right fa-fw"></i></a>
+    
+</div>
+
+
+    <div id="comments">
+        
+	
+<div id="lv-container" data-id="city" data-uid="MTAyMC8zMzA1MS85NjEz">
+  <script type="text/javascript">
+     (function(d, s) {
+         var j, e = d.getElementsByTagName(s)[0];
+         if (typeof LivereTower === 'function') { return; }
+         j = d.createElement(s);
+         j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+         j.async = true;
+         e.parentNode.insertBefore(j, e);
+     })(document, 'script');
+  </script>
+</div>
+
+
+    </div>
+
+
+
+
+
+                </main>
+                
+    <aside class="col-md-4 sidebar">
+        
+        
+    <div class="widget">    
+        <h3 class="title">搜索</h3>
+        <div id="search-form">
+            <div id="result-mask" class="hide"></div>
+            <div class="search-area">
+                
+                    <input id="search-key" type="search" autocomplete="off" placeholder="搜点什么呢?">
+                    <button type="button" class="search-form-submit" id="search-local">站内搜索</button>
+                
+                
+            </div>
+            <div id="result-wrap" class="hide">
+                <div id="search-result"></div>
+            </div>
+            <div class="hide">
+                <template id="search-tpl">
+                    <div class="item">
+                        <a href="/{path}" title="{title}">
+                            <div class="title">{title}</div>
+                            <div class="content">{content}</div>
+                        </a>
+                    </div>
+                </template>
+            </div>
+        </div>
+    </div>
+
+        
+        
+    <div class="widget notification">
+        <h3 class="title">网站公告</h3>
+        <div>
+            <p>暂无公告~ <br/>
+        </div>
+    </div>
+
+        
+        
+    <div class="widget">
+      <h3 class="title">社交</h3> 
+        <div class="content social">
+            
+	            <a href="https://github.com/smartsean" rel="external nofollow" title="Github" target="_blank">
+			    	<i class="git fa fa-git"></i>
+			    </a>
+            
+        </div>
+    </div>
+
+
+        
+        
+    <div class="widget">
+        <h3 class="title">分类</h3>
+        <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/Android/"><i class="fa" aria-hidden="true">Android</i></a><span class="category-list-count">7</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/工具/"><i class="fa" aria-hidden="true">工具</i></a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/我/"><i class="fa" aria-hidden="true">我</i></a><span class="category-list-count">2</span></li></ul>
+    </div>
+
+
+        
+        
+    <div class="widget">
+      <h3 class="title">归档</h3>
+        <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/09/"><i class="fa" aria-hidden="true">九月 2017</i></a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/04/"><i class="fa" aria-hidden="true">四月 2017</i></a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/03/"><i class="fa" aria-hidden="true">三月 2017</i></a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/10/"><i class="fa" aria-hidden="true">十月 2016</i></a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/04/"><i class="fa" aria-hidden="true">四月 2016</i></a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/03/"><i class="fa" aria-hidden="true">三月 2016</i></a><span class="archive-list-count">3</span></li></ul>
+    </div>
+
+
+        
+        
+  <div class="widget">
+    <h3 class="title">标签云</h3>
+    <div class="content tag-cloud">
+        <a href="/tags/Android/" style="font-size: 20px;">Android</a> <a href="/tags/AndroidStudio/" style="font-size: 15px;">AndroidStudio</a> <a href="/tags/Git/" style="font-size: 10px;">Git</a> <a href="/tags/工具/" style="font-size: 15px;">工具</a> <a href="/tags/我/" style="font-size: 15px;">我</a> <a href="/tags/自定义View/" style="font-size: 10px;">自定义View</a>
+    </div>
+  </div>
+
+
+        
+        
+    <div class="widget">
+        <h3 class="title">友链</h3>
+        <div class="content friends-link">
+        
+            <a href="http://www.shenliyang.com" class="fa" target="_blank">个人博客</a>
+        
+        </div>
+    </div>
+
+
+        
+    </aside>
+
+            </div>
+        </div>
+    </section>
+    <footer class="main-footer">
+    <div class="container">
+        <div class="row">
+        </div>
+    </div>
+</footer>
+
+<a id="back-to-top" class="hide">
+	<i class="fa fa-chevron-up"></i>
+</a>
+
+
+
+
+    <div class="copyright">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12"> 
+                <span>Copyright &copy; 2017
+                </span> | 
+                <span>
+                    Powered by <a href="//hexo.io" class="copyright-links" target="_blank" rel="nofollow">Hexo</a>
+                </span> | 
+                <span>
+                    Theme by <a href="//github.com/shenliyang/hexo-theme-snippet.git" class="copyright-links" target="_blank" rel="nofollow">Snippet</a>
+                </span>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+	<script src="/js/search.js?rev=@@hash"></script>
+
+
+<script src="/js/app.js?rev=@@hash"></script>
+
+
+</body>
+</html>
