@@ -1,0 +1,361 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+    <!--Setting-->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+    <meta http-equiv="Cache-Control" content="no-siteapp">
+    <meta name="renderer" content="webkit|ie-comp|ie-stand">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="format-detection" content="telephone=no,email=no,adress=no">
+    <meta name="browsermode" content="application">
+    <meta name="screen-orientation" content="portrait">
+    <link rel="dns-prefetch" href="https://github.com/smartsean/smartsean.github.io">
+    <!--SEO-->
+
+
+
+<meta name="robots" content="all" />
+<meta name="google" content="all" />
+<meta name="googlebot" content="all" />
+<meta name="verify" content="all" />
+    <!--Title-->
+
+
+<title>Android打开指定文件实践 --- 工具类 | SmartSean的小站</title>
+
+
+    <link rel="alternate" href="/atom.xml" title="SmartSean的小站" type="application/atom+xml">
+
+
+    <link rel="icon" href="/favicon.ico">
+
+    
+
+
+
+<link rel="stylesheet" href="//cdn.bootcss.com/bootstrap/3.3.4/css/bootstrap.min.css?rev=3.3.4">
+<link rel="stylesheet" href="//cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.min.css">
+<link rel="stylesheet" href="/css/style.css?rev=@@hash">
+
+
+
+
+    
+    <div class="hide">
+    	<script src="https://s4.cnzz.com/z_stat.php?id=1263868967&web_id=1263868967" language="JavaScript"></script>
+    </div>
+
+
+
+
+
+
+    
+</head>
+
+
+<!--[if lte IE 8]>
+<style>
+    html{ font-size: 1em }
+</style>
+<![endif]-->
+<!--[if lte IE 9]>
+<div style="ie">你使用的浏览器版本过低，为了你更好的阅读体验，请更新浏览器的版本或者使用其他现代浏览器，比如Chrome、Firefox、Safari等。</div>
+<![endif]-->
+
+<body>
+    <header class="main-header"  style="background-image:url(http://7xpw2b.com1.z0.glb.clouddn.com/hexo-sinppet/img/banner2.jpg)"  >
+    <div class="main-header-box">
+        <a class="header-avatar" href="/" title="">
+            <img src="/img/avatar.jpg" alt="logo头像">
+        </a>
+        <div class="branding">
+        	<!--<h2 class="text-hide">Snippet主题,从未如此简单有趣</h2>-->
+            
+                <h2> 记录生活，记录代码 </h2>
+             
+    	</div>
+    </div>
+</header>
+    <nav class="main-navigation">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="navbar-header"><span class="nav-toggle-button collapsed" data-toggle="collapse" data-target="#main-menu" id="mnav">
+                    <span class="sr-only">Toggle navigation</span>
+                    <i class="fa fa-bars"></i>
+                    </span>
+                </div>
+                <div class="collapse navbar-collapse" id="main-menu">
+                    <ul class="menu">
+                        
+                            <li role="presentation"><a href="/"><i class="fa fa-fw "></i>首页</a>
+                            </li>
+                        
+                            <li role="presentation"><a href="/categories/Android/"><i class="fa fa-fw "></i>Android</a>
+                            </li>
+                        
+                            <li role="presentation"><a href="/categories/工具/"><i class="fa fa-fw "></i>工具</a>
+                            </li>
+                        
+                            <li role="presentation"><a href="/categories/我/"><i class="fa fa-fw "></i>我</a>
+                            </li>
+                        
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</nav>
+    <section class="content-wrap">
+        <div class="container">
+            <div class="row">
+                <main class="col-md-8 main-content m-post">
+                    <p id="process"></p>
+<article class="post">
+    <div class="post-head">
+        <h1 id="Android打开指定文件实践 --- 工具类">
+            
+	            Android打开指定文件实践 --- 工具类
+            
+        </h1>
+        <div class="post-meta">
+    
+    
+    <span class="categories-meta fa-wrap">
+        <i class="fa fa-folder-open-o"></i>
+        <span>工具</span>
+    </span>
+    
+    
+    <span class="fa-wrap">
+        <i class="fa fa-tags"></i>
+        <span class="tags-meta">
+            
+            Android
+            
+        </span>
+    </span>
+    
+    
+    <span class="fa-wrap">
+        <i class="fa fa-clock-o"></i>
+        <span class="date-meta">2017/12/12</span>
+    </span>
+</div>
+
+            
+            
+    </div>
+    
+    <div class="post-body post-content">
+        <blockquote>
+<p>项目中有下载文件的功能，但是有点 low，就是单纯的下载，下载成功提示用户文件下载在哪，需要用户手动去文件管理器找这些文件，不是很人性化，于是决定新增下载文件以后让用户直接能打开文件，友好型会好很多</p>
+</blockquote>
+<h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>首先在实现打开指定文件之前，我尝试过打开指定的文件夹，但是并没有成功，研究了大半天的时间，发现是不可行的，这是个坑，希望不要有人再踩这个坑了，（当然，也有可能是我没找到打开文件夹的方法，如果有人知道，希望能够赐教下，先谢谢了）</p>
+<p><strong>文末会给出封装好的代码，OpenFileUtils 和 FileProviderUtils 类，可以直接使用。</strong></p>
+<h2 id="判断文件类型"><a href="#判断文件类型" class="headerlink" title="判断文件类型"></a>判断文件类型</h2><p>我们在打开文件之前，首先得知道文件的类型，才能指定 Intent 的 Data ，才能实现打开文件的功能。</p>
+<p>常见的文件类型以及对应的 DataType 如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">/**</span><br><span class="line"> * 声明各种类型文件的dataType</span><br><span class="line"> **/</span><br><span class="line">private static final String DATA_TYPE_APK = &quot;application/vnd.android.package-archive&quot;;</span><br><span class="line">private static final String DATA_TYPE_VIDEO = &quot;video/*&quot;;</span><br><span class="line">private static final String DATA_TYPE_AUDIO = &quot;audio/*&quot;;</span><br><span class="line">private static final String DATA_TYPE_HTML = &quot;text/html&quot;;</span><br><span class="line">private static final String DATA_TYPE_IMAGE = &quot;image/*&quot;;</span><br><span class="line">private static final String DATA_TYPE_PPT = &quot;application/vnd.ms-powerpoint&quot;;</span><br><span class="line">private static final String DATA_TYPE_EXCEL = &quot;application/vnd.ms-excel&quot;;</span><br><span class="line">private static final String DATA_TYPE_WORD = &quot;application/msword&quot;;</span><br><span class="line">private static final String DATA_TYPE_CHM = &quot;application/x-chm&quot;;</span><br><span class="line">private static final String DATA_TYPE_TXT = &quot;text/plain&quot;;</span><br><span class="line">private static final String DATA_TYPE_PDF = &quot;application/pdf&quot;;</span><br><span class="line">/**</span><br><span class="line"> * 未指定明确的文件类型，不能使用精确类型的工具打开，需要用户选择</span><br><span class="line"> */</span><br><span class="line">private static final String DATA_TYPE_ALL = &quot;*/*&quot;;</span><br></pre></td></tr></table></figure>
+<p>然后我们得根据要打开的文件名，获取文件的类型：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br></pre></td><td class="code"><pre><span class="line">// 取得文件扩展名</span><br><span class="line">String end = file.getName().substring(file.getName().lastIndexOf(&quot;.&quot;) + 1, file.getName().length()).toLowerCase();</span><br><span class="line">// 依扩展名的类型决定MimeType</span><br><span class="line">switch (end) &#123;</span><br><span class="line">    case &quot;3gp&quot;:</span><br><span class="line">    case &quot;mp4&quot;:</span><br><span class="line">        openVideoFileIntent(mContext, file);</span><br><span class="line">        break;</span><br><span class="line">    case &quot;m4a&quot;:</span><br><span class="line">    case &quot;mp3&quot;:</span><br><span class="line">    case &quot;mid&quot;:</span><br><span class="line">    case &quot;xmf&quot;:</span><br><span class="line">    case &quot;ogg&quot;:</span><br><span class="line">    case &quot;wav&quot;:</span><br><span class="line">        openAudioFileIntent(mContext, file);</span><br><span class="line">        break;</span><br><span class="line">    case &quot;doc&quot;:</span><br><span class="line">    case &quot;docx&quot;:</span><br><span class="line">        commonOpenFileWithType(mContext, file, DATA_TYPE_WORD);</span><br><span class="line">        break;</span><br><span class="line">    case &quot;xls&quot;:</span><br><span class="line">    case &quot;xlsx&quot;:</span><br><span class="line">        commonOpenFileWithType(mContext, file, DATA_TYPE_EXCEL);</span><br><span class="line">        break;</span><br><span class="line">    case &quot;jpg&quot;:</span><br><span class="line">    case &quot;gif&quot;:</span><br><span class="line">    case &quot;png&quot;:</span><br><span class="line">    case &quot;jpeg&quot;:</span><br><span class="line">    case &quot;bmp&quot;:</span><br><span class="line">        commonOpenFileWithType(mContext, file, DATA_TYPE_IMAGE);</span><br><span class="line">        break;</span><br><span class="line">    case &quot;txt&quot;:</span><br><span class="line">        commonOpenFileWithType(mContext, file, DATA_TYPE_TXT);</span><br><span class="line">        break;</span><br><span class="line">    case &quot;htm&quot;:</span><br><span class="line">    case &quot;html&quot;:</span><br><span class="line">        commonOpenFileWithType(mContext, file, DATA_TYPE_HTML);</span><br><span class="line">        break;</span><br><span class="line">    case &quot;apk&quot;:</span><br><span class="line">        commonOpenFileWithType(mContext, file, DATA_TYPE_APK);</span><br><span class="line">        break;</span><br><span class="line">    case &quot;ppt&quot;:</span><br><span class="line">        commonOpenFileWithType(mContext, file, DATA_TYPE_PPT);</span><br><span class="line">        break;</span><br><span class="line">    case &quot;pdf&quot;:</span><br><span class="line">        commonOpenFileWithType(mContext, file, DATA_TYPE_PDF);</span><br><span class="line">        break;</span><br><span class="line">    case &quot;chm&quot;:</span><br><span class="line">        commonOpenFileWithType(mContext, file, DATA_TYPE_CHM);</span><br><span class="line">        break;</span><br><span class="line">    default:</span><br><span class="line">        commonOpenFileWithType(mContext, file, DATA_TYPE_ALL);</span><br><span class="line">        break;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>根据文件名拿到 DataType 之后，我们就可以把 DataType 传入 Intent 来打开文件了。下面以打开 Video 为例：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">/**</span><br><span class="line"> * Android打开Video文件</span><br><span class="line"> * @param mContext</span><br><span class="line"> * @param file</span><br><span class="line"> */</span><br><span class="line">public static void openVideoFileIntent(Context mContext, File file) &#123;</span><br><span class="line">    Intent intent = new Intent(Intent.ACTION_VIEW);</span><br><span class="line">    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);</span><br><span class="line">    intent.putExtra(&quot;oneshot&quot;, 0);</span><br><span class="line">    intent.putExtra(&quot;configchange&quot;, 0);</span><br><span class="line">    FileProviderUtils.setIntentDataAndType(mContext, intent, DATA_TYPE_VIDEO, file, false);</span><br><span class="line">    mContext.startActivity(intent);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>只要传入 Context 和 File 就可以使用了。</p>
+<h2 id="相关代码"><a href="#相关代码" class="headerlink" title="相关代码"></a>相关代码</h2><p>上面的代码是不完整的，下面我贴出有关的类的代码：</p>
+<p>首先是：OpenFileUtils 类</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">/**</span><br><span class="line"> * @author SmartSean</span><br><span class="line"> * @date 17/12/11 16:04</span><br><span class="line"> */</span><br><span class="line">public class OpenFileUtils &#123;</span><br><span class="line"></span><br><span class="line">    /**</span><br><span class="line">     * 声明各种类型文件的dataType</span><br><span class="line">     **/</span><br><span class="line">    private static final String DATA_TYPE_APK = &quot;application/vnd.android.package-archive&quot;;</span><br><span class="line">    private static final String DATA_TYPE_VIDEO = &quot;video/*&quot;;</span><br><span class="line">    private static final String DATA_TYPE_AUDIO = &quot;audio/*&quot;;</span><br><span class="line">    private static final String DATA_TYPE_HTML = &quot;text/html&quot;;</span><br><span class="line">    private static final String DATA_TYPE_IMAGE = &quot;image/*&quot;;</span><br><span class="line">    private static final String DATA_TYPE_PPT = &quot;application/vnd.ms-powerpoint&quot;;</span><br><span class="line">    private static final String DATA_TYPE_EXCEL = &quot;application/vnd.ms-excel&quot;;</span><br><span class="line">    private static final String DATA_TYPE_WORD = &quot;application/msword&quot;;</span><br><span class="line">    private static final String DATA_TYPE_CHM = &quot;application/x-chm&quot;;</span><br><span class="line">    private static final String DATA_TYPE_TXT = &quot;text/plain&quot;;</span><br><span class="line">    private static final String DATA_TYPE_PDF = &quot;application/pdf&quot;;</span><br><span class="line">    /**</span><br><span class="line">     * 未指定明确的文件类型，不能使用精确类型的工具打开，需要用户选择</span><br><span class="line">     */</span><br><span class="line">    private static final String DATA_TYPE_ALL = &quot;*/*&quot;;</span><br><span class="line"></span><br><span class="line">    /**</span><br><span class="line">     * 打开文件</span><br><span class="line">     * @param mContext</span><br><span class="line">     * @param file</span><br><span class="line">     */</span><br><span class="line">    public static void openFile(Context mContext, File file) &#123;</span><br><span class="line">        if (!file.exists()) &#123;</span><br><span class="line">            return;</span><br><span class="line">        &#125;</span><br><span class="line">        // 取得文件扩展名</span><br><span class="line">        String end = file.getName().substring(file.getName().lastIndexOf(&quot;.&quot;) + 1, file.getName().length()).toLowerCase();</span><br><span class="line">        // 依扩展名的类型决定MimeType</span><br><span class="line">        switch (end) &#123;</span><br><span class="line">            case &quot;3gp&quot;:</span><br><span class="line">            case &quot;mp4&quot;:</span><br><span class="line">                openVideoFileIntent(mContext, file);</span><br><span class="line">                break;</span><br><span class="line">            case &quot;m4a&quot;:</span><br><span class="line">            case &quot;mp3&quot;:</span><br><span class="line">            case &quot;mid&quot;:</span><br><span class="line">            case &quot;xmf&quot;:</span><br><span class="line">            case &quot;ogg&quot;:</span><br><span class="line">            case &quot;wav&quot;:</span><br><span class="line">                openAudioFileIntent(mContext, file);</span><br><span class="line">                break;</span><br><span class="line">            case &quot;doc&quot;:</span><br><span class="line">            case &quot;docx&quot;:</span><br><span class="line">                commonOpenFileWithType(mContext, file, DATA_TYPE_WORD);</span><br><span class="line">                break;</span><br><span class="line">            case &quot;xls&quot;:</span><br><span class="line">            case &quot;xlsx&quot;:</span><br><span class="line">                commonOpenFileWithType(mContext, file, DATA_TYPE_EXCEL);</span><br><span class="line">                break;</span><br><span class="line">            case &quot;jpg&quot;:</span><br><span class="line">            case &quot;gif&quot;:</span><br><span class="line">            case &quot;png&quot;:</span><br><span class="line">            case &quot;jpeg&quot;:</span><br><span class="line">            case &quot;bmp&quot;:</span><br><span class="line">                commonOpenFileWithType(mContext, file, DATA_TYPE_IMAGE);</span><br><span class="line">                break;</span><br><span class="line">            case &quot;txt&quot;:</span><br><span class="line">                commonOpenFileWithType(mContext, file, DATA_TYPE_TXT);</span><br><span class="line">                break;</span><br><span class="line">            case &quot;htm&quot;:</span><br><span class="line">            case &quot;html&quot;:</span><br><span class="line">                commonOpenFileWithType(mContext, file, DATA_TYPE_HTML);</span><br><span class="line">                break;</span><br><span class="line">            case &quot;apk&quot;:</span><br><span class="line">                commonOpenFileWithType(mContext, file, DATA_TYPE_APK);</span><br><span class="line">                break;</span><br><span class="line">            case &quot;ppt&quot;:</span><br><span class="line">                commonOpenFileWithType(mContext, file, DATA_TYPE_PPT);</span><br><span class="line">                break;</span><br><span class="line">            case &quot;pdf&quot;:</span><br><span class="line">                commonOpenFileWithType(mContext, file, DATA_TYPE_PDF);</span><br><span class="line">                break;</span><br><span class="line">            case &quot;chm&quot;:</span><br><span class="line">                commonOpenFileWithType(mContext, file, DATA_TYPE_CHM);</span><br><span class="line">                break;</span><br><span class="line">            default:</span><br><span class="line">                commonOpenFileWithType(mContext, file, DATA_TYPE_ALL);</span><br><span class="line">                break;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    /**</span><br><span class="line">     * Android传入type打开文件</span><br><span class="line">     * @param mContext</span><br><span class="line">     * @param file</span><br><span class="line">     * @param type</span><br><span class="line">     */</span><br><span class="line">    public static void commonOpenFileWithType(Context mContext, File file, String type) &#123;</span><br><span class="line">        Intent intent = new Intent(Intent.ACTION_VIEW);</span><br><span class="line">        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);</span><br><span class="line">        intent.addCategory(Intent.CATEGORY_DEFAULT);</span><br><span class="line">        FileProviderUtils.setIntentDataAndType(mContext, intent, type, file, true);</span><br><span class="line">        mContext.startActivity(intent);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    /**</span><br><span class="line">     * Android打开Video文件</span><br><span class="line">     * @param mContext</span><br><span class="line">     * @param file</span><br><span class="line">     */</span><br><span class="line">    public static void openVideoFileIntent(Context mContext, File file) &#123;</span><br><span class="line">        Intent intent = new Intent(Intent.ACTION_VIEW);</span><br><span class="line">        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);</span><br><span class="line">        intent.putExtra(&quot;oneshot&quot;, 0);</span><br><span class="line">        intent.putExtra(&quot;configchange&quot;, 0);</span><br><span class="line">        FileProviderUtils.setIntentDataAndType(mContext, intent, DATA_TYPE_VIDEO, file, false);</span><br><span class="line">        mContext.startActivity(intent);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    /**</span><br><span class="line">     * Android打开Audio文件</span><br><span class="line">     * @param mContext</span><br><span class="line">     * @param file</span><br><span class="line">     */</span><br><span class="line">    private static void openAudioFileIntent(Context mContext, File file) &#123;</span><br><span class="line">        Intent intent = new Intent(Intent.ACTION_VIEW);</span><br><span class="line">        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);</span><br><span class="line">        intent.putExtra(&quot;oneshot&quot;, 0);</span><br><span class="line">        intent.putExtra(&quot;configchange&quot;, 0);</span><br><span class="line">        FileProviderUtils.setIntentDataAndType(mContext, intent, DATA_TYPE_AUDIO, file, false);</span><br><span class="line">        mContext.startActivity(intent);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>接下来是洪洋大神写的 Android 7.0 适配类 FileProviderUtils（使用前先需要先了解下 FileProvider 的使用）</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">/**</span><br><span class="line"> * @author SmartSean</span><br><span class="line"> * @date 17/12/11 14:23</span><br><span class="line"> */</span><br><span class="line">public class FileProviderUtils &#123;</span><br><span class="line"></span><br><span class="line">    public static Uri getUriForFile(Context mContext, File file) &#123;</span><br><span class="line">        Uri fileUri = null;</span><br><span class="line">        if (Build.VERSION.SDK_INT &gt;= 24) &#123;</span><br><span class="line">            fileUri = getUriForFile24(mContext, file);</span><br><span class="line">        &#125; else &#123;</span><br><span class="line">            fileUri = Uri.fromFile(file);</span><br><span class="line">        &#125;</span><br><span class="line">        return fileUri;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    public static Uri getUriForFile24(Context mContext, File file) &#123;</span><br><span class="line">        Uri fileUri = android.support.v4.content.FileProvider.getUriForFile(mContext,</span><br><span class="line">                BuildConfig.APPLICATION_ID + &quot;.provider&quot;,</span><br><span class="line">                file);</span><br><span class="line">        return fileUri;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    public static void setIntentDataAndType(Context mContext,</span><br><span class="line">                                            Intent intent,</span><br><span class="line">                                            String type,</span><br><span class="line">                                            File file,</span><br><span class="line">                                            boolean writeAble) &#123;</span><br><span class="line">        if (Build.VERSION.SDK_INT &gt;= 24) &#123;</span><br><span class="line">            intent.setDataAndType(getUriForFile(mContext, file), type);</span><br><span class="line">            intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);</span><br><span class="line">            if (writeAble) &#123;</span><br><span class="line">                intent.addFlags(Intent.FLAG_GRANT_WRITE_URI_PERMISSION);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125; else &#123;</span><br><span class="line">            intent.setDataAndType(Uri.fromFile(file), type);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="调用"><a href="#调用" class="headerlink" title="调用"></a>调用</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">File file = new File(Environment.getExternalStorageDirectory()+&quot;/AA/q.xlsx&quot;);</span><br><span class="line">try &#123;</span><br><span class="line">    OpenFileUtils.openFile(mContext, file);</span><br><span class="line">&#125; catch (Exception e) &#123;</span><br><span class="line">    ToastUtil.toastError(mContext, &quot;无可用打开方式&quot;);</span><br><span class="line">    e.printStackTrace();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>这样就可以实现打开文件功能了。</p>
+<h2 id="最后"><a href="#最后" class="headerlink" title="最后"></a>最后</h2><p>最后，唠叨下，好久没写博客，感觉都不知道怎么写了，慢慢找感觉吧。。。</p>
+
+    </div>
+
+    <div class="post-footer">   
+        <div>
+            
+                转载声明：商业转载请联系作者获得授权,非商业转载请注明出处 © <a href="" target="_blank">Snippet</a>
+            
+        </div>
+        <div>
+            
+        </div>  
+    </div>
+</article>
+
+<div class="article-nav prev-next-wrap clearfix">
+    
+    
+        <a href="/2017/09/12/Android Studio 使用/" class="next-post btn btn-default">下一篇<i class="fa fa-angle-right fa-fw"></i></a>
+    
+</div>
+
+
+    <div id="comments">
+        
+	
+<div id="lv-container" data-id="city" data-uid="MTAyMC8zMzA1MS85NjEz">
+  <script type="text/javascript">
+     (function(d, s) {
+         var j, e = d.getElementsByTagName(s)[0];
+         if (typeof LivereTower === 'function') { return; }
+         j = d.createElement(s);
+         j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+         j.async = true;
+         e.parentNode.insertBefore(j, e);
+     })(document, 'script');
+  </script>
+</div>
+
+
+    </div>
+
+
+
+
+
+                </main>
+                
+    <aside class="col-md-4 sidebar">
+        
+        
+    <div class="widget">    
+        <h3 class="title">搜索</h3>
+        <div id="search-form">
+            <div id="result-mask" class="hide"></div>
+            <div class="search-area">
+                
+                    <input id="search-key" type="search" autocomplete="off" placeholder="搜点什么呢?">
+                    <button type="button" class="search-form-submit" id="search-local">站内搜索</button>
+                
+                
+            </div>
+            <div id="result-wrap" class="hide">
+                <div id="search-result"></div>
+            </div>
+            <div class="hide">
+                <template id="search-tpl">
+                    <div class="item">
+                        <a href="/{path}" title="{title}">
+                            <div class="title">{title}</div>
+                            <div class="content">{content}</div>
+                        </a>
+                    </div>
+                </template>
+            </div>
+        </div>
+    </div>
+
+        
+        
+    <div class="widget notification">
+        <h3 class="title">网站公告</h3>
+        <div>
+            <p>暂无公告~ <br/>
+        </div>
+    </div>
+
+        
+        
+    <div class="widget">
+      <h3 class="title">社交</h3> 
+        <div class="content social">
+            
+	            <a href="https://github.com/smartsean" rel="external nofollow" title="Github" target="_blank">
+			    	<i class="git fa fa-git"></i>
+			    </a>
+            
+        </div>
+    </div>
+
+
+        
+        
+    <div class="widget">
+        <h3 class="title">分类</h3>
+        <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/Android/"><i class="fa" aria-hidden="true">Android</i></a><span class="category-list-count">37</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Android/工具/"><i class="fa" aria-hidden="true">工具</i></a><span class="category-list-count">2</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Ionic/"><i class="fa" aria-hidden="true">Ionic</i></a><span class="category-list-count">7</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Ionic/其他/"><i class="fa" aria-hidden="true">其他</i></a><span class="category-list-count">7</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/工具/"><i class="fa" aria-hidden="true">工具</i></a><span class="category-list-count">4</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/工具/Android/"><i class="fa" aria-hidden="true">Android</i></a><span class="category-list-count">1</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/工具/Android/我/"><i class="fa" aria-hidden="true">我</i></a><span class="category-list-count">1</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/工具/我/"><i class="fa" aria-hidden="true">我</i></a><span class="category-list-count">1</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/我/"><i class="fa" aria-hidden="true">我</i></a><span class="category-list-count">4</span></li></ul>
+    </div>
+
+
+        
+        
+    <div class="widget">
+      <h3 class="title">归档</h3>
+        <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/12/"><i class="fa" aria-hidden="true">十二月 2017</i></a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/09/"><i class="fa" aria-hidden="true">九月 2017</i></a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/08/"><i class="fa" aria-hidden="true">八月 2017</i></a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/07/"><i class="fa" aria-hidden="true">七月 2017</i></a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/05/"><i class="fa" aria-hidden="true">五月 2017</i></a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/04/"><i class="fa" aria-hidden="true">四月 2017</i></a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/03/"><i class="fa" aria-hidden="true">三月 2017</i></a><span class="archive-list-count">7</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/02/"><i class="fa" aria-hidden="true">二月 2017</i></a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/01/"><i class="fa" aria-hidden="true">一月 2017</i></a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/12/"><i class="fa" aria-hidden="true">十二月 2016</i></a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/11/"><i class="fa" aria-hidden="true">十一月 2016</i></a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/10/"><i class="fa" aria-hidden="true">十月 2016</i></a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/09/"><i class="fa" aria-hidden="true">九月 2016</i></a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/08/"><i class="fa" aria-hidden="true">八月 2016</i></a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/06/"><i class="fa" aria-hidden="true">六月 2016</i></a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/04/"><i class="fa" aria-hidden="true">四月 2016</i></a><span class="archive-list-count">10</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/03/"><i class="fa" aria-hidden="true">三月 2016</i></a><span class="archive-list-count">3</span></li></ul>
+    </div>
+
+
+        
+        
+  <div class="widget">
+    <h3 class="title">标签云</h3>
+    <div class="content tag-cloud">
+        <a href="/tags/Android/" style="font-size: 20px;">Android</a> <a href="/tags/AndroidStudio/" style="font-size: 12px;">AndroidStudio</a> <a href="/tags/Git/" style="font-size: 10px;">Git</a> <a href="/tags/Ionic/" style="font-size: 18px;">Ionic</a> <a href="/tags/Java/" style="font-size: 12px;">Java</a> <a href="/tags/Java-Java基础/" style="font-size: 10px;">Java Java基础</a> <a href="/tags/工具/" style="font-size: 16px;">工具</a> <a href="/tags/异常/" style="font-size: 12px;">异常</a> <a href="/tags/我/" style="font-size: 14px;">我</a> <a href="/tags/模拟器/" style="font-size: 10px;">模拟器</a> <a href="/tags/自定义View/" style="font-size: 10px;">自定义View</a>
+    </div>
+  </div>
+
+
+        
+        
+    <div class="widget">
+        <h3 class="title">友链</h3>
+        <div class="content friends-link">
+        
+            <a href="http://www.shenliyang.com" class="fa" target="_blank">个人博客</a>
+        
+        </div>
+    </div>
+
+
+        
+    </aside>
+
+            </div>
+        </div>
+    </section>
+    <footer class="main-footer">
+    <div class="container">
+        <div class="row">
+        </div>
+    </div>
+</footer>
+
+<a id="back-to-top" class="hide">
+	<i class="fa fa-chevron-up"></i>
+</a>
+
+
+
+
+    <div class="copyright">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12"> 
+                <span>Copyright &copy; 2017
+                </span> | 
+                <span>
+                    Powered by <a href="//hexo.io" class="copyright-links" target="_blank" rel="nofollow">Hexo</a>
+                </span> | 
+                <span>
+                    Theme by <a href="//github.com/shenliyang/hexo-theme-snippet.git" class="copyright-links" target="_blank" rel="nofollow">Snippet</a>
+                </span>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+	<script src="/js/search.js?rev=@@hash"></script>
+
+
+<script src="/js/app.js?rev=@@hash"></script>
+
+
+</body>
+</html>
