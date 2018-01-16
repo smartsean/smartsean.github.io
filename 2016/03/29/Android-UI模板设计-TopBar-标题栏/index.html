@@ -1,0 +1,367 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+    <!--Setting-->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+    <meta http-equiv="Cache-Control" content="no-siteapp">
+    <meta name="renderer" content="webkit|ie-comp|ie-stand">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="format-detection" content="telephone=no,email=no,adress=no">
+    <meta name="browsermode" content="application">
+    <meta name="screen-orientation" content="portrait">
+    <link rel="dns-prefetch" href="https://github.com/smartsean/smartsean.github.io">
+    <!--SEO-->
+
+
+
+<meta name="robots" content="all" />
+<meta name="google" content="all" />
+<meta name="googlebot" content="all" />
+<meta name="verify" content="all" />
+    <!--Title-->
+
+
+<title>Android UI模板设计---TopBar(标题栏) | SmartSean的小站</title>
+
+
+    <link rel="alternate" href="/atom.xml" title="SmartSean的小站" type="application/atom+xml">
+
+
+    <link rel="icon" href="/favicon.ico">
+
+    
+
+
+
+<link rel="stylesheet" href="//cdn.bootcss.com/bootstrap/3.3.4/css/bootstrap.min.css?rev=3.3.4">
+<link rel="stylesheet" href="//cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.min.css">
+<link rel="stylesheet" href="/css/style.css?rev=@@hash">
+
+
+
+
+    
+    <div class="hide">
+    	<script src="https://s4.cnzz.com/z_stat.php?id=1263868967&web_id=1263868967" language="JavaScript"></script>
+    </div>
+
+
+
+
+
+
+    
+</head>
+
+
+<!--[if lte IE 8]>
+<style>
+    html{ font-size: 1em }
+</style>
+<![endif]-->
+<!--[if lte IE 9]>
+<div style="ie">你使用的浏览器版本过低，为了你更好的阅读体验，请更新浏览器的版本或者使用其他现代浏览器，比如Chrome、Firefox、Safari等。</div>
+<![endif]-->
+
+<body>
+    <header class="main-header"  style="background-image:url(http://7xpw2b.com1.z0.glb.clouddn.com/hexo-sinppet/img/banner2.jpg)"  >
+    <div class="main-header-box">
+        <a class="header-avatar" href="/" title="">
+            <img src="/img/avatar.jpg" alt="logo头像">
+        </a>
+        <div class="branding">
+        	<!--<h2 class="text-hide">Snippet主题,从未如此简单有趣</h2>-->
+            
+                <h2> 记录生活，记录代码 </h2>
+             
+    	</div>
+    </div>
+</header>
+    <nav class="main-navigation">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="navbar-header"><span class="nav-toggle-button collapsed" data-toggle="collapse" data-target="#main-menu" id="mnav">
+                    <span class="sr-only">Toggle navigation</span>
+                    <i class="fa fa-bars"></i>
+                    </span>
+                </div>
+                <div class="collapse navbar-collapse" id="main-menu">
+                    <ul class="menu">
+                        
+                            <li role="presentation"><a href="/"><i class="fa fa-fw "></i>首页</a>
+                            </li>
+                        
+                            <li role="presentation"><a href="/categories/Android/"><i class="fa fa-fw "></i>Android</a>
+                            </li>
+                        
+                            <li role="presentation"><a href="/categories/工具/"><i class="fa fa-fw "></i>工具</a>
+                            </li>
+                        
+                            <li role="presentation"><a href="/categories/我/"><i class="fa fa-fw "></i>我</a>
+                            </li>
+                        
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</nav>
+    <section class="content-wrap">
+        <div class="container">
+            <div class="row">
+                <main class="col-md-8 main-content m-post">
+                    <p id="process"></p>
+<article class="post">
+    <div class="post-head">
+        <h1 id="Android UI模板设计---TopBar(标题栏)">
+            
+	            Android UI模板设计---TopBar(标题栏)
+            
+        </h1>
+        <div class="post-meta">
+    
+    
+    <span class="categories-meta fa-wrap">
+        <i class="fa fa-folder-open-o"></i>
+        <span>Android</span>
+    </span>
+    
+    
+    <span class="fa-wrap">
+        <i class="fa fa-tags"></i>
+        <span class="tags-meta">
+            
+            Android
+            
+        </span>
+    </span>
+    
+    
+    <span class="fa-wrap">
+        <i class="fa fa-clock-o"></i>
+        <span class="date-meta">2016/03/29</span>
+    </span>
+</div>
+
+            
+            
+            <p class="fa fa-exclamation-triangle warning">
+                本文于<strong>657</strong>天之前发表，文中内容可能已经过时。
+            </p>
+        
+    </div>
+    
+    <div class="post-body post-content">
+        <pre><code>之前在郭神的书上看到了自定义控件这个概念，今天在慕课网又接触了自定义模板，今天就把学习到的自定义TopBar模板的总结写在这里。
+自定义主要分为三步：
+</code></pre><blockquote>
+<ol>
+<li>设置自定义模板需要的属性</li>
+<li>在java代码中实现我们的自定义模板</li>
+<li>在布局文件中引用自定义模板</li>
+</ol>
+</blockquote>
+<hr>
+<p> <strong>1. 设置自定义模板需要的属性</strong><br>    首先新建项目TopBar，在res的values目录下新建一个xml文件topba_atts，用来设置我们自定义模板需要的属性，xml代码里面resources下通过declare-styleable来声明，告诉系统这是我们声明的属性，declare-styleable下的attr声明我们需要属性的名称name和引用的资源的类型format；代码如下：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">&lt;?xml version=&quot;1.0&quot; encoding=&quot;utf-8&quot;?&gt;</span><br><span class="line">&lt;resources&gt;</span><br><span class="line">    &lt;declare-styleable name=&quot;Topbar&quot;&gt;</span><br><span class="line">        </span><br><span class="line">        &lt;!--设置标题栏属性--&gt;</span><br><span class="line">        &lt;attr name=&quot;titleText&quot; format=&quot;string&quot;&gt;&lt;/attr&gt;</span><br><span class="line">        &lt;attr name=&quot;titleTextSize&quot; format=&quot;dimension&quot;&gt;&lt;/attr&gt;</span><br><span class="line">        &lt;attr name=&quot;titleTextColor1&quot; format=&quot;color&quot;&gt;&lt;/attr&gt;</span><br><span class="line">        </span><br><span class="line">        &lt;!--设置左侧显示属性，可以设置为图片什么的--&gt;</span><br><span class="line">        &lt;attr name=&quot;leftText&quot; format=&quot;string&quot;&gt;&lt;/attr&gt;</span><br><span class="line">        &lt;attr name=&quot;leftTextColre&quot; format=&quot;color&quot;&gt;&lt;/attr&gt;</span><br><span class="line">        &lt;attr name=&quot;leftBackground&quot; format=&quot;reference|color&quot;&gt;&lt;/attr&gt;</span><br><span class="line"></span><br><span class="line">        &lt;!--设置右侧显示属性，可以设置为图片什么的--&gt;</span><br><span class="line">        &lt;attr name=&quot;rightText&quot; format=&quot;string&quot;&gt;&lt;/attr&gt;</span><br><span class="line">        &lt;attr name=&quot;rightTextColre&quot; format=&quot;color&quot;&gt;&lt;/attr&gt;</span><br><span class="line">        &lt;attr name=&quot;rightBackground&quot; format=&quot;reference|color&quot;&gt;&lt;/attr&gt;</span><br><span class="line"></span><br><span class="line">    &lt;/declare-styleable&gt;</span><br><span class="line">&lt;/resources&gt;</span><br></pre></td></tr></table></figure></p>
+<p>Topbar需要的属性定义完毕，下面是java代码中实现。</p>
+<p> <strong>2. 在java代码中实现我们的自定义模板</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br></pre></td><td class="code"><pre><span class="line">package com.udmodel.css.topbar;</span><br><span class="line"></span><br><span class="line">import android.content.Context;</span><br><span class="line">import android.content.res.TypedArray;</span><br><span class="line">import android.graphics.drawable.Drawable;</span><br><span class="line">import android.util.AttributeSet;</span><br><span class="line">import android.view.Gravity;</span><br><span class="line">import android.view.View;</span><br><span class="line">import android.view.ViewGroup;</span><br><span class="line">import android.widget.Button;</span><br><span class="line">import android.widget.RelativeLayout;</span><br><span class="line">import android.widget.TextView;</span><br><span class="line"></span><br><span class="line">/**</span><br><span class="line"> * Created by css on 2016/3/27.</span><br><span class="line"> */</span><br><span class="line">public class Topbar extends RelativeLayout &#123;</span><br><span class="line"></span><br><span class="line">    //定义我们要用到控件</span><br><span class="line">    private Button leftButton,rightButton;</span><br><span class="line">    private TextView tvtitle;</span><br><span class="line"></span><br><span class="line">    //声明控件属性，和在values下面的topbar_atts.xml中的对应</span><br><span class="line">    private int titleTextColor1;</span><br><span class="line">    private String titleText;</span><br><span class="line">    private float titleTextSize;</span><br><span class="line"></span><br><span class="line">    private int leftTextColor;</span><br><span class="line">    private Drawable leftBackground;</span><br><span class="line">    private String leftText;</span><br><span class="line"></span><br><span class="line">    private int rightTextColor;</span><br><span class="line">    private Drawable rightBackground;</span><br><span class="line">    private String rightText;</span><br><span class="line"></span><br><span class="line">    //定义控件的布局属性</span><br><span class="line">    private LayoutParams leftParams,rightParams,titleParams;</span><br><span class="line"></span><br><span class="line">    //仿照系统实现onclick事件的方法，实现自定义模板内控件的点击事件</span><br><span class="line"></span><br><span class="line">    //用于映射调用者传进来的topbarClickListener接口</span><br><span class="line">    private topbarClickListener listener;</span><br><span class="line"></span><br><span class="line">    //定义接口，实现两个方法</span><br><span class="line">    public interface topbarClickListener&#123;</span><br><span class="line">        public void leftClick();</span><br><span class="line">        public void rightClick();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    //创建一个方法给调用者，调用者可以传递进来匿名内部类实现</span><br><span class="line">    public void setOnTopbarClickListener(topbarClickListener listener)</span><br><span class="line">    &#123;</span><br><span class="line">        this.listener = listener;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    public Topbar(Context context, AttributeSet attrs) &#123;</span><br><span class="line">        super(context, attrs);</span><br><span class="line">        //获取我们定义的xml文件</span><br><span class="line">        TypedArray topBarAtts = context.obtainStyledAttributes(attrs,R.styleable.Topbar);</span><br><span class="line"></span><br><span class="line">        titleTextColor1 = topBarAtts.getColor(R.styleable.Topbar_titleTextColor1, 0);</span><br><span class="line">        titleText = topBarAtts.getString(R.styleable.Topbar_titleText);</span><br><span class="line">        titleTextSize = topBarAtts.getDimension(R.styleable.Topbar_titleTextSize, 0);</span><br><span class="line"></span><br><span class="line">        leftTextColor =topBarAtts.getColor(R.styleable.Topbar_leftTextColor, 0);</span><br><span class="line">        leftBackground = topBarAtts.getDrawable(R.styleable.Topbar_leftBackground);</span><br><span class="line">        leftText = topBarAtts.getString(R.styleable.Topbar_leftText);</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">        rightTextColor =topBarAtts.getColor(R.styleable.Topbar_rightTextColor, 0);</span><br><span class="line">        rightBackground = topBarAtts.getDrawable(R.styleable.Topbar_rightBackground);</span><br><span class="line">        rightText = topBarAtts.getString(R.styleable.Topbar_rightText);</span><br><span class="line"></span><br><span class="line">        //避免浪费资源，避免因为缓存造成的错误</span><br><span class="line">        topBarAtts.recycle();</span><br><span class="line"></span><br><span class="line">        //实例化控件</span><br><span class="line">        leftButton = new Button(context);</span><br><span class="line">        rightButton = new Button(context);</span><br><span class="line">        tvtitle = new TextView(context);</span><br><span class="line"></span><br><span class="line">        //把获取到的属性赋值给我们的控件</span><br><span class="line">        leftButton.setTextColor(leftTextColor);</span><br><span class="line">        leftButton.setBackground(leftBackground);</span><br><span class="line">        leftButton.setText(leftText);</span><br><span class="line"></span><br><span class="line">        rightButton.setTextColor(rightTextColor);</span><br><span class="line">        rightButton.setBackground(rightBackground);//该方法必须在API16以上才可以用</span><br><span class="line">        rightButton.setText(rightText);</span><br><span class="line"></span><br><span class="line">        tvtitle.setTextColor(titleTextColor1);</span><br><span class="line">        tvtitle.setText(titleText);</span><br><span class="line">        tvtitle.setTextSize(titleTextSize);</span><br><span class="line">        tvtitle.setGravity(Gravity.CENTER);</span><br><span class="line"></span><br><span class="line">        setBackgroundColor(0xffffff00);//设置Topbar的背景色</span><br><span class="line"></span><br><span class="line">        //给左边Button添加属性，然后添加到View中</span><br><span class="line">        leftParams = new LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT); //定义左侧按钮的宽高属性</span><br><span class="line">        leftParams.addRule(RelativeLayout.ALIGN_PARENT_LEFT, TRUE);//制定左对齐的规则</span><br><span class="line">        addView(leftButton, leftParams);//添加到View中</span><br><span class="line">        //给右边Button添加属性，然后添加到View中</span><br><span class="line">        rightParams = new LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);</span><br><span class="line">        rightParams.addRule(RelativeLayout.ALIGN_PARENT_RIGHT, TRUE);</span><br><span class="line">        addView(rightButton, rightParams);</span><br><span class="line">        //给中间的TextView添加属性，然后添加到View中</span><br><span class="line">        titleParams = new LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.MATCH_PARENT);</span><br><span class="line">        titleParams.addRule(RelativeLayout.CENTER_IN_PARENT, TRUE);//居中对齐</span><br><span class="line">        addView(tvtitle, titleParams);</span><br><span class="line"></span><br><span class="line">        //在leftButton和rightButton的OnClick事件中去调用该接口的两个方法</span><br><span class="line">        leftButton.setOnClickListener(new OnClickListener() &#123;</span><br><span class="line">            @Override</span><br><span class="line">            public void onClick(View v) &#123;</span><br><span class="line">                listener.leftClick();</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;);</span><br><span class="line"></span><br><span class="line">        rightButton.setOnClickListener(new OnClickListener() &#123;</span><br><span class="line">            @Override</span><br><span class="line">            public void onClick(View v) &#123;</span><br><span class="line">                listener.rightClick();</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    //自定义方法控制左侧button的显示吗，调用者只用传入值来选择true可用，false不可用消失</span><br><span class="line">    public void setLeftButtonIsvisiable(boolean flag)</span><br><span class="line">    &#123;</span><br><span class="line">        if(flag)</span><br><span class="line">        &#123;</span><br><span class="line">            leftButton.setVisibility(View.VISIBLE);</span><br><span class="line">        &#125;</span><br><span class="line">        else</span><br><span class="line">        &#123;</span><br><span class="line">            leftButton.setVisibility(View.GONE);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p> <strong>3. 在布局文件中引用自定义模板</strong><br> 代码如下：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line">&lt;?xml version=&quot;1.0&quot; encoding=&quot;utf-8&quot;?&gt;</span><br><span class="line">&lt;RelativeLayout xmlns:android=&quot;http://schemas.android.com/apk/res/android&quot;</span><br><span class="line">    xmlns:custom=&quot;http://schemas.android.com/apk/res-auto&quot;</span><br><span class="line">    xmlns:tools=&quot;http://schemas.android.com/tools&quot;</span><br><span class="line">    android:layout_width=&quot;match_parent&quot;</span><br><span class="line">    android:layout_height=&quot;match_parent&quot;</span><br><span class="line">    android:paddingBottom=&quot;@dimen/activity_vertical_margin&quot;</span><br><span class="line">    android:paddingLeft=&quot;@dimen/activity_horizontal_margin&quot;</span><br><span class="line">    android:paddingRight=&quot;@dimen/activity_horizontal_margin&quot;</span><br><span class="line">    android:paddingTop=&quot;@dimen/activity_vertical_margin&quot;</span><br><span class="line">    custom:layout_behavior=&quot;@string/appbar_scrolling_view_behavior&quot;</span><br><span class="line">    tools:context=&quot;com.udmodel.css.topbar.MainActivity&quot;</span><br><span class="line">    tools:showIn=&quot;@layout/activity_main&quot;&gt;</span><br><span class="line"></span><br><span class="line">    &lt;com.udmodel.css.topbar.Topbar</span><br><span class="line">        android:layout_width=&quot;match_parent&quot;</span><br><span class="line">        android:layout_height=&quot;40dp&quot;</span><br><span class="line">        android:id=&quot;@+id/topbar&quot;</span><br><span class="line"></span><br><span class="line">        custom:leftBackground=&quot;@color/colorAccent&quot;</span><br><span class="line">        custom:leftText=&quot;Back&quot;</span><br><span class="line">        custom:leftTextColor=&quot;#FFFFFF&quot;</span><br><span class="line"></span><br><span class="line">        custom:rightBackground=&quot;@color/colorAccent&quot;</span><br><span class="line">        custom:rightText=&quot;more&quot;</span><br><span class="line">        custom:rightTextColor=&quot;#FFFFFF&quot;</span><br><span class="line"></span><br><span class="line">        custom:titleText=&quot;自定义标题&quot;</span><br><span class="line">        custom:titleTextColor1=&quot;#123412&quot;</span><br><span class="line">        custom:titleTextSize=&quot;10sp&quot;</span><br><span class="line">        &gt;&lt;/com.udmodel.css.topbar.Topbar&gt;</span><br><span class="line">&lt;/RelativeLayout&gt;</span><br></pre></td></tr></table></figure></p>
+<p>下面这句在AS中可以直接在最后写res-auto，但是如果在eclipse中就需要写全包名，具体是引用第三方的名称空间(NameSpace),定义为custom，然后通过custom找到我们定义的属性<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">xmlns:custom=&quot;http://schemas.android.com/apk/res-auto&quot;</span><br></pre></td></tr></table></figure></p>
+<p>下面的@color/colorAccent是在values下面的color下面有个自定义颜色，直接引用，如果没有，新建一个，颜色自己选<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">custom:leftBackground=&quot;@color/colorAccent&quot;</span><br></pre></td></tr></table></figure></p>
+<p>最后，我们在代码中展示自定义的模板，并且验证功能；</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">@Override</span><br><span class="line">    protected void onCreate(Bundle savedInstanceState) &#123;</span><br><span class="line">        super.onCreate(savedInstanceState);</span><br><span class="line">        setContentView(R.layout.activity_main);</span><br><span class="line"></span><br><span class="line">        //获得topbar</span><br><span class="line">        Topbar topbar = (Topbar) findViewById(R.id.topbar);</span><br><span class="line">        //利用Topbar类中的方法来重写点击事件</span><br><span class="line">        topbar.setOnTopbarClickListener(new Topbar.topbarClickListener() &#123;</span><br><span class="line">            @Override</span><br><span class="line">            public void leftClick() &#123;</span><br><span class="line">                Toast.makeText(MainActivity.this,&quot;left&quot;,Toast.LENGTH_SHORT).show();</span><br><span class="line">            &#125;</span><br><span class="line"></span><br><span class="line">            @Override</span><br><span class="line">            public void rightClick() &#123;</span><br><span class="line">                Toast.makeText(MainActivity.this,&quot;right&quot;,Toast.LENGTH_SHORT).show();</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;);</span><br><span class="line">        //设置左侧的Button不可见</span><br><span class="line">        topbar.setLeftButtonIsvisiable(false);</span><br></pre></td></tr></table></figure>
+<p>效果图：<br>1、未点击Button，左侧Button隐藏<br><img src="http://img.blog.csdn.net/20160328111836070" alt="未点击Button，左侧Button隐藏"></p>
+<p>2、点击右侧Button，提示Toast</p>
+<p><img src="http://img.blog.csdn.net/20160328111917399" alt="点击右侧Button，提示Toast"></p>
+<p>下载地址：<a href="http://download.csdn.net/detail/dghfhjgjhgk/9474279" target="_blank" rel="noopener">自定义Topbar下载</a></p>
+
+    </div>
+
+    <div class="post-footer">   
+        <div>
+            
+                转载声明：商业转载请联系作者获得授权,非商业转载请注明出处 © <a href="" target="_blank">Snippet</a>
+            
+        </div>
+        <div>
+            
+        </div>  
+    </div>
+</article>
+
+<div class="article-nav prev-next-wrap clearfix">
+    
+        <a href="/2016/04/10/Android Studio常用快捷键及设置/" class="pre-post btn btn-default"><i class="fa fa-angle-left fa-fw"></i>上一篇</a>
+    
+    
+</div>
+
+
+    <div id="comments">
+        
+	
+<div id="lv-container" data-id="city" data-uid="MTAyMC8zMzA1MS85NjEz">
+  <script type="text/javascript">
+     (function(d, s) {
+         var j, e = d.getElementsByTagName(s)[0];
+         if (typeof LivereTower === 'function') { return; }
+         j = d.createElement(s);
+         j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+         j.async = true;
+         e.parentNode.insertBefore(j, e);
+     })(document, 'script');
+  </script>
+</div>
+
+
+    </div>
+
+
+
+
+
+                </main>
+                
+    <aside class="col-md-4 sidebar">
+        
+        
+    <div class="widget">    
+        <h3 class="title">搜索</h3>
+        <div id="search-form">
+            <div id="result-mask" class="hide"></div>
+            <div class="search-area">
+                
+                    <input id="search-key" type="search" autocomplete="off" placeholder="搜点什么呢?">
+                    <button type="button" class="search-form-submit" id="search-local">站内搜索</button>
+                
+                
+            </div>
+            <div id="result-wrap" class="hide">
+                <div id="search-result"></div>
+            </div>
+            <div class="hide">
+                <template id="search-tpl">
+                    <div class="item">
+                        <a href="/{path}" title="{title}">
+                            <div class="title">{title}</div>
+                            <div class="content">{content}</div>
+                        </a>
+                    </div>
+                </template>
+            </div>
+        </div>
+    </div>
+
+        
+        
+    <div class="widget notification">
+        <h3 class="title">网站公告</h3>
+        <div>
+            <p>暂无公告~ <br/>
+        </div>
+    </div>
+
+        
+        
+    <div class="widget">
+      <h3 class="title">社交</h3> 
+        <div class="content social">
+            
+	            <a href="https://github.com/smartsean" rel="external nofollow" title="Github" target="_blank">
+			    	<i class="git fa fa-git"></i>
+			    </a>
+            
+        </div>
+    </div>
+
+
+        
+        
+    <div class="widget">
+        <h3 class="title">分类</h3>
+        <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/Android/"><i class="fa" aria-hidden="true">Android</i></a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/工具/"><i class="fa" aria-hidden="true">工具</i></a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/我/"><i class="fa" aria-hidden="true">我</i></a><span class="category-list-count">2</span></li></ul>
+    </div>
+
+
+        
+        
+    <div class="widget">
+      <h3 class="title">归档</h3>
+        <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/09/"><i class="fa" aria-hidden="true">九月 2017</i></a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/04/"><i class="fa" aria-hidden="true">四月 2017</i></a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/03/"><i class="fa" aria-hidden="true">三月 2017</i></a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/10/"><i class="fa" aria-hidden="true">十月 2016</i></a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/04/"><i class="fa" aria-hidden="true">四月 2016</i></a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/03/"><i class="fa" aria-hidden="true">三月 2016</i></a><span class="archive-list-count">1</span></li></ul>
+    </div>
+
+
+        
+        
+  <div class="widget">
+    <h3 class="title">标签云</h3>
+    <div class="content tag-cloud">
+        <a href="/tags/Android/" style="font-size: 20px;">Android</a> <a href="/tags/AndroidStudio/" style="font-size: 10px;">AndroidStudio</a> <a href="/tags/AndroidStudio-Android/" style="font-size: 10px;">AndroidStudio Android</a> <a href="/tags/Git/" style="font-size: 10px;">Git</a> <a href="/tags/工具/" style="font-size: 10px;">工具</a> <a href="/tags/我/" style="font-size: 15px;">我</a> <a href="/tags/自定义View/" style="font-size: 10px;">自定义View</a>
+    </div>
+  </div>
+
+
+        
+        
+    <div class="widget">
+        <h3 class="title">友链</h3>
+        <div class="content friends-link">
+        
+            <a href="http://www.shenliyang.com" class="fa" target="_blank">个人博客</a>
+        
+        </div>
+    </div>
+
+
+        
+    </aside>
+
+            </div>
+        </div>
+    </section>
+    <footer class="main-footer">
+    <div class="container">
+        <div class="row">
+        </div>
+    </div>
+</footer>
+
+<a id="back-to-top" class="hide">
+	<i class="fa fa-chevron-up"></i>
+</a>
+
+
+
+
+    <div class="copyright">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12"> 
+                <span>Copyright &copy; 2017
+                </span> | 
+                <span>
+                    Powered by <a href="//hexo.io" class="copyright-links" target="_blank" rel="nofollow">Hexo</a>
+                </span> | 
+                <span>
+                    Theme by <a href="//github.com/shenliyang/hexo-theme-snippet.git" class="copyright-links" target="_blank" rel="nofollow">Snippet</a>
+                </span>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+	<script src="/js/search.js?rev=@@hash"></script>
+
+
+<script src="/js/app.js?rev=@@hash"></script>
+
+
+</body>
+</html>
