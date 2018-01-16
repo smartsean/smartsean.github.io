@@ -1,0 +1,373 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+    <!--Setting-->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+    <meta http-equiv="Cache-Control" content="no-siteapp">
+    <meta name="renderer" content="webkit|ie-comp|ie-stand">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="format-detection" content="telephone=no,email=no,adress=no">
+    <meta name="browsermode" content="application">
+    <meta name="screen-orientation" content="portrait">
+    <link rel="dns-prefetch" href="https://github.com/smartsean/smartsean.github.io">
+    <!--SEO-->
+
+
+
+<meta name="robots" content="all" />
+<meta name="google" content="all" />
+<meta name="googlebot" content="all" />
+<meta name="verify" content="all" />
+    <!--Title-->
+
+
+<title>Android组件之服务---Service | SmartSean的小站</title>
+
+
+    <link rel="alternate" href="/atom.xml" title="SmartSean的小站" type="application/atom+xml">
+
+
+    <link rel="icon" href="/favicon.ico">
+
+    
+
+
+
+<link rel="stylesheet" href="//cdn.bootcss.com/bootstrap/3.3.4/css/bootstrap.min.css?rev=3.3.4">
+<link rel="stylesheet" href="//cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.min.css">
+<link rel="stylesheet" href="/css/style.css?rev=@@hash">
+
+
+
+
+    
+    <div class="hide">
+    	<script src="https://s4.cnzz.com/z_stat.php?id=1263868967&web_id=1263868967" language="JavaScript"></script>
+    </div>
+
+
+
+
+
+
+    
+</head>
+
+
+<!--[if lte IE 8]>
+<style>
+    html{ font-size: 1em }
+</style>
+<![endif]-->
+<!--[if lte IE 9]>
+<div style="ie">你使用的浏览器版本过低，为了你更好的阅读体验，请更新浏览器的版本或者使用其他现代浏览器，比如Chrome、Firefox、Safari等。</div>
+<![endif]-->
+
+<body>
+    <header class="main-header"  style="background-image:url(http://7xpw2b.com1.z0.glb.clouddn.com/hexo-sinppet/img/banner2.jpg)"  >
+    <div class="main-header-box">
+        <a class="header-avatar" href="/" title="">
+            <img src="/img/avatar.jpg" alt="logo头像">
+        </a>
+        <div class="branding">
+        	<!--<h2 class="text-hide">Snippet主题,从未如此简单有趣</h2>-->
+            
+                <h2> 记录生活，记录代码 </h2>
+             
+    	</div>
+    </div>
+</header>
+    <nav class="main-navigation">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="navbar-header"><span class="nav-toggle-button collapsed" data-toggle="collapse" data-target="#main-menu" id="mnav">
+                    <span class="sr-only">Toggle navigation</span>
+                    <i class="fa fa-bars"></i>
+                    </span>
+                </div>
+                <div class="collapse navbar-collapse" id="main-menu">
+                    <ul class="menu">
+                        
+                            <li role="presentation"><a href="/"><i class="fa fa-fw "></i>首页</a>
+                            </li>
+                        
+                            <li role="presentation"><a href="/categories/Android/"><i class="fa fa-fw "></i>Android</a>
+                            </li>
+                        
+                            <li role="presentation"><a href="/categories/工具/"><i class="fa fa-fw "></i>工具</a>
+                            </li>
+                        
+                            <li role="presentation"><a href="/categories/我/"><i class="fa fa-fw "></i>我</a>
+                            </li>
+                        
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</nav>
+    <section class="content-wrap">
+        <div class="container">
+            <div class="row">
+                <main class="col-md-8 main-content m-post">
+                    <p id="process"></p>
+<article class="post">
+    <div class="post-head">
+        <h1 id="Android组件之服务---Service">
+            
+	            Android组件之服务---Service
+            
+        </h1>
+        <div class="post-meta">
+    
+    
+    <span class="categories-meta fa-wrap">
+        <i class="fa fa-folder-open-o"></i>
+        <span>Android</span>
+    </span>
+    
+    
+    <span class="fa-wrap">
+        <i class="fa fa-tags"></i>
+        <span class="tags-meta">
+            
+            Android
+            
+        </span>
+    </span>
+    
+    
+    <span class="fa-wrap">
+        <i class="fa fa-clock-o"></i>
+        <span class="date-meta">2016/04/17</span>
+    </span>
+</div>
+
+            
+            
+            <p class="fa fa-exclamation-triangle warning">
+                本文于<strong>638</strong>天之前发表，文中内容可能已经过时。
+            </p>
+        
+    </div>
+    
+    <div class="post-body post-content">
+        <p>—今天在做毕设的时候需要用到播放提示音，想了想，当需要提示的时候新建一个Service来播放提示音比较好，而且可以在响应事件中控制提示音的播放，就先专门弄了个小的例子来练下手，于是修改了下之前入门Service时候写的代码，实现一个简易的音乐播放。（这里使用的是MediaPlayer，如果是较短提示音的话使用SoundPool比较好）</p>
+<p><strong>什么是服务：</strong><br>        服务是Android中实现程序后台运行的解决方案，它非常适合用于去执行哪些不需要和用户交互而且还要求长期运行的任务，服务不依赖于任何界面，即使当程序被切换到后台，或者打开了另外一个程序，服务仍然能够保持正常运行，服务的优先级是高于Activity的，另外服务作为四大组件，在新建的时候一定要在AndroidManifest.xml文件中进行注册才能使用。<br><strong>服务运行环境：</strong><br>        服务不是独立运行在进程中的，而是依赖于创建该服务时所在的应用程序进程，当某个应用程序被杀掉时，所依赖于这个进程的服务也会被停止。</p>
+<pre><code>需要注意的是，服务不会自己开启线程，所有的代码都是默认运行在主线程当中的，也就是说，我们需要在服务的内部手动创建子线程，并在其中执行具体的任务，负责就可能出现子线程被阻塞的情况，可以用多线程编程解决，Android专门为我们提供了一个类---IntentService，可以创建异步的、可自动停止运行的服务。
+</code></pre><p>常见的服务用途：后台放音乐，后台记录地理位置的改变，监听程序动作</p>
+<p><strong>常见使用服务的方式：</strong></p>
+<ol>
+<li>不和Activity绑定</li>
+</ol>
+<blockquote>
+<p>启动：startService(Intent实例);<br>Intent intent1 = new Intent(MainActivity.this,MyStartService.class);<br>startService(intent1);    </p>
+<p>关闭：stopService(Intent实例);<br>stopService(intent1);</p>
+</blockquote>
+<p>启动和关闭的时候Intent实例必须是同一个，不然不能停止服务；</p>
+<ol>
+<li>和Activity绑定完成Activity和Service间的通信</li>
+</ol>
+<blockquote>
+<p>启动：bindService(Intent实例,ServiceConnection实例,BIND_AUTO_CREATE);<br>Intent intent2 = new Intent(MainActivity.this,MyBindService.class);<br>bindService(intent2, conn, BIND_AUTO_CREATE);</p>
+<p>关闭：unbindService(conn);<br>unbindService(conn);</p>
+</blockquote>
+<p>conn是ServiceConnection实例的实例，待会在代码中给出,需要注意的是，如果要活Service自动关闭，上面两种都可以使用stopSelf();但是如果既使用了startService又使用了bingService的话，就要同时调用stopService和ubBindService方法才能使服务的onDestory()执行；</p>
+<p>今天正好用到下面通过一个小的简易音乐播放来演示下Activity和Service之间的通信：主要利用服务中的onBind方法，新建一个专门的Binder对象进行通信。<br>1、建一个服务，用来定义一些播放的操作。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br></pre></td><td class="code"><pre><span class="line">package com.service.css.servicedemo;</span><br><span class="line"></span><br><span class="line">import android.app.Service;</span><br><span class="line">import android.content.Intent;</span><br><span class="line">import android.media.MediaPlayer;</span><br><span class="line">import android.os.Binder;</span><br><span class="line">import android.os.IBinder;</span><br><span class="line">import android.support.annotation.Nullable;</span><br><span class="line">import android.util.Log;</span><br><span class="line"></span><br><span class="line">import java.io.IOException;</span><br><span class="line"></span><br><span class="line">/**</span><br><span class="line"> * Created by css on 2016/3/29.</span><br><span class="line"> */</span><br><span class="line">public class MyBindService extends Service implements MediaPlayer.OnCompletionListener&#123;</span><br><span class="line"></span><br><span class="line">    private MediaPlayer mediaPlayer;</span><br><span class="line">    //实现MediaPlayer.OnCompletionListener接口的方法</span><br><span class="line">    @Override</span><br><span class="line">    public void onCompletion(MediaPlayer mp) &#123;</span><br><span class="line">        stopSelf();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    //新建类同于回调</span><br><span class="line">    public class MyBinder extends Binder</span><br><span class="line">    &#123;</span><br><span class="line">        public MyBindService getService()</span><br><span class="line">        &#123;</span><br><span class="line">            //获得MyBindService，可以执行它的方法</span><br><span class="line">            return MyBindService.this;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    //用于传送Binder对象给Activity</span><br><span class="line">    @Nullable</span><br><span class="line">    @Override</span><br><span class="line">    public IBinder onBind(Intent intent) &#123;</span><br><span class="line">        Log.d(&quot;TAG&quot;, &quot;这里是 onBind&quot;);</span><br><span class="line">        return new MyBinder();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    //初始化的时候使用，对此绑定只执行一次</span><br><span class="line">    @Override</span><br><span class="line">    public void onCreate() &#123;</span><br><span class="line">        Log.d(&quot;TAG&quot;,&quot;这里是 onCreate&quot;);</span><br><span class="line">        mediaPlayer = MediaPlayer.create(this, R.raw.alarm);</span><br><span class="line">        mediaPlayer.setOnCompletionListener(this);</span><br><span class="line">        //开始震动</span><br><span class="line">//        vibrator = (Vibrator) getApplicationContext().getSystemService(Service.VIBRATOR_SERVICE);</span><br><span class="line">        super.onCreate();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    //初始化的时候使用，对此绑定执行多次，</span><br><span class="line">    @Override</span><br><span class="line">    public int onStartCommand(Intent intent, int flags, int startId) &#123;</span><br><span class="line">        if(!mediaPlayer.isPlaying())&#123;</span><br><span class="line">            mediaPlayer.start();</span><br><span class="line">        &#125;</span><br><span class="line">        return START_STICKY;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    //解绑定的时候执行的方法</span><br><span class="line">    @Override</span><br><span class="line">    public boolean onUnbind(Intent intent) &#123;</span><br><span class="line">        Log.d(&quot;TAG&quot;, &quot;这里是 onUnbind&quot;);</span><br><span class="line">        return super.onUnbind(intent);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    //重写onDestroy方法</span><br><span class="line">    @Override</span><br><span class="line">    public void onDestroy() &#123;</span><br><span class="line">        Log.d(&quot;TAG&quot;, &quot;这里是 onDestroy&quot;);</span><br><span class="line">        //停止</span><br><span class="line">        if(mediaPlayer.isPlaying())&#123;</span><br><span class="line">            mediaPlayer.stop();</span><br><span class="line">        &#125;</span><br><span class="line">        //释放</span><br><span class="line">        mediaPlayer.release();</span><br><span class="line">        super.onDestroy();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    //播放</span><br><span class="line">    public void play()</span><br><span class="line">    &#123;</span><br><span class="line">        Log.d(&quot;TAG&quot;, &quot;播放&quot;);</span><br><span class="line">        //如果不正在播放，则开始播放</span><br><span class="line">        if(!mediaPlayer.isPlaying())&#123;</span><br><span class="line">            mediaPlayer.start();</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    //暂停</span><br><span class="line">    public void pause()</span><br><span class="line">    &#123;</span><br><span class="line">        Log.d(&quot;TAG&quot;, &quot;暂停&quot;);</span><br><span class="line">        //暂停播放，下次点击播放可以接着暂停的地方播放</span><br><span class="line">        mediaPlayer.pause();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    //停止</span><br><span class="line">    public void stop()</span><br><span class="line">    &#123;</span><br><span class="line">        Log.d(&quot;TAG&quot;, &quot;停止&quot;);</span><br><span class="line">        //如果不为空，停止</span><br><span class="line">        if (mediaPlayer != null) &#123;</span><br><span class="line">            mediaPlayer.stop();</span><br><span class="line">            try &#123;</span><br><span class="line">                mediaPlayer.prepare();//stop后下次重新播放要首先进入prepared状态</span><br><span class="line">                mediaPlayer.seekTo(0);//须将播放时间设置到0；这样才能在下次播放是重新开始，否则会继续上次播放</span><br><span class="line">            &#125; catch (IOException e) &#123;</span><br><span class="line">                e.printStackTrace();</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>2、主Activity中的代码：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br></pre></td><td class="code"><pre><span class="line">package com.service.css.servicedemo;</span><br><span class="line"></span><br><span class="line">import android.app.Activity;</span><br><span class="line">import android.content.ComponentName;</span><br><span class="line">import android.content.Intent;</span><br><span class="line">import android.content.ServiceConnection;</span><br><span class="line">import android.os.Bundle;</span><br><span class="line">import android.os.IBinder;</span><br><span class="line">import android.util.Log;</span><br><span class="line">import android.view.View;</span><br><span class="line"></span><br><span class="line">public class MainActivity extends Activity &#123;</span><br><span class="line"></span><br><span class="line">    private MyBindService myBindService;</span><br><span class="line"></span><br><span class="line">    @Override</span><br><span class="line">    protected void onCreate(Bundle savedInstanceState) &#123;</span><br><span class="line">        super.onCreate(savedInstanceState);</span><br><span class="line">        setContentView(R.layout.activity_main);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    //使用ServiceConnection，在Activity和Service连接、断开的时候执行操作；</span><br><span class="line">    ServiceConnection conn = new ServiceConnection() &#123;</span><br><span class="line">        //连接执行的操作</span><br><span class="line">        @Override</span><br><span class="line">        public void onServiceConnected(ComponentName name, IBinder service) &#123;</span><br><span class="line">            Log.d(&quot;TAG&quot;,&quot;service    is   onServiceConnected!&quot;);</span><br><span class="line">            myBindService =  ((MyBindService.MyBinder)service).getService();</span><br><span class="line">        &#125;</span><br><span class="line">        //断开执行的操作</span><br><span class="line">        @Override</span><br><span class="line">        public void onServiceDisconnected(ComponentName name) &#123;</span><br><span class="line">            Log.d(&quot;TAG&quot;,&quot;service    is   onServiceDisconnected!&quot;);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;;</span><br><span class="line"></span><br><span class="line">    //处理Button的点击事件(在布局文件中指定了onClick属性)</span><br><span class="line">    public void doClick(View v)</span><br><span class="line">    &#123;</span><br><span class="line">        switch(v.getId())</span><br><span class="line">        &#123;</span><br><span class="line">            //Activity和Service绑定</span><br><span class="line">            case R.id.bind:</span><br><span class="line">                Intent intent2 = new Intent(MainActivity.this,MyBindService.class);</span><br><span class="line">                bindService(intent2, conn, BIND_AUTO_CREATE);</span><br><span class="line">                break;</span><br><span class="line"></span><br><span class="line">            //播放操作</span><br><span class="line">            case R.id.play:</span><br><span class="line">                myBindService.play();</span><br><span class="line">                break;</span><br><span class="line">            //暂停操作</span><br><span class="line">            case R.id.pause:</span><br><span class="line">                myBindService.pause();</span><br><span class="line">                break;</span><br><span class="line">            //停止操作</span><br><span class="line">            case R.id.stop:</span><br><span class="line">                myBindService.stop();</span><br><span class="line">                break;</span><br><span class="line">            //解绑定操作</span><br><span class="line">            case R.id.unbind:</span><br><span class="line">                unbindService(conn);</span><br><span class="line">                myBindService = null;</span><br><span class="line">                break;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>对了，今天遇到了一个问题，在Activity绑定Service的操作可以在Activity的onCreate方法中直接进行，但是如果想要在Activity中播放音乐的话，不能把上面的myBindService.play();写在onCreate或者onResume中。</p>
+<p><a href="http://download.csdn.net/detail/sean_css/9493928" target="_blank" rel="noopener">源码</a></p>
+
+    </div>
+
+    <div class="post-footer">   
+        <div>
+            
+                转载声明：商业转载请联系作者获得授权,非商业转载请注明出处 © <a href="" target="_blank">Snippet</a>
+            
+        </div>
+        <div>
+            
+        </div>  
+    </div>
+</article>
+
+<div class="article-nav prev-next-wrap clearfix">
+    
+        <a href="/2016/04/18/Android异常：ServiceConnection-泄露/" class="pre-post btn btn-default"><i class="fa fa-angle-left fa-fw"></i>上一篇</a>
+    
+    
+        <a href="/2016/04/16/Android震动-启动、循环、取消控制/" class="next-post btn btn-default">下一篇<i class="fa fa-angle-right fa-fw"></i></a>
+    
+</div>
+
+
+    <div id="comments">
+        
+	
+<div id="lv-container" data-id="city" data-uid="MTAyMC8zMzA1MS85NjEz">
+  <script type="text/javascript">
+     (function(d, s) {
+         var j, e = d.getElementsByTagName(s)[0];
+         if (typeof LivereTower === 'function') { return; }
+         j = d.createElement(s);
+         j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+         j.async = true;
+         e.parentNode.insertBefore(j, e);
+     })(document, 'script');
+  </script>
+</div>
+
+
+    </div>
+
+
+
+
+
+                </main>
+                
+    <aside class="col-md-4 sidebar">
+        
+        
+    <div class="widget">    
+        <h3 class="title">搜索</h3>
+        <div id="search-form">
+            <div id="result-mask" class="hide"></div>
+            <div class="search-area">
+                
+                    <input id="search-key" type="search" autocomplete="off" placeholder="搜点什么呢?">
+                    <button type="button" class="search-form-submit" id="search-local">站内搜索</button>
+                
+                
+            </div>
+            <div id="result-wrap" class="hide">
+                <div id="search-result"></div>
+            </div>
+            <div class="hide">
+                <template id="search-tpl">
+                    <div class="item">
+                        <a href="/{path}" title="{title}">
+                            <div class="title">{title}</div>
+                            <div class="content">{content}</div>
+                        </a>
+                    </div>
+                </template>
+            </div>
+        </div>
+    </div>
+
+        
+        
+    <div class="widget notification">
+        <h3 class="title">网站公告</h3>
+        <div>
+            <p>暂无公告~ <br/>
+        </div>
+    </div>
+
+        
+        
+    <div class="widget">
+      <h3 class="title">社交</h3> 
+        <div class="content social">
+            
+	            <a href="https://github.com/smartsean" rel="external nofollow" title="Github" target="_blank">
+			    	<i class="git fa fa-git"></i>
+			    </a>
+            
+        </div>
+    </div>
+
+
+        
+        
+    <div class="widget">
+        <h3 class="title">分类</h3>
+        <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/Android/"><i class="fa" aria-hidden="true">Android</i></a><span class="category-list-count">15</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Ionic/"><i class="fa" aria-hidden="true">Ionic</i></a><span class="category-list-count">2</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Ionic/其他/"><i class="fa" aria-hidden="true">其他</i></a><span class="category-list-count">2</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/工具/"><i class="fa" aria-hidden="true">工具</i></a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/我/"><i class="fa" aria-hidden="true">我</i></a><span class="category-list-count">2</span></li></ul>
+    </div>
+
+
+        
+        
+    <div class="widget">
+      <h3 class="title">归档</h3>
+        <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/09/"><i class="fa" aria-hidden="true">九月 2017</i></a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/04/"><i class="fa" aria-hidden="true">四月 2017</i></a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/03/"><i class="fa" aria-hidden="true">三月 2017</i></a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/10/"><i class="fa" aria-hidden="true">十月 2016</i></a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/09/"><i class="fa" aria-hidden="true">九月 2016</i></a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/08/"><i class="fa" aria-hidden="true">八月 2016</i></a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/06/"><i class="fa" aria-hidden="true">六月 2016</i></a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/04/"><i class="fa" aria-hidden="true">四月 2016</i></a><span class="archive-list-count">10</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/03/"><i class="fa" aria-hidden="true">三月 2016</i></a><span class="archive-list-count">3</span></li></ul>
+    </div>
+
+
+        
+        
+  <div class="widget">
+    <h3 class="title">标签云</h3>
+    <div class="content tag-cloud">
+        <a href="/tags/Android/" style="font-size: 20px;">Android</a> <a href="/tags/AndroidStudio/" style="font-size: 15px;">AndroidStudio</a> <a href="/tags/Git/" style="font-size: 10px;">Git</a> <a href="/tags/Ionic/" style="font-size: 15px;">Ionic</a> <a href="/tags/Java/" style="font-size: 10px;">Java</a> <a href="/tags/工具/" style="font-size: 15px;">工具</a> <a href="/tags/异常/" style="font-size: 10px;">异常</a> <a href="/tags/我/" style="font-size: 15px;">我</a> <a href="/tags/自定义View/" style="font-size: 10px;">自定义View</a>
+    </div>
+  </div>
+
+
+        
+        
+    <div class="widget">
+        <h3 class="title">友链</h3>
+        <div class="content friends-link">
+        
+            <a href="http://www.shenliyang.com" class="fa" target="_blank">个人博客</a>
+        
+        </div>
+    </div>
+
+
+        
+    </aside>
+
+            </div>
+        </div>
+    </section>
+    <footer class="main-footer">
+    <div class="container">
+        <div class="row">
+        </div>
+    </div>
+</footer>
+
+<a id="back-to-top" class="hide">
+	<i class="fa fa-chevron-up"></i>
+</a>
+
+
+
+
+    <div class="copyright">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12"> 
+                <span>Copyright &copy; 2017
+                </span> | 
+                <span>
+                    Powered by <a href="//hexo.io" class="copyright-links" target="_blank" rel="nofollow">Hexo</a>
+                </span> | 
+                <span>
+                    Theme by <a href="//github.com/shenliyang/hexo-theme-snippet.git" class="copyright-links" target="_blank" rel="nofollow">Snippet</a>
+                </span>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+	<script src="/js/search.js?rev=@@hash"></script>
+
+
+<script src="/js/app.js?rev=@@hash"></script>
+
+
+</body>
+</html>

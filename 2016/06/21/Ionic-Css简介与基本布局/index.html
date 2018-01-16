@@ -1,0 +1,388 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+    <!--Setting-->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+    <meta http-equiv="Cache-Control" content="no-siteapp">
+    <meta name="renderer" content="webkit|ie-comp|ie-stand">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="format-detection" content="telephone=no,email=no,adress=no">
+    <meta name="browsermode" content="application">
+    <meta name="screen-orientation" content="portrait">
+    <link rel="dns-prefetch" href="https://github.com/smartsean/smartsean.github.io">
+    <!--SEO-->
+
+
+
+<meta name="robots" content="all" />
+<meta name="google" content="all" />
+<meta name="googlebot" content="all" />
+<meta name="verify" content="all" />
+    <!--Title-->
+
+
+<title>Ionic Css简介与基本布局 | SmartSean的小站</title>
+
+
+    <link rel="alternate" href="/atom.xml" title="SmartSean的小站" type="application/atom+xml">
+
+
+    <link rel="icon" href="/favicon.ico">
+
+    
+
+
+
+<link rel="stylesheet" href="//cdn.bootcss.com/bootstrap/3.3.4/css/bootstrap.min.css?rev=3.3.4">
+<link rel="stylesheet" href="//cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.min.css">
+<link rel="stylesheet" href="/css/style.css?rev=@@hash">
+
+
+
+
+    
+    <div class="hide">
+    	<script src="https://s4.cnzz.com/z_stat.php?id=1263868967&web_id=1263868967" language="JavaScript"></script>
+    </div>
+
+
+
+
+
+
+    
+</head>
+
+
+<!--[if lte IE 8]>
+<style>
+    html{ font-size: 1em }
+</style>
+<![endif]-->
+<!--[if lte IE 9]>
+<div style="ie">你使用的浏览器版本过低，为了你更好的阅读体验，请更新浏览器的版本或者使用其他现代浏览器，比如Chrome、Firefox、Safari等。</div>
+<![endif]-->
+
+<body>
+    <header class="main-header"  style="background-image:url(http://7xpw2b.com1.z0.glb.clouddn.com/hexo-sinppet/img/banner2.jpg)"  >
+    <div class="main-header-box">
+        <a class="header-avatar" href="/" title="">
+            <img src="/img/avatar.jpg" alt="logo头像">
+        </a>
+        <div class="branding">
+        	<!--<h2 class="text-hide">Snippet主题,从未如此简单有趣</h2>-->
+            
+                <h2> 记录生活，记录代码 </h2>
+             
+    	</div>
+    </div>
+</header>
+    <nav class="main-navigation">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="navbar-header"><span class="nav-toggle-button collapsed" data-toggle="collapse" data-target="#main-menu" id="mnav">
+                    <span class="sr-only">Toggle navigation</span>
+                    <i class="fa fa-bars"></i>
+                    </span>
+                </div>
+                <div class="collapse navbar-collapse" id="main-menu">
+                    <ul class="menu">
+                        
+                            <li role="presentation"><a href="/"><i class="fa fa-fw "></i>首页</a>
+                            </li>
+                        
+                            <li role="presentation"><a href="/categories/Android/"><i class="fa fa-fw "></i>Android</a>
+                            </li>
+                        
+                            <li role="presentation"><a href="/categories/工具/"><i class="fa fa-fw "></i>工具</a>
+                            </li>
+                        
+                            <li role="presentation"><a href="/categories/我/"><i class="fa fa-fw "></i>我</a>
+                            </li>
+                        
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</nav>
+    <section class="content-wrap">
+        <div class="container">
+            <div class="row">
+                <main class="col-md-8 main-content m-post">
+                    <p id="process"></p>
+<article class="post">
+    <div class="post-head">
+        <h1 id="Ionic Css简介与基本布局">
+            
+	            Ionic Css简介与基本布局
+            
+        </h1>
+        <div class="post-meta">
+    
+    
+    <span class="categories-meta fa-wrap">
+        <i class="fa fa-folder-open-o"></i>
+        <span>其他</span>
+    </span>
+    
+    
+    <span class="fa-wrap">
+        <i class="fa fa-tags"></i>
+        <span class="tags-meta">
+            
+            Ionic
+            
+        </span>
+    </span>
+    
+    
+    <span class="fa-wrap">
+        <i class="fa fa-clock-o"></i>
+        <span class="date-meta">2016/06/21</span>
+    </span>
+</div>
+
+            
+            
+            <p class="fa fa-exclamation-triangle warning">
+                本文于<strong>573</strong>天之前发表，文中内容可能已经过时。
+            </p>
+        
+    </div>
+    
+    <div class="post-body post-content">
+        <h1 id="Ionic-Css简介与基本布局"><a href="#Ionic-Css简介与基本布局" class="headerlink" title="Ionic Css简介与基本布局"></a>Ionic Css简介与基本布局</h1><h3 id="Ionic简介"><a href="#Ionic简介" class="headerlink" title="Ionic简介"></a>Ionic简介</h3><p>　　Ionic属于hybrid开发模式，本质上是讲移动web应用与浏览器打包，优点是采用标准的web技术进行开发，避免了不同平台原声开发体系的学习，上手快、效率高。缺点是性能上有一定的损失<br>　　ionic是一个强大的混合式/hybrid_HTML5移动开发框架，特点是使用标准的HTML、CSS、JavaScript，开发跨平台（目前支持：Android、IOS）的原生App应用。<br>　　<img src="http://img.blog.csdn.net/20160621180017394" alt="Alt text"><br>ionic主要包括三个部分：</p>
+<ul>
+<li><strong>CSS框架</strong> 提供原生质感的CSS样式模拟，ionic这个部分使用了ionicons图标样式库</li>
+<li><strong>JavaScript</strong>提供移动Web应用开发框架，ionic基于AngularJS基础框架开发，因此自然的遵循AngularJS框架的约束，此外，ionic使用AngularJS UI Router实现前端路由</li>
+<li><strong>命令行/CLI</strong>命令行工具集用来简化应用程序的开发、构造和仿真运行，ionic命令行工具使用了Cordova，依赖于平台SDK（Android&amp;IOS）实现将移动web项目打包成原生App<blockquote>
+<p>由于ionic使用了HTML5和CSS3的一些新规范，所以要求<strong>ios7+/Android4.1+</strong>，在低版本上使用ionic开发的应用的时候，有时会出现问题</p>
+<h3 id="CSS框架"><a href="#CSS框架" class="headerlink" title="CSS框架"></a>CSS框架</h3><p>　　可以直接使用ionic的CSS框架，直接在HTML中引入ionic.css就可以。ionic的CSS框架提供了预定义的CSS类，来帮助我们快速构建适用于手机端的UI，ionic的预定义CSS类主要分为下面四个方面：</p>
+</blockquote>
+</li>
+<li><p>基本布局类<br>  ionic将手机页面的布局模式基本抽象为三块：头部、内容和尾部，基本布局类提供了这几个区域的CSS类</p>
+</li>
+<li><p>颜色和图标类<br>ionic定义了几个配色方案CSS类，并使用ionicons提供的字体图标类</p>
+</li>
+<li><p>界面组件类<br>ionic定义了丰富的界面组件CSS类，让HTML元素看起来像移动平台的UI组件</p>
+</li>
+<li><p>格栅系统类<br>和Bootstrap一样，ionic也提供了格栅系统，不过ionic的实现是基于CSS3的flexBox模型，更为灵活 </p>
+</li>
+</ul>
+<h3 id="布局模式"><a href="#布局模式" class="headerlink" title="布局模式"></a>布局模式</h3><p>在APP开发中，通常一个页面分为三个部分</p>
+<ol>
+<li><strong>标题/header</strong>    标题总是位于屏幕顶部</li>
+<li><strong>内容/content</strong>   内容区占据除了标题和页脚的区域</li>
+<li><strong>页脚/footer</strong>      页脚区总是位于屏幕的底部<br><img src="http://img.blog.csdn.net/20160621180118473" alt="Alt text"><br>ionic使用以下的CSS类声明区域的性质：</li>
+</ol>
+<ul>
+<li><strong>.bar.bar-header</strong> 声明元素为标题区</li>
+<li><strong>.bar.bar-footer</strong> 声明元素为页脚区</li>
+<li><strong>.content</strong>声明元素为内容区<h4 id="定高条块：-bar"><a href="#定高条块：-bar" class="headerlink" title="定高条块：.bar"></a>定高条块：.bar</h4>样式.bar将元素声明为屏幕上绝对定义和块状区域，具有固定的高度（44px）：<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">&lt;any class=&quot;bar&quot;&gt;.....&lt;any&gt;</span><br><span class="line">```	</span><br><span class="line">一旦元素应用了.bar样式，就可以继续选用两类预定义样式来进一步声明元素及其内容的外观：</span><br><span class="line">1. 同级样式---同级样式与.bar应用在同一元素上，声明元素的位置、配色等</span><br><span class="line">2. 下级样式---下级样式只能应用在.bar的子元素上，声明子元素的大小等特征</span><br><span class="line">具体的样式如下：</span><br><span class="line">![这里写图片描述](http://img.blog.csdn.net/20160621180215881)</span><br><span class="line">#### .bar：位置</span><br><span class="line">ionic使用以下样式定义条块的位置：</span><br><span class="line">- .bar-header -置顶</span><br><span class="line">- .bar-subheader -header之下置顶</span><br><span class="line">- .bar-footer - 置底</span><br><span class="line">- .bar-subfooter -footrt之上置顶</span><br><span class="line">比如腾讯App中，可以看到三个条块：标题、副标题、页脚</span><br><span class="line">![这里写图片描述](http://img.blog.csdn.net/20160621180245928)</span><br><span class="line">#### .bar :嵌入子元素</span><br><span class="line">在ionic中，有三种.bar子元素的样式是自定义的：</span><br><span class="line">- **标题文字** -对包含的标题文字的元素使用.title样式，通常是使用h1元素；一般是居中显示的标题</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<p><any class="bar"></any></p>
+<p><any class="title">…</any><br><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">- **按钮** --对用作按钮的元素，应用.button样式，通常使用button或者a元素作为按钮，注意按钮将使用.bar的配色方案；经常会用到，比如顶部标题栏右侧的+号按钮，或者顶部左侧的返回按钮</span><br></pre></td></tr></table></figure></p>
+<p><any class="bar"></any></p>
+<p><any class="button">…</any><br><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">- **工具栏** - 工具栏包含一组按钮，对用作工具栏的元素，应用.button-bar样式，通常使用div元素作为工具栏;一般较少用到</span><br></pre></td></tr></table></figure></p>
+<p><any class="bar"></any></p>
+<p><any class="button-bar">…</any><br><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">#### .bar :嵌入input</span><br><span class="line">一种常见的UI模式是在标题栏中嵌入搜索栏，比如说大众点评如下：</span><br><span class="line">![这里写图片描述](http://img.blog.csdn.net/20160621180311273)</span><br><span class="line">在.bar元素中嵌入input元素，需要注意两点：</span><br><span class="line">1. 在条块元素上应用.item-input-insert样式</span><br><span class="line">2. 将input包裹在应用.item-input-wrapper样式的元素内</span><br><span class="line">这是因为在ionic的实现中，.bar中的input样式定义如下：</span><br><span class="line">比如以下代码：</span><br></pre></td></tr></table></figure></p>
+<p><div class="bar bar-header bar-energized item-input-inset"><br>          <a class="button button-clear icon-right ion-android-arrow-dropdown">北京</a><br>        <label class="item-input-wrapper"><br>            <input type="text" placeholder="输入商户名搜索"><br>        </label><br>    </div><br>```</p>
+<h4 id="内容：-content和-scroll-content"><a href="#内容：-content和-scroll-content" class="headerlink" title="内容：.content和.scroll-content"></a>内容：.content和.scroll-content</h4><p>ionic预定义了两个内容容器样式：</p>
+<ol>
+<li>.content - 流式定位，内容元素在文档流中按顺序定位</li>
+<li>.scroll-content - 决定定位，内容元素占满整个屏幕<br>这两个样式都可以使用以下样式进一步确定位置及其范围<br><img src="http://img.blog.csdn.net/20160621180350974" alt="这里写图片描述"></li>
+</ol>
+
+    </div>
+
+    <div class="post-footer">   
+        <div>
+            
+                转载声明：商业转载请联系作者获得授权,非商业转载请注明出处 © <a href="" target="_blank">Snippet</a>
+            
+        </div>
+        <div>
+            
+        </div>  
+    </div>
+</article>
+
+<div class="article-nav prev-next-wrap clearfix">
+    
+        <a href="/2016/08/19/ionic开发webApp-百度定位/" class="pre-post btn btn-default"><i class="fa fa-angle-left fa-fw"></i>上一篇</a>
+    
+    
+        <a href="/2016/06/03/JAVA-生成JSON格式数据/" class="next-post btn btn-default">下一篇<i class="fa fa-angle-right fa-fw"></i></a>
+    
+</div>
+
+
+    <div id="comments">
+        
+	
+<div id="lv-container" data-id="city" data-uid="MTAyMC8zMzA1MS85NjEz">
+  <script type="text/javascript">
+     (function(d, s) {
+         var j, e = d.getElementsByTagName(s)[0];
+         if (typeof LivereTower === 'function') { return; }
+         j = d.createElement(s);
+         j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+         j.async = true;
+         e.parentNode.insertBefore(j, e);
+     })(document, 'script');
+  </script>
+</div>
+
+
+    </div>
+
+
+
+
+
+                </main>
+                
+    <aside class="col-md-4 sidebar">
+        
+        
+    <div class="widget">    
+        <h3 class="title">搜索</h3>
+        <div id="search-form">
+            <div id="result-mask" class="hide"></div>
+            <div class="search-area">
+                
+                    <input id="search-key" type="search" autocomplete="off" placeholder="搜点什么呢?">
+                    <button type="button" class="search-form-submit" id="search-local">站内搜索</button>
+                
+                
+            </div>
+            <div id="result-wrap" class="hide">
+                <div id="search-result"></div>
+            </div>
+            <div class="hide">
+                <template id="search-tpl">
+                    <div class="item">
+                        <a href="/{path}" title="{title}">
+                            <div class="title">{title}</div>
+                            <div class="content">{content}</div>
+                        </a>
+                    </div>
+                </template>
+            </div>
+        </div>
+    </div>
+
+        
+        
+    <div class="widget notification">
+        <h3 class="title">网站公告</h3>
+        <div>
+            <p>暂无公告~ <br/>
+        </div>
+    </div>
+
+        
+        
+    <div class="widget">
+      <h3 class="title">社交</h3> 
+        <div class="content social">
+            
+	            <a href="https://github.com/smartsean" rel="external nofollow" title="Github" target="_blank">
+			    	<i class="git fa fa-git"></i>
+			    </a>
+            
+        </div>
+    </div>
+
+
+        
+        
+    <div class="widget">
+        <h3 class="title">分类</h3>
+        <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/Android/"><i class="fa" aria-hidden="true">Android</i></a><span class="category-list-count">15</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Ionic/"><i class="fa" aria-hidden="true">Ionic</i></a><span class="category-list-count">2</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Ionic/其他/"><i class="fa" aria-hidden="true">其他</i></a><span class="category-list-count">2</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/工具/"><i class="fa" aria-hidden="true">工具</i></a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/我/"><i class="fa" aria-hidden="true">我</i></a><span class="category-list-count">2</span></li></ul>
+    </div>
+
+
+        
+        
+    <div class="widget">
+      <h3 class="title">归档</h3>
+        <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/09/"><i class="fa" aria-hidden="true">九月 2017</i></a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/04/"><i class="fa" aria-hidden="true">四月 2017</i></a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/03/"><i class="fa" aria-hidden="true">三月 2017</i></a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/10/"><i class="fa" aria-hidden="true">十月 2016</i></a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/09/"><i class="fa" aria-hidden="true">九月 2016</i></a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/08/"><i class="fa" aria-hidden="true">八月 2016</i></a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/06/"><i class="fa" aria-hidden="true">六月 2016</i></a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/04/"><i class="fa" aria-hidden="true">四月 2016</i></a><span class="archive-list-count">10</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/03/"><i class="fa" aria-hidden="true">三月 2016</i></a><span class="archive-list-count">3</span></li></ul>
+    </div>
+
+
+        
+        
+  <div class="widget">
+    <h3 class="title">标签云</h3>
+    <div class="content tag-cloud">
+        <a href="/tags/Android/" style="font-size: 20px;">Android</a> <a href="/tags/AndroidStudio/" style="font-size: 15px;">AndroidStudio</a> <a href="/tags/Git/" style="font-size: 10px;">Git</a> <a href="/tags/Ionic/" style="font-size: 15px;">Ionic</a> <a href="/tags/Java/" style="font-size: 10px;">Java</a> <a href="/tags/工具/" style="font-size: 15px;">工具</a> <a href="/tags/异常/" style="font-size: 10px;">异常</a> <a href="/tags/我/" style="font-size: 15px;">我</a> <a href="/tags/自定义View/" style="font-size: 10px;">自定义View</a>
+    </div>
+  </div>
+
+
+        
+        
+    <div class="widget">
+        <h3 class="title">友链</h3>
+        <div class="content friends-link">
+        
+            <a href="http://www.shenliyang.com" class="fa" target="_blank">个人博客</a>
+        
+        </div>
+    </div>
+
+
+        
+    </aside>
+
+            </div>
+        </div>
+    </section>
+    <footer class="main-footer">
+    <div class="container">
+        <div class="row">
+        </div>
+    </div>
+</footer>
+
+<a id="back-to-top" class="hide">
+	<i class="fa fa-chevron-up"></i>
+</a>
+
+
+
+
+    <div class="copyright">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12"> 
+                <span>Copyright &copy; 2017
+                </span> | 
+                <span>
+                    Powered by <a href="//hexo.io" class="copyright-links" target="_blank" rel="nofollow">Hexo</a>
+                </span> | 
+                <span>
+                    Theme by <a href="//github.com/shenliyang/hexo-theme-snippet.git" class="copyright-links" target="_blank" rel="nofollow">Snippet</a>
+                </span>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+	<script src="/js/search.js?rev=@@hash"></script>
+
+
+<script src="/js/app.js?rev=@@hash"></script>
+
+
+</body>
+</html>
