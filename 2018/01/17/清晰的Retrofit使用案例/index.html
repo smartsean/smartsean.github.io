@@ -1,0 +1,754 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+    <!--Setting-->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+    <meta http-equiv="Cache-Control" content="no-siteapp">
+    <meta name="renderer" content="webkit|ie-comp|ie-stand">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="format-detection" content="telephone=no,email=no,adress=no">
+    <meta name="browsermode" content="application">
+    <meta name="screen-orientation" content="portrait">
+    <link rel="dns-prefetch" href="https://github.com/smartsean/smartsean.github.io">
+    <!--SEO-->
+
+
+
+<meta name="robots" content="all" />
+<meta name="google" content="all" />
+<meta name="googlebot" content="all" />
+<meta name="verify" content="all" />
+    <!--Title-->
+
+
+<title>清晰的Retrofit使用案例 | SmartSean的小站</title>
+
+
+    <link rel="alternate" href="/atom.xml" title="SmartSean的小站" type="application/atom+xml">
+
+
+    <link rel="icon" href="/favicon.ico">
+
+    
+
+
+
+<link rel="stylesheet" href="//cdn.bootcss.com/bootstrap/3.3.4/css/bootstrap.min.css?rev=3.3.4">
+<link rel="stylesheet" href="//cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.min.css">
+<link rel="stylesheet" href="/css/style.css?rev=@@hash">
+
+
+
+
+    
+    <div class="hide">
+    	<script src="https://s4.cnzz.com/z_stat.php?id=1263868967&web_id=1263868967" language="JavaScript"></script>
+    </div>
+
+
+
+
+
+
+    
+</head>
+
+
+<!--[if lte IE 8]>
+<style>
+    html{ font-size: 1em }
+</style>
+<![endif]-->
+<!--[if lte IE 9]>
+<div style="ie">你使用的浏览器版本过低，为了你更好的阅读体验，请更新浏览器的版本或者使用其他现代浏览器，比如Chrome、Firefox、Safari等。</div>
+<![endif]-->
+
+<body>
+    <header class="main-header"  style="background-image:url(http://7xpw2b.com1.z0.glb.clouddn.com/hexo-sinppet/img/banner2.jpg)"  >
+    <div class="main-header-box">
+        <a class="header-avatar" href="/" title="">
+            <img src="/img/avatar.jpg" alt="logo头像">
+        </a>
+        <div class="branding">
+        	<!--<h2 class="text-hide">Snippet主题,从未如此简单有趣</h2>-->
+            
+                <h2> 仰望星空，脚踏实地。 </h2>
+             
+    	</div>
+    </div>
+</header>
+    <nav class="main-navigation">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="navbar-header"><span class="nav-toggle-button collapsed" data-toggle="collapse" data-target="#main-menu" id="mnav">
+                    <span class="sr-only">Toggle navigation</span>
+                    <i class="fa fa-bars"></i>
+                    </span>
+                </div>
+                <div class="collapse navbar-collapse" id="main-menu">
+                    <ul class="menu">
+                        
+                            <li role="presentation"><a href="/"><i class="fa fa-fw "></i>首页</a>
+                            </li>
+                        
+                            <li role="presentation"><a href="/categories/Android/"><i class="fa fa-fw "></i>Android</a>
+                            </li>
+                        
+                            <li role="presentation"><a href="/categories/工具/"><i class="fa fa-fw "></i>工具</a>
+                            </li>
+                        
+                            <li role="presentation"><a href="/categories/我/"><i class="fa fa-fw "></i>我</a>
+                            </li>
+                        
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</nav>
+    <section class="content-wrap">
+        <div class="container">
+            <div class="row">
+                <main class="col-md-8 main-content m-post">
+                    <p id="process"></p>
+<article class="post">
+    <div class="post-head">
+        <h1 id="清晰的Retrofit使用案例">
+            
+	            清晰的Retrofit使用案例
+            
+        </h1>
+        <div class="post-meta">
+    
+    
+    <span class="categories-meta fa-wrap">
+        <i class="fa fa-folder-open-o"></i>
+        <span>Android</span>
+    </span>
+    
+    
+    <span class="fa-wrap">
+        <i class="fa fa-tags"></i>
+        <span class="tags-meta">
+            
+            Android
+            
+        </span>
+    </span>
+    
+    
+    <span class="fa-wrap">
+        <i class="fa fa-clock-o"></i>
+        <span class="date-meta">2018/01/17</span>
+    </span>
+</div>
+
+            
+            
+    </div>
+    
+    <div class="post-body post-content">
+        <h1 id="清晰的-Retrofit-使用教程"><a href="#清晰的-Retrofit-使用教程" class="headerlink" title="清晰的 Retrofit 使用教程"></a>清晰的 Retrofit 使用教程</h1><blockquote>
+<p>这篇博客主要是为了记录描述下前段写的一个 Retrofit 使用 Demo 的，前段时间写了一个基本涵盖日常使用的 Rtrofit 使用的项目，但是发现当时是会了，后来就忘记了，还得去翻以前的项目，很是痛苦，所以决定写这篇博客记录下。</p>
+</blockquote>
+<p>顺便说下，现在的很多介绍 Retrofit 的文章大多都是说的很理论，但我觉得实践才能出真知，所以本篇博客主要是通过一个个实例来让你知道怎么用的。</p>
+<p>另外，看这篇博客需要先了解下 Retrofit，推荐看下 <a href="https://www.jianshu.com/p/a3e162261ab6" target="_blank" rel="noopener">Carson_Ho大神的文章</a>。</p>
+<h2 id="一、前期准备"><a href="#一、前期准备" class="headerlink" title="一、前期准备"></a>一、前期准备</h2><p>1、 首先创建一个新项目，然后更改 <code>targetSdkVersion</code> 为 22（因为涉及到文件上传）</p>
+<p>2、 添加使用的依赖：（建议全部添加）</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">//添加 Retrofit</span><br><span class="line">implementation &apos;com.squareup.retrofit2:retrofit:2.1.0&apos;</span><br><span class="line">//转换请求结果为 String 的</span><br><span class="line">implementation &apos;com.squareup.retrofit2:converter-scalars:2.1.0&apos;</span><br><span class="line">//转换请求结果为 JSON 的</span><br><span class="line">implementation &apos;com.squareup.retrofit2:converter-gson:2.1.0&apos;</span><br><span class="line">//获取七牛上传文件的 Token 的</span><br><span class="line">compile &apos;com.qiniu:qiniu-java-sdk:7.1.+&apos;</span><br></pre></td></tr></table></figure>
+<p>3、新建 ApiStore 接口如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">public interface ApiStores &#123;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>4、 新建 Logger 工具类</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br></pre></td><td class="code"><pre><span class="line">//建议直接复制</span><br><span class="line">public class Logger &#123;</span><br><span class="line">    private static final boolean DEBUG = true;</span><br><span class="line"></span><br><span class="line">    private static final String TAG = &quot;smartlog&quot;;</span><br><span class="line"></span><br><span class="line">    public static void v(String s) &#123;</span><br><span class="line">        v(TAG, s);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    public static void v(String tag, String s) &#123;</span><br><span class="line">        if (DEBUG)</span><br><span class="line">            Log.v(tag, s);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    public static void d(String s) &#123;</span><br><span class="line">        d(TAG, s);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    public static void d(String tag, String s) &#123;</span><br><span class="line">        if (DEBUG)</span><br><span class="line">            Log.d(tag, s);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    public static void i(String s) &#123;</span><br><span class="line">        i(TAG, s);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    public static void i(String tag, String s) &#123;</span><br><span class="line">        if (DEBUG)</span><br><span class="line">            Log.i(tag, s);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    public static void w(String s) &#123;</span><br><span class="line">        w(TAG, s);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    public static void w(String tag, String s) &#123;</span><br><span class="line">        if (DEBUG)</span><br><span class="line">            Log.w(tag, s);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    public static void e(String s) &#123;</span><br><span class="line">        e(TAG, s);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    public static void e(String tag, String s) &#123;</span><br><span class="line">        if (DEBUG)</span><br><span class="line">            Log.e(tag, s);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">``` </span><br><span class="line"></span><br><span class="line">ok，接下来就是实例。</span><br><span class="line"></span><br><span class="line">## 二、实例</span><br><span class="line"></span><br><span class="line">### 2.1 使用最普通的 GET 请求</span><br><span class="line"></span><br><span class="line">我们使用的 api 请求地址：[豆瓣电影Top250](https://developers.douban.com/wiki/?title=movie_v2#top250)</span><br><span class="line"></span><br><span class="line">[直接点击这里](https://api.douban.com/v2/movie/top250)可以看到我们即将请求得到的数据,然后我们新建返回的数据 Model ：MovieModel</span><br></pre></td></tr></table></figure>
+<p>//这个Model有点长，建议直接复制<br>public class MovieModel {</p>
+<pre><code>private int count;
+private int start;
+private int total;
+private String title;
+private List&lt;SubjectsBean&gt; subjects;
+
+public int getCount() {
+    return count;
+}
+
+public void setCount(int count) {
+    this.count = count;
+}
+
+public int getStart() {
+    return start;
+}
+
+public void setStart(int start) {
+    this.start = start;
+}
+
+public int getTotal() {
+    return total;
+}
+
+public void setTotal(int total) {
+    this.total = total;
+}
+
+public String getTitle() {
+    return title;
+}
+
+public void setTitle(String title) {
+    this.title = title;
+}
+
+public List&lt;SubjectsBean&gt; getSubjects() {
+    return subjects;
+}
+
+public void setSubjects(List&lt;SubjectsBean&gt; subjects) {
+    this.subjects = subjects;
+}
+
+public static class SubjectsBean {
+
+    private RatingBean rating;
+    private String title;
+    private int collect_count;
+    private String original_title;
+    private String subtype;
+    private String year;
+    private ImagesBean images;
+    private String alt;
+    private String id;
+    private List&lt;String&gt; genres;
+    private List&lt;CastsBean&gt; casts;
+    private List&lt;DirectorsBean&gt; directors;
+
+    public RatingBean getRating() {
+        return rating;
+    }
+
+    public void setRating(RatingBean rating) {
+        this.rating = rating;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    public int getCollect_count() {
+        return collect_count;
+    }
+
+    public void setCollect_count(int collect_count) {
+        this.collect_count = collect_count;
+    }
+
+    public String getOriginal_title() {
+        return original_title;
+    }
+
+    public void setOriginal_title(String original_title) {
+        this.original_title = original_title;
+    }
+
+    public String getSubtype() {
+        return subtype;
+    }
+
+    public void setSubtype(String subtype) {
+        this.subtype = subtype;
+    }
+
+    public String getYear() {
+        return year;
+    }
+
+    public void setYear(String year) {
+        this.year = year;
+    }
+
+    public ImagesBean getImages() {
+        return images;
+    }
+
+    public void setImages(ImagesBean images) {
+        this.images = images;
+    }
+
+    public String getAlt() {
+        return alt;
+    }
+
+    public void setAlt(String alt) {
+        this.alt = alt;
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
+
+    public List&lt;String&gt; getGenres() {
+        return genres;
+    }
+
+    public void setGenres(List&lt;String&gt; genres) {
+        this.genres = genres;
+    }
+
+    public List&lt;CastsBean&gt; getCasts() {
+        return casts;
+    }
+
+    public void setCasts(List&lt;CastsBean&gt; casts) {
+        this.casts = casts;
+    }
+
+    public List&lt;DirectorsBean&gt; getDirectors() {
+        return directors;
+    }
+
+    public void setDirectors(List&lt;DirectorsBean&gt; directors) {
+        this.directors = directors;
+    }
+
+    public static class RatingBean {
+        private int max;
+        private double average;
+        private String stars;
+        private int min;
+
+        public int getMax() {
+            return max;
+        }
+
+        public void setMax(int max) {
+            this.max = max;
+        }
+
+        public double getAverage() {
+            return average;
+        }
+
+        public void setAverage(double average) {
+            this.average = average;
+        }
+
+        public String getStars() {
+            return stars;
+        }
+
+        public void setStars(String stars) {
+            this.stars = stars;
+        }
+
+        public int getMin() {
+            return min;
+        }
+
+        public void setMin(int min) {
+            this.min = min;
+        }
+    }
+
+    public static class ImagesBean {
+        private String small;
+        private String large;
+        private String medium;
+
+        public String getSmall() {
+            return small;
+        }
+
+        public void setSmall(String small) {
+            this.small = small;
+        }
+
+        public String getLarge() {
+            return large;
+        }
+
+        public void setLarge(String large) {
+            this.large = large;
+        }
+
+        public String getMedium() {
+            return medium;
+        }
+
+        public void setMedium(String medium) {
+            this.medium = medium;
+        }
+    }
+
+    public static class CastsBean {
+
+        private String alt;
+        private AvatarsBean avatars;
+        private String name;
+        private String id;
+
+        public String getAlt() {
+            return alt;
+        }
+
+        public void setAlt(String alt) {
+            this.alt = alt;
+        }
+
+        public AvatarsBean getAvatars() {
+            return avatars;
+        }
+
+        public void setAvatars(AvatarsBean avatars) {
+            this.avatars = avatars;
+        }
+
+        public String getName() {
+            return name;
+        }
+
+        public void setName(String name) {
+            this.name = name;
+        }
+
+        public String getId() {
+            return id;
+        }
+
+        public void setId(String id) {
+            this.id = id;
+        }
+
+        public static class AvatarsBean {
+
+            private String small;
+            private String large;
+            private String medium;
+
+            public String getSmall() {
+                return small;
+            }
+
+            public void setSmall(String small) {
+                this.small = small;
+            }
+
+            public String getLarge() {
+                return large;
+            }
+
+            public void setLarge(String large) {
+                this.large = large;
+            }
+
+            public String getMedium() {
+                return medium;
+            }
+
+            public void setMedium(String medium) {
+                this.medium = medium;
+            }
+        }
+    }
+
+    public static class DirectorsBean {
+
+        private String alt;
+        private AvatarsBeanX avatars;
+        private String name;
+        private String id;
+
+        public String getAlt() {
+            return alt;
+        }
+
+        public void setAlt(String alt) {
+            this.alt = alt;
+        }
+
+        public AvatarsBeanX getAvatars() {
+            return avatars;
+        }
+
+        public void setAvatars(AvatarsBeanX avatars) {
+            this.avatars = avatars;
+        }
+
+        public String getName() {
+            return name;
+        }
+
+        public void setName(String name) {
+            this.name = name;
+        }
+
+        public String getId() {
+            return id;
+        }
+
+        public void setId(String id) {
+            this.id = id;
+        }
+
+        public static class AvatarsBeanX {
+            private String small;
+            private String large;
+            private String medium;
+
+            public String getSmall() {
+                return small;
+            }
+
+            public void setSmall(String small) {
+                this.small = small;
+            }
+
+            public String getLarge() {
+                return large;
+            }
+
+            public void setLarge(String large) {
+                this.large = large;
+            }
+
+            public String getMedium() {
+                return medium;
+            }
+
+            public void setMedium(String medium) {
+                this.medium = medium;
+            }
+        }
+    }
+}
+</code></pre><p>}<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">在 ApiStore 中添加：</span><br></pre></td></tr></table></figure></p>
+<p>//使用最普通的方式进行GET请求<br>@GET(“v2/movie/top250”)<br>Call<moviemodel> getMovieMsg();<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">此时可以在 Activity 中的请求代码为：</span><br></pre></td></tr></table></figure></moviemodel></p>
+<pre><code>private void getMovieModelGet() {
+    Retrofit retrofit = new Retrofit.Builder()
+            .baseUrl(&quot;https://api.douban.com/&quot;)
+            .addConverterFactory(GsonConverterFactory.create())
+            .build();
+    ApiStores apiStores = retrofit.create(ApiStores.class);
+    Call&lt;MovieModel&gt; call = apiStores.getMovieMsg();
+    call.enqueue(new Callback&lt;MovieModel&gt;() {
+        @Override
+        public void onResponse(Call&lt;MovieModel&gt; call, Response&lt;MovieModel&gt; response) {
+            Logger.d(response.body().getTitle());
+        }
+
+        @Override
+        public void onFailure(Call&lt;MovieModel&gt; call, Throwable t) {
+            Logger.d(t.getMessage());
+        }
+    });
+}
+</code></pre><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">结果:</span><br></pre></td></tr></table></figure>
+<p>D/smartlog: 豆瓣电影Top250<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">接下来分析下:</span><br><span class="line"></span><br><span class="line">首先看下 ApiStore 中的方法：</span><br><span class="line"></span><br><span class="line">1、整个请求url分为两部分</span><br><span class="line">- BaseUrl： ``https://api.douban.com/``</span><br><span class="line">- path：``v2/movie/top250``</span><br><span class="line"></span><br><span class="line">所以整个的 url 是 ``https://api.douban.com/v2/movie/top250``</span><br><span class="line"></span><br><span class="line">2、@GET 是表示的此次网络请求是通过 get 请求发出的。</span><br><span class="line">3、“v2/movie/top250” 是表示此次请求的 path ，和 base</span><br><span class="line">4、Call&lt;MovieModel&gt; 是表示此次的返回结果是 MovieModel ，如果是 Call&lt;String&gt; 则表示是返回的结果是 String 字符串。这个地方和新建 Retrofit 的时候设置的 ConverterFactory 有关的，</span><br><span class="line">- 如果是 .addConverterFactory(GsonConverterFactory.create()) ，则必须是 Call&lt;MovieModel&gt;</span><br><span class="line">- 如果是 .addConverterFactory(ScalarsConverterFactory.create())，则必须是 Call&lt;String&gt;</span><br><span class="line"> </span><br><span class="line">再来看下在 Activity 中的请求代码：</span><br><span class="line">1. 首先我们创建了 Retrofit 的实例 retrofit。</span><br><span class="line">2. 通过创建的 retrofit的 create() 方法，传入我们前面写的  ApiStores.class，得到 apiStore实例。</span><br><span class="line">3. 然后通过 apiStore 的 getMovieMsg()方法得到 call</span><br><span class="line">4. 然后再执行 call 的 enqueue() 方法执行异步请求。</span><br><span class="line"></span><br><span class="line">分析到此结束。</span><br><span class="line"></span><br><span class="line">### 2.2 使用 @Path 的 GET 请求</span><br><span class="line"></span><br><span class="line">首先在 ApiStore 中添加：</span><br></pre></td></tr></table></figure></p>
+<p>//使用Path进行GET请求<br>@GET(“v2/{path}/top250”)<br>Call<moviemodel> getMoviePathMsg(@Path(“path”) String path);<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">在 Activity 中的代码:</span><br></pre></td></tr></table></figure></moviemodel></p>
+<p>private void getMoviePathGet() {<br>    Retrofit retrofit = new Retrofit.Builder().baseUrl(“<a href="https://api.douban.com/" target="_blank" rel="noopener">https://api.douban.com/</a>“)<br>            .addConverterFactory(GsonConverterFactory.create())<br>            .build();<br>    ApiStores apiStores = retrofit.create(ApiStores.class);<br>    Call<moviemodel> call = apiStores.getMoviePathMsg(“movie”);<br>    call.enqueue(new Callback<moviemodel>() {<br>        @Override<br>        public void onResponse(Call<moviemodel> call, Response<moviemodel> response) {<br>            Logger.d(“通过path获取”+response.body().getTitle());<br>        }</moviemodel></moviemodel></moviemodel></moviemodel></p>
+<pre><code>    @Override
+    public void onFailure(Call&lt;MovieModel&gt; call, Throwable t) {
+        Logger.d(t.getMessage());
+    }
+});
+</code></pre><p>}<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">运行结果:</span><br></pre></td></tr></table></figure></p>
+<p>D/smartlog: 通过path获取豆瓣电影Top250<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">继续来分析：</span><br><span class="line"></span><br><span class="line">&#123;path&#125; 对应的是 @Path 标记里面的 “path”，不一定叫 path ，也可以是其他的，只要 &#123;a&#125;和&quot;a&quot;对应就行。String 类型的 path就是要把 &#123;path&#125; 替换掉，组成新的 path。</span><br><span class="line"></span><br><span class="line">结合 Activity 中的 `apiStores.getMoviePathMsg(&quot;movie&quot;);`，那么最终的请求链接如下：</span><br><span class="line"></span><br><span class="line">- BaseUrl： https://api.douban.com/</span><br><span class="line">- path：v2/movie/top250</span><br><span class="line">最终 url 为： https://api.douban.com/v2/movie/top250</span><br><span class="line"></span><br><span class="line">所以这种和2.1中的的最终请求 url 是一样的。所以最终结果也是一样的。</span><br></pre></td></tr></table></figure></p>
+<p>Call<moviemodel> call = apiStores.getMoviePathMsg(“movie”);<br><code>``
+这段代码中的</code>“movie”<code>最终是把</code> {path} <code>替换掉，拼接成最终的</code>v2/movie/top250`</moviemodel></p>
+<h3 id="3、使用-Query-的-GET-请求"><a href="#3、使用-Query-的-GET-请求" class="headerlink" title="3、使用 @Query 的 GET 请求"></a>3、使用 @Query 的 GET 请求</h3><h3 id="4、使用-QueryMap-的-GET-请求"><a href="#4、使用-QueryMap-的-GET-请求" class="headerlink" title="4、使用 @QueryMap 的 GET 请求"></a>4、使用 @QueryMap 的 GET 请求</h3><h3 id="5、使用-Body-类型为-String-的-POST-请求"><a href="#5、使用-Body-类型为-String-的-POST-请求" class="headerlink" title="5、使用 @Body 类型为 String 的 POST 请求"></a>5、使用 @Body 类型为 String 的 POST 请求</h3><h3 id="6、使用-Body-类型为-JavaBean-的-POST-请求"><a href="#6、使用-Body-类型为-JavaBean-的-POST-请求" class="headerlink" title="6、使用 @Body 类型为 JavaBean 的 POST 请求"></a>6、使用 @Body 类型为 JavaBean 的 POST 请求</h3><h3 id="7、使用-Body-类型为-RequestBody-的-POST-请求"><a href="#7、使用-Body-类型为-RequestBody-的-POST-请求" class="headerlink" title="7、使用 @Body 类型为 RequestBody 的 POST 请求"></a>7、使用 @Body 类型为 RequestBody 的 POST 请求</h3><h3 id="8、使用-Filed-的-POST-请求"><a href="#8、使用-Filed-的-POST-请求" class="headerlink" title="8、使用 @Filed 的 POST 请求"></a>8、使用 @Filed 的 POST 请求</h3><h3 id="9、使用-Part-的-POST-请求上传文件"><a href="#9、使用-Part-的-POST-请求上传文件" class="headerlink" title="9、使用 @Part 的 POST 请求上传文件"></a>9、使用 @Part 的 POST 请求上传文件</h3><h3 id="10、使用-PartMap-的-POST-请求上传文件"><a href="#10、使用-PartMap-的-POST-请求上传文件" class="headerlink" title="10、使用 @PartMap 的 POST 请求上传文件"></a>10、使用 @PartMap 的 POST 请求上传文件</h3>
+    </div>
+
+    <div class="post-footer">   
+        <div>
+            
+                转载声明：商业转载请联系作者获得授权,非商业转载请注明出处 © <a href="" target="_blank">smartsean</a>
+            
+        </div>
+        <div>
+            
+        </div>  
+    </div>
+</article>
+
+<div class="article-nav prev-next-wrap clearfix">
+    
+    
+        <a href="/2017/12/21/Android-上传-Library-到-JCenter/" class="next-post btn btn-default">下一篇<i class="fa fa-angle-right fa-fw"></i></a>
+    
+</div>
+
+
+    <div id="comments">
+        
+	
+<div id="lv-container" data-id="city" data-uid="MTAyMC8zMzA1MS85NjEz">
+  <script type="text/javascript">
+     (function(d, s) {
+         var j, e = d.getElementsByTagName(s)[0];
+         if (typeof LivereTower === 'function') { return; }
+         j = d.createElement(s);
+         j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+         j.async = true;
+         e.parentNode.insertBefore(j, e);
+     })(document, 'script');
+  </script>
+</div>
+
+
+    </div>
+
+
+
+
+
+                </main>
+                
+    <aside class="col-md-4 sidebar">
+        
+        
+    <div class="widget">    
+        <h3 class="title">搜索</h3>
+        <div id="search-form">
+            <div id="result-mask" class="hide"></div>
+            <div class="search-area">
+                
+                    <input id="search-key" type="search" autocomplete="off" placeholder="搜点什么呢?">
+                    <button type="button" class="search-form-submit" id="search-local">站内搜索</button>
+                
+                
+            </div>
+            <div id="result-wrap" class="hide">
+                <div id="search-result"></div>
+            </div>
+            <div class="hide">
+                <template id="search-tpl">
+                    <div class="item">
+                        <a href="/{path}" title="{title}">
+                            <div class="title">{title}</div>
+                            <div class="content">{content}</div>
+                        </a>
+                    </div>
+                </template>
+            </div>
+        </div>
+    </div>
+
+        
+        
+    <div class="widget">
+      <h3 class="title">社交</h3> 
+        <div class="content social">
+            
+	            <a href="https://github.com/smartsean" rel="external nofollow" title="Github" target="_blank">
+			    	<i class="git fa fa-git"></i>
+			    </a>
+            
+        </div>
+    </div>
+
+
+        
+        
+    <div class="widget">
+        <h3 class="title">分类</h3>
+        <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/Android/"><i class="fa" aria-hidden="true">Android</i></a><span class="category-list-count">40</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Android/工具/"><i class="fa" aria-hidden="true">工具</i></a><span class="category-list-count">3</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Android/工具/我/"><i class="fa" aria-hidden="true">我</i></a><span class="category-list-count">1</span></li></ul></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Ionic/"><i class="fa" aria-hidden="true">Ionic</i></a><span class="category-list-count">7</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Ionic/其他/"><i class="fa" aria-hidden="true">其他</i></a><span class="category-list-count">7</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/工具/"><i class="fa" aria-hidden="true">工具</i></a><span class="category-list-count">4</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/工具/Android/"><i class="fa" aria-hidden="true">Android</i></a><span class="category-list-count">1</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/工具/Android/我/"><i class="fa" aria-hidden="true">我</i></a><span class="category-list-count">1</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/工具/我/"><i class="fa" aria-hidden="true">我</i></a><span class="category-list-count">1</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/我/"><i class="fa" aria-hidden="true">我</i></a><span class="category-list-count">4</span></li></ul>
+    </div>
+
+
+        
+        
+  <div class="widget">
+    <h3 class="title">标签云</h3>
+    <div class="content tag-cloud">
+        <a href="/tags/Android/" style="font-size: 20px;">Android</a> <a href="/tags/AndroidStudio/" style="font-size: 12px;">AndroidStudio</a> <a href="/tags/Git/" style="font-size: 10px;">Git</a> <a href="/tags/Ionic/" style="font-size: 18px;">Ionic</a> <a href="/tags/Java/" style="font-size: 12px;">Java</a> <a href="/tags/Java-Java基础/" style="font-size: 10px;">Java Java基础</a> <a href="/tags/工具/" style="font-size: 16px;">工具</a> <a href="/tags/异常/" style="font-size: 12px;">异常</a> <a href="/tags/我/" style="font-size: 14px;">我</a> <a href="/tags/模拟器/" style="font-size: 10px;">模拟器</a> <a href="/tags/自定义View/" style="font-size: 10px;">自定义View</a>
+    </div>
+  </div>
+
+
+        
+        
+    <div class="widget notification">
+        <h3 class="title">网站公告</h3>
+        <div>
+            <p>暂无公告~ <br/>
+        </div>
+    </div>
+
+        
+        
+    <div class="widget">
+      <h3 class="title">归档</h3>
+        <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/01/"><i class="fa" aria-hidden="true">一月 2018</i></a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/12/"><i class="fa" aria-hidden="true">十二月 2017</i></a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/09/"><i class="fa" aria-hidden="true">九月 2017</i></a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/08/"><i class="fa" aria-hidden="true">八月 2017</i></a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/07/"><i class="fa" aria-hidden="true">七月 2017</i></a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/05/"><i class="fa" aria-hidden="true">五月 2017</i></a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/04/"><i class="fa" aria-hidden="true">四月 2017</i></a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/03/"><i class="fa" aria-hidden="true">三月 2017</i></a><span class="archive-list-count">7</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/02/"><i class="fa" aria-hidden="true">二月 2017</i></a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/01/"><i class="fa" aria-hidden="true">一月 2017</i></a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/12/"><i class="fa" aria-hidden="true">十二月 2016</i></a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/11/"><i class="fa" aria-hidden="true">十一月 2016</i></a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/10/"><i class="fa" aria-hidden="true">十月 2016</i></a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/09/"><i class="fa" aria-hidden="true">九月 2016</i></a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/08/"><i class="fa" aria-hidden="true">八月 2016</i></a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/06/"><i class="fa" aria-hidden="true">六月 2016</i></a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/04/"><i class="fa" aria-hidden="true">四月 2016</i></a><span class="archive-list-count">10</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/03/"><i class="fa" aria-hidden="true">三月 2016</i></a><span class="archive-list-count">3</span></li></ul>
+    </div>
+
+
+        
+        
+    <div class="widget">
+        <h3 class="title">友链</h3>
+        <div class="content friends-link">
+        
+            <a href="http://www.shenliyang.com" class="fa" target="_blank">个人博客</a>
+        
+        </div>
+    </div>
+
+
+        
+    </aside>
+
+            </div>
+        </div>
+    </section>
+    <footer class="main-footer">
+    <div class="container">
+        <div class="row">
+        </div>
+    </div>
+</footer>
+
+<a id="back-to-top" class="hide">
+	<i class="fa fa-chevron-up"></i>
+</a>
+
+
+
+
+    <div class="copyright">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12"> 
+                <span>Copyright &copy; 2018
+                </span> | 
+                <span>
+                    Powered by <a href="//hexo.io" class="copyright-links" target="_blank" rel="nofollow">Hexo</a>
+                </span> | 
+                <span>
+                    Theme by <a href="//github.com/shenliyang/hexo-theme-snippet.git" class="copyright-links" target="_blank" rel="nofollow">Snippet</a>
+                </span>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+	<script src="/js/search.js?rev=@@hash"></script>
+
+
+<script src="/js/app.js?rev=@@hash"></script>
+
+
+</body>
+</html>
