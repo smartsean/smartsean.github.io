@@ -1,0 +1,454 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+    <!--Setting-->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+    <meta http-equiv="Cache-Control" content="no-siteapp">
+    <meta name="renderer" content="webkit|ie-comp|ie-stand">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="format-detection" content="telephone=no,email=no,adress=no">
+    <meta name="browsermode" content="application">
+    <meta name="screen-orientation" content="portrait">
+    <link rel="dns-prefetch" href="https://github.com/smartsean/smartsean.github.io">
+    <!--SEO-->
+
+
+
+<meta name="robots" content="all" />
+<meta name="google" content="all" />
+<meta name="googlebot" content="all" />
+<meta name="verify" content="all" />
+    <!--Title-->
+
+
+<title>DialogFragment 封装链式调用 | SmartSean的小站</title>
+
+
+    <link rel="alternate" href="/atom.xml" title="SmartSean的小站" type="application/atom+xml">
+
+
+    <link rel="icon" href="/favicon.ico">
+
+    
+
+
+
+<link rel="stylesheet" href="//cdn.bootcss.com/bootstrap/3.3.4/css/bootstrap.min.css?rev=3.3.4">
+<link rel="stylesheet" href="//cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.min.css">
+<link rel="stylesheet" href="/css/style.css?rev=@@hash">
+
+
+
+
+    
+    <div class="hide">
+    	<script src="https://s4.cnzz.com/z_stat.php?id=1263868967&web_id=1263868967" language="JavaScript"></script>
+    </div>
+
+
+
+
+
+
+    
+</head>
+
+
+<!--[if lte IE 8]>
+<style>
+    html{ font-size: 1em }
+</style>
+<![endif]-->
+<!--[if lte IE 9]>
+<div style="ie">你使用的浏览器版本过低，为了你更好的阅读体验，请更新浏览器的版本或者使用其他现代浏览器，比如Chrome、Firefox、Safari等。</div>
+<![endif]-->
+
+<body>
+    <header class="main-header"  style="background-image:url(http://7xpw2b.com1.z0.glb.clouddn.com/hexo-sinppet/img/banner2.jpg)"  >
+    <div class="main-header-box">
+        <a class="header-avatar" href="/" title="">
+            <img src="/img/avatar.jpg" alt="logo头像">
+        </a>
+        <div class="branding">
+        	<!--<h2 class="text-hide">Snippet主题,从未如此简单有趣</h2>-->
+            
+                <h2> 仰望星空，脚踏实地。 </h2>
+             
+    	</div>
+    </div>
+</header>
+    <nav class="main-navigation">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="navbar-header"><span class="nav-toggle-button collapsed" data-toggle="collapse" data-target="#main-menu" id="mnav">
+                    <span class="sr-only">Toggle navigation</span>
+                    <i class="fa fa-bars"></i>
+                    </span>
+                </div>
+                <div class="collapse navbar-collapse" id="main-menu">
+                    <ul class="menu">
+                        
+                            <li role="presentation"><a href="/"><i class="fa fa-fw "></i>首页</a>
+                            </li>
+                        
+                            <li role="presentation"><a href="/categories/Android/"><i class="fa fa-fw "></i>Android</a>
+                            </li>
+                        
+                            <li role="presentation"><a href="/categories/工具/"><i class="fa fa-fw "></i>工具</a>
+                            </li>
+                        
+                            <li role="presentation"><a href="/categories/我/"><i class="fa fa-fw "></i>我</a>
+                            </li>
+                        
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</nav>
+    <section class="content-wrap">
+        <div class="container">
+            <div class="row">
+                <main class="col-md-8 main-content m-post">
+                    <p id="process"></p>
+<article class="post">
+    <div class="post-head">
+        <h1 id="DialogFragment 封装链式调用">
+            
+	            DialogFragment 封装链式调用
+            
+        </h1>
+        <div class="post-meta">
+    
+    
+    <span class="categories-meta fa-wrap">
+        <i class="fa fa-folder-open-o"></i>
+        <span>Android</span>
+    </span>
+    
+    
+    <span class="fa-wrap">
+        <i class="fa fa-tags"></i>
+        <span class="tags-meta">
+            
+            Android
+            
+        </span>
+    </span>
+    
+    
+    <span class="fa-wrap">
+        <i class="fa fa-clock-o"></i>
+        <span class="date-meta">2018/01/29</span>
+    </span>
+</div>
+
+            
+            
+    </div>
+    
+    <div class="post-body post-content">
+        <h1 id="DialogFragment-封装链式调用"><a href="#DialogFragment-封装链式调用" class="headerlink" title="DialogFragment 封装链式调用"></a>DialogFragment 封装链式调用</h1><h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>日常开发中，Dialog 是一个每个 app 所必备的。</p>
+<p>通常来说，每个 app 的Dialog 的样式一般都是统一风格的，比如说有：</p>
+<ul>
+<li>确认、取消的 Dialog</li>
+<li>提示性的 Dialog</li>
+<li>列表选择的 Dialog</li>
+<li>版本更新的 Dialog</li>
+<li>带输入框的 Dialog</li>
+</ul>
+<p>如果每个都要单独写，就显得有点浪费了，一般情况下，我们都需要进行封装，便于使用和阅读。</p>
+<p><strong>那为什么要使用 Dialog 呢？</strong> </p>
+<p>使用 DialogFragment 来管理对话框，当旋转屏幕和按下后退键时可以更好的管理其生命周期，它和 Fragment 有着基本一致的生命周期。</p>
+<p>并且 DialogFragment 也允许开发者把 Dialog 作为内嵌的组件进行重用，类似 Fragment （可以在大屏幕和小屏幕显示出不同的效果）</p>
+<p>那么接下来我们就一步一步的来封装出一个便于我们使用的 DialogFragment。</p>
+<p>还是先看下效果图吧，可能有点不是很好看，毕竟没有 ui，哈哈</p>
+<p><img src="http://p2oza5z62.bkt.clouddn.com/2018-01-29-15172244663397.gif" alt="效果图"></p>
+<p><a href="https://github.com/smartsean/MyDialog">源码地址</a>     可以先去下载代码对照着看。</p>
+<h2 id="一、构建-BaseDialogFragment"><a href="#一、构建-BaseDialogFragment" class="headerlink" title="一、构建 BaseDialogFragment"></a>一、构建 BaseDialogFragment</h2><h3 id="1-1-明确我们需要的属性"><a href="#1-1-明确我们需要的属性" class="headerlink" title="1.1 明确我们需要的属性"></a>1.1 明确我们需要的属性</h3><p>在构建 BaseDialogFragment 之前，我们先分析下正常情况下，我们使用 Dialog 都需要哪些属性：</p>
+<ul>
+<li>Dialog 的宽和高</li>
+<li>Dialog 的对其方式</li>
+<li>Dialog 在 x 和 y 坐标系的偏移量</li>
+<li>Dialog 的显示隐藏的动画</li>
+<li>Dialog 给调用者的回调</li>
+<li>Dialog 消失时候的回调</li>
+<li>Dialog 是否可以点击外部消失</li>
+</ul>
+<p>当然，有的需求要不了这么多的属性，也有的人需要更多的属性，那就需要自己去探索了，我就讲下基于上面这些属性的封装，然后你可以基于我的 BaseDialogFragment 进行扩展。</p>
+<p>有了上面的属性，我们就明白了在 BaseDialogFragment 中我们需要的字段:<br>新建 BaseDialogFragment </p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">abstract</span> <span class="class"><span class="keyword">class</span> <span class="title">BaseDialogFragment</span> <span class="keyword">extends</span> <span class="title">DialogFragment</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">int</span> mWidth = WRAP_CONTENT;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">int</span> mHeight = WRAP_CONTENT;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">int</span> mGravity = CENTER;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">int</span> mOffsetX = <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">int</span> mOffsetY = <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">int</span> mAnimation = R.style.DialogBaseAnimation;</span><br><span class="line">    <span class="keyword">protected</span> DialogResultListener mDialogResultListener;</span><br><span class="line">    <span class="keyword">protected</span> DialogDismissListener mDialogDismissListener;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<ul>
+<li>mWidth 是 Dialog 的宽</li>
+<li>mHeight 是 Dialog 的高</li>
+<li>mGravity 是 Dialog 的出现位置</li>
+<li>mOffsetX 是 Dialog 在 x 方向上的偏移</li>
+<li>mOffsetY 是 Dialog 在 y 方向上的偏移</li>
+<li>mAnimation 是 Dialog 的动画</li>
+<li>mDialogResultListener 是 Dialog 返回结果的回调</li>
+<li>mDialogDismissListener 是 Dialog 取消时的回调</li>
+</ul>
+<p>DialogBaseAnimation 是我自己定义的基本的动画样式，在 <code>res-value-styles</code> 下：</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">&lt;?xml version=<span class="string">"1.0"</span> encoding=<span class="string">"utf-8"</span>?&gt;</span><br><span class="line">&lt;resources&gt;</span><br><span class="line">    &lt;style name=<span class="string">"DialogBaseAnimation"</span>&gt;</span><br><span class="line">        &lt;item name="android:windowEnterAnimation"&gt;@anim/dialog_enter&lt;/item&gt;</span><br><span class="line">        &lt;item name="android:windowExitAnimation"&gt;@anim/dialog_out&lt;/item&gt;</span><br><span class="line">    &lt;/style&gt;</span><br><span class="line">&lt;/resources&gt;</span><br></pre></td></tr></table></figure>
+<p>在 res下新建文件夹 anim ，然后在里面新建两个文件：<br>1、dialog_enter.xml</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">&lt;?xml version=&quot;1.0&quot; encoding=&quot;utf-8&quot;?&gt;</span><br><span class="line">&lt;translate</span><br><span class="line">    android:fromYDelta=&quot;100%p&quot;</span><br><span class="line">    android:toYDelta=&quot;0%p&quot;</span><br><span class="line">    android:duration=&quot;200&quot;</span><br><span class="line">    xmlns:android=&quot;http://schemas.android.com/apk/res/android&quot;&gt;</span><br><span class="line">&lt;/translate&gt;</span><br></pre></td></tr></table></figure>
+<p>2、dialog_out.xml</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">&lt;?xml version=&quot;1.0&quot; encoding=&quot;utf-8&quot;?&gt;</span><br><span class="line">&lt;translate</span><br><span class="line">    android:fromYDelta=&quot;0%p&quot;</span><br><span class="line">    android:toYDelta=&quot;100%p&quot;</span><br><span class="line">    android:duration=&quot;200&quot;</span><br><span class="line">    xmlns:android=&quot;http://schemas.android.com/apk/res/android&quot;&gt;</span><br><span class="line">&lt;/translate&gt;</span><br></pre></td></tr></table></figure>
+<p>我们需要的基本属性已经好了，接下来就是如何通过构建者模式来赋值了。</p>
+<h3 id="1-2-构建-Builder"><a href="#1-2-构建-Builder" class="headerlink" title="1.2 构建 Builder"></a>1.2 构建 Builder</h3><p>我们在 BaseDialogFragment 中新建 Builder:</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@author</span> SmartSean </span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">abstract</span> <span class="class"><span class="keyword">class</span> <span class="title">BaseDialogFragment</span> <span class="keyword">extends</span> <span class="title">DialogFragment</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">int</span> mWidth = WRAP_CONTENT;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">int</span> mHeight = WRAP_CONTENT;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">int</span> mGravity = CENTER;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">int</span> mOffsetX = <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">int</span> mOffsetY = <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">int</span> mAnimation = R.style.DialogBaseAnimation;</span><br><span class="line">    <span class="keyword">protected</span> DialogResultListener mDialogResultListener;</span><br><span class="line">    <span class="keyword">protected</span> DialogDismissListener mDialogDismissListener;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">abstract</span> <span class="class"><span class="keyword">class</span> <span class="title">Builder</span>&lt;<span class="title">T</span> <span class="keyword">extends</span> <span class="title">Builder</span>, <span class="title">D</span> <span class="keyword">extends</span> <span class="title">BaseDialogFragment</span>&gt; </span>&#123;</span><br><span class="line">        <span class="keyword">private</span> <span class="keyword">int</span> mWidth = WRAP_CONTENT;</span><br><span class="line">        <span class="keyword">private</span> <span class="keyword">int</span> mHeight = WRAP_CONTENT;</span><br><span class="line">        <span class="keyword">private</span> <span class="keyword">int</span> mGravity = CENTER;</span><br><span class="line">        <span class="keyword">private</span> <span class="keyword">int</span> mOffsetX = <span class="number">0</span>;</span><br><span class="line">        <span class="keyword">private</span> <span class="keyword">int</span> mOffsetY = <span class="number">0</span>;</span><br><span class="line">        <span class="keyword">private</span> <span class="keyword">int</span> mAnimation = R.style.DialogBaseAnimation;</span><br><span class="line"></span><br><span class="line">        <span class="function"><span class="keyword">public</span> T <span class="title">setSize</span><span class="params">(<span class="keyword">int</span> mWidth, <span class="keyword">int</span> mHeight)</span> </span>&#123;</span><br><span class="line">            <span class="keyword">this</span>.mWidth = mWidth;</span><br><span class="line">            <span class="keyword">this</span>.mHeight = mHeight;</span><br><span class="line">            <span class="keyword">return</span> (T) <span class="keyword">this</span>;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="function"><span class="keyword">public</span> T <span class="title">setGravity</span><span class="params">(<span class="keyword">int</span> mGravity)</span> </span>&#123;</span><br><span class="line">            <span class="keyword">this</span>.mGravity = mGravity;</span><br><span class="line">            <span class="keyword">return</span> (T) <span class="keyword">this</span>;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="function"><span class="keyword">public</span> T <span class="title">setOffsetX</span><span class="params">(<span class="keyword">int</span> mOffsetX)</span> </span>&#123;</span><br><span class="line">            <span class="keyword">this</span>.mOffsetX = mOffsetX;</span><br><span class="line">            <span class="keyword">return</span> (T) <span class="keyword">this</span>;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="function"><span class="keyword">public</span> T <span class="title">setOffsetY</span><span class="params">(<span class="keyword">int</span> mOffsetY)</span> </span>&#123;</span><br><span class="line">            <span class="keyword">this</span>.mOffsetY = mOffsetY;</span><br><span class="line">            <span class="keyword">return</span> (T) <span class="keyword">this</span>;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="function"><span class="keyword">public</span> T <span class="title">setAnimation</span><span class="params">(<span class="keyword">int</span> mAnimation)</span> </span>&#123;</span><br><span class="line">            <span class="keyword">this</span>.mAnimation = mAnimation;</span><br><span class="line">            <span class="keyword">return</span> (T) <span class="keyword">this</span>;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="function"><span class="keyword">protected</span> <span class="keyword">abstract</span> D <span class="title">build</span><span class="params">()</span></span>;</span><br><span class="line"></span><br><span class="line">        <span class="function"><span class="keyword">protected</span> <span class="keyword">void</span> <span class="title">clear</span><span class="params">()</span> </span>&#123;</span><br><span class="line">            <span class="keyword">this</span>.mWidth = WRAP_CONTENT;</span><br><span class="line">            <span class="keyword">this</span>.mHeight = WRAP_CONTENT;</span><br><span class="line">            <span class="keyword">this</span>.mGravity = CENTER;</span><br><span class="line">            <span class="keyword">this</span>.mOffsetX = <span class="number">0</span>;</span><br><span class="line">            <span class="keyword">this</span>.mOffsetY = <span class="number">0</span>;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>可以看到：</p>
+<p>Builder 是一个泛型抽象类，可以传入当前 Buidler 的子类 T 和 BaseDialogFragment 的子类 D，</p>
+<p>我们在 Builder 中对可以在 Bundle 中存储的变量都进行了赋值，并且返回泛型 T,在最终的抽象方法 build() 中返回泛型 D。</p>
+<p>这里使用抽象的 build() 方法是因为：每个最终的 Dialog 返回的内容是不一样的，需要子类去实现。</p>
+<p>你可能会问，前面定义的 mDialogResultListener 和 mDialogDismissListener 怎么没在 Buidler 中出现呢？</p>
+<p>我们知道 接口类型是不能存储在 Bundle 中的，所以我们放在了 BaseDialogFragment 中，后面你会看到，不要急。。。</p>
+<h3 id="1-3-让子类也能使用这些属性"><a href="#1-3-让子类也能使用这些属性" class="headerlink" title="1.3 让子类也能使用这些属性"></a>1.3 让子类也能使用这些属性</h3><p>为了能够让子类也能使用我们在上面 Builder 中构建的属性，我们需要写一个方法，把 Builder 中获取到的值放到 Bundle 中，然后在 Fragment 的 onCreate 方法中进行赋值，</p>
+<p>获取 Bundle ：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">protected</span> <span class="keyword">static</span> Bundle <span class="title">getArgumentBundle</span><span class="params">(Builder b)</span> </span>&#123;</span><br><span class="line">    Bundle bundle = <span class="keyword">new</span> Bundle();</span><br><span class="line">    bundle.putInt(<span class="string">"mWidth"</span>, b.mWidth);</span><br><span class="line">    bundle.putInt(<span class="string">"mHeight"</span>, b.mHeight);</span><br><span class="line">    bundle.putInt(<span class="string">"mGravity"</span>, b.mGravity);</span><br><span class="line">    bundle.putInt(<span class="string">"mOffsetX"</span>, b.mOffsetX);</span><br><span class="line">    bundle.putInt(<span class="string">"mOffsetY"</span>, b.mOffsetY);</span><br><span class="line">    bundle.putInt(<span class="string">"mAnimation"</span>, b.mAnimation);</span><br><span class="line">    <span class="keyword">return</span> bundle;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>在 onCreate 中赋值：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Override</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onCreate</span><span class="params">(@Nullable Bundle savedInstanceState)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">super</span>.onCreate(savedInstanceState);</span><br><span class="line">    <span class="keyword">if</span> (getArguments() != <span class="keyword">null</span>) &#123;</span><br><span class="line">        mWidth = getArguments().getInt(<span class="string">"mWidth"</span>);</span><br><span class="line">        mHeight = getArguments().getInt(<span class="string">"mHeight"</span>);</span><br><span class="line">        mOffsetX = getArguments().getInt(<span class="string">"mOffsetX"</span>);</span><br><span class="line">        mOffsetY = getArguments().getInt(<span class="string">"mOffsetY"</span>);</span><br><span class="line">        mAnimation = getArguments().getInt(<span class="string">"mAnimation"</span>);</span><br><span class="line">        mGravity = getArguments().getInt(<span class="string">"mGravity"</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>这样我们就可以在子类中 通过 getArgumentBundle 方法拿到 通过 Builder 拿到的值了。并且不需要在每个子 Dialog 中获取这些值了，因为父类已经在 onCreate 中取过了。</p>
+<h3 id="1-4-重写-onCreateView-方法"><a href="#1-4-重写-onCreateView-方法" class="headerlink" title="1.4 重写 onCreateView 方法"></a>1.4 重写 onCreateView 方法</h3><p>使用 DialogFragment 必须重写 onCreateView 或者 onCreateDialog ，我们这里选择使用重写 onCreateView，因为我觉得一个项目中的 Dialog 中的样式不会有太多，重写 onCreateView 这样灵活性高，复用起来很方便。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Nullable</span></span><br><span class="line"><span class="meta">@Override</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> View <span class="title">onCreateView</span><span class="params">(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState)</span> </span>&#123;</span><br><span class="line">    setStyle();</span><br><span class="line">    <span class="keyword">return</span> setView(inflater, container, savedInstanceState);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>首先我们通过 style() 设置了 Dialog 所要遵循的样式：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 设置统一样式</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">setStyle</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="comment">//获取Window</span></span><br><span class="line">    Window window = getDialog().getWindow();</span><br><span class="line">    <span class="comment">//无标题</span></span><br><span class="line">    getDialog().requestWindowFeature(STYLE_NO_TITLE);</span><br><span class="line">    <span class="comment">// 透明背景</span></span><br><span class="line">    getDialog().getWindow().setBackgroundDrawable(<span class="keyword">new</span> ColorDrawable(Color.TRANSPARENT));</span><br><span class="line">    <span class="comment">//设置宽高</span></span><br><span class="line">    window.getDecorView().setPadding(<span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>);</span><br><span class="line">    WindowManager.LayoutParams wlp = window.getAttributes();</span><br><span class="line">    wlp.width = mWidth;</span><br><span class="line">    wlp.height = mHeight;</span><br><span class="line">    <span class="comment">//设置对齐方式</span></span><br><span class="line">    wlp.gravity = mGravity;</span><br><span class="line">    <span class="comment">//设置偏移量</span></span><br><span class="line">    wlp.x = DensityUtil.dip2px(getDialog().getContext(), mOffsetX);</span><br><span class="line">    wlp.y = DensityUtil.dip2px(getDialog().getContext(), mOffsetY);</span><br><span class="line">    <span class="comment">//设置动画</span></span><br><span class="line">    window.setWindowAnimations(mAnimation);</span><br><span class="line">    window.setAttributes(wlp);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p> 而 setView 则是一个抽象方法，让子类根据实际需求去实现：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">protected</span> <span class="keyword">abstract</span> View <span class="title">setView</span><span class="params">(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState)</span></span>;</span><br></pre></td></tr></table></figure>
+<h3 id="1-5-实现-Dialog-回调事件"><a href="#1-5-实现-Dialog-回调事件" class="headerlink" title="1.5 实现 Dialog 回调事件"></a>1.5 实现 Dialog 回调事件</h3><p>看下我们定义的两个回调：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">interface</span> <span class="title">DialogResultListener</span>&lt;<span class="title">T</span>&gt; </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">result</span><span class="params">(T result)</span></span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">interface</span> <span class="title">DialogDismissListener</span></span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">dismiss</span><span class="params">(DialogFragment dialog)</span></span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>给我们的 DialogFragment 回调赋值：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> BaseDialogFragment <span class="title">setDialogResultListener</span><span class="params">(DialogResultListener dialogResultListener)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">this</span>.mDialogResultListener = dialogResultListener;</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">this</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">public</span> BaseDialogFragment <span class="title">setDialogDismissListener</span><span class="params">(DialogDismissListener dialogDismissListener)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">this</span>.mDialogDismissListener = dialogDismissListener;</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">this</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>在 onDismiss 中回调我们的 DialogDismissListener</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Override</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onDismiss</span><span class="params">(DialogInterface dialog)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">super</span>.onDismiss(dialog);</span><br><span class="line">    <span class="keyword">if</span> (mDialogDismissListener != <span class="keyword">null</span>) &#123;</span><br><span class="line">        mDialogDismissListener.dismiss(<span class="keyword">this</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>至于 DialogResultListener 则需要根据具体的 Dialog 实现去回调不同的内容。</p>
+<p>至此，我们的基础搭建已经完成，这里再贴下完整的代码，不需要的直接略过，往后翻去看具体实现。</p>
+<p><code>BaseDialogFragment</code></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@author</span> SmartSean</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">abstract</span> <span class="class"><span class="keyword">class</span> <span class="title">BaseDialogFragment</span> <span class="keyword">extends</span> <span class="title">DialogFragment</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">int</span> mWidth = WRAP_CONTENT;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">int</span> mHeight = WRAP_CONTENT;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">int</span> mGravity = CENTER;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">int</span> mOffsetX = <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">int</span> mOffsetY = <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">int</span> mAnimation = R.style.DialogBaseAnimation;</span><br><span class="line">    <span class="keyword">protected</span> DialogResultListener mDialogResultListener;</span><br><span class="line">    <span class="keyword">protected</span> DialogDismissListener mDialogDismissListener;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">protected</span> <span class="keyword">static</span> Bundle <span class="title">getArgumentBundle</span><span class="params">(Builder b)</span> </span>&#123;</span><br><span class="line">        Bundle bundle = <span class="keyword">new</span> Bundle();</span><br><span class="line">        bundle.putInt(<span class="string">"mWidth"</span>, b.mWidth);</span><br><span class="line">        bundle.putInt(<span class="string">"mHeight"</span>, b.mHeight);</span><br><span class="line">        bundle.putInt(<span class="string">"mGravity"</span>, b.mGravity);</span><br><span class="line">        bundle.putInt(<span class="string">"mOffsetX"</span>, b.mOffsetX);</span><br><span class="line">        bundle.putInt(<span class="string">"mOffsetY"</span>, b.mOffsetY);</span><br><span class="line">        bundle.putInt(<span class="string">"mAnimation"</span>, b.mAnimation);</span><br><span class="line">        <span class="keyword">return</span> bundle;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onCreate</span><span class="params">(@Nullable Bundle savedInstanceState)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">super</span>.onCreate(savedInstanceState);</span><br><span class="line">        <span class="keyword">if</span> (getArguments() != <span class="keyword">null</span>) &#123;</span><br><span class="line">            mWidth = getArguments().getInt(<span class="string">"mWidth"</span>);</span><br><span class="line">            mHeight = getArguments().getInt(<span class="string">"mHeight"</span>);</span><br><span class="line">            mOffsetX = getArguments().getInt(<span class="string">"mOffsetX"</span>);</span><br><span class="line">            mOffsetY = getArguments().getInt(<span class="string">"mOffsetY"</span>);</span><br><span class="line">            mAnimation = getArguments().getInt(<span class="string">"mAnimation"</span>);</span><br><span class="line">            mGravity = getArguments().getInt(<span class="string">"mGravity"</span>);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">protected</span> <span class="keyword">abstract</span> View <span class="title">setView</span><span class="params">(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState)</span></span>;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Nullable</span></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> View <span class="title">onCreateView</span><span class="params">(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState)</span> </span>&#123;</span><br><span class="line">        setStyle();</span><br><span class="line">        <span class="keyword">return</span> setView(inflater, container, savedInstanceState);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 设置统一样式</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">setStyle</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="comment">//获取Window</span></span><br><span class="line">        Window window = getDialog().getWindow();</span><br><span class="line">        <span class="comment">//无标题</span></span><br><span class="line">        getDialog().requestWindowFeature(STYLE_NO_TITLE);</span><br><span class="line">        <span class="comment">// 透明背景</span></span><br><span class="line">        getDialog().getWindow().setBackgroundDrawable(<span class="keyword">new</span> ColorDrawable(Color.TRANSPARENT));</span><br><span class="line">        <span class="comment">//设置宽高</span></span><br><span class="line">        window.getDecorView().setPadding(<span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>);</span><br><span class="line">        WindowManager.LayoutParams wlp = window.getAttributes();</span><br><span class="line">        wlp.width = mWidth;</span><br><span class="line">        wlp.height = mHeight;</span><br><span class="line">        <span class="comment">//设置对齐方式</span></span><br><span class="line">        wlp.gravity = mGravity;</span><br><span class="line">        <span class="comment">//设置偏移量</span></span><br><span class="line">        wlp.x = DensityUtil.dip2px(getDialog().getContext(), mOffsetX);</span><br><span class="line">        wlp.y = DensityUtil.dip2px(getDialog().getContext(), mOffsetY);</span><br><span class="line">        <span class="comment">//设置动画</span></span><br><span class="line">        window.setWindowAnimations(mAnimation);</span><br><span class="line">        window.setAttributes(wlp);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onDismiss</span><span class="params">(DialogInterface dialog)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">super</span>.onDismiss(dialog);</span><br><span class="line">        <span class="keyword">if</span> (mDialogDismissListener != <span class="keyword">null</span>) &#123;</span><br><span class="line">            mDialogDismissListener.dismiss(<span class="keyword">this</span>);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> BaseDialogFragment <span class="title">setDialogResultListener</span><span class="params">(DialogResultListener dialogResultListener)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.mDialogResultListener = dialogResultListener;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">this</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> BaseDialogFragment <span class="title">setDialogDismissListener</span><span class="params">(DialogDismissListener dialogDismissListener)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.mDialogDismissListener = dialogDismissListener;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">this</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">abstract</span> <span class="class"><span class="keyword">class</span> <span class="title">Builder</span>&lt;<span class="title">T</span> <span class="keyword">extends</span> <span class="title">Builder</span>, <span class="title">D</span> <span class="keyword">extends</span> <span class="title">BaseDialogFragment</span>&gt; </span>&#123;</span><br><span class="line">        <span class="keyword">private</span> <span class="keyword">int</span> mWidth = WRAP_CONTENT;</span><br><span class="line">        <span class="keyword">private</span> <span class="keyword">int</span> mHeight = WRAP_CONTENT;</span><br><span class="line">        <span class="keyword">private</span> <span class="keyword">int</span> mGravity = CENTER;</span><br><span class="line">        <span class="keyword">private</span> <span class="keyword">int</span> mOffsetX = <span class="number">0</span>;</span><br><span class="line">        <span class="keyword">private</span> <span class="keyword">int</span> mOffsetY = <span class="number">0</span>;</span><br><span class="line">        <span class="keyword">private</span> <span class="keyword">int</span> mAnimation = R.style.DialogBaseAnimation;</span><br><span class="line"></span><br><span class="line">        <span class="function"><span class="keyword">public</span> T <span class="title">setSize</span><span class="params">(<span class="keyword">int</span> mWidth, <span class="keyword">int</span> mHeight)</span> </span>&#123;</span><br><span class="line">            <span class="keyword">this</span>.mWidth = mWidth;</span><br><span class="line">            <span class="keyword">this</span>.mHeight = mHeight;</span><br><span class="line">            <span class="keyword">return</span> (T) <span class="keyword">this</span>;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="function"><span class="keyword">public</span> T <span class="title">setGravity</span><span class="params">(<span class="keyword">int</span> mGravity)</span> </span>&#123;</span><br><span class="line">            <span class="keyword">this</span>.mGravity = mGravity;</span><br><span class="line">            <span class="keyword">return</span> (T) <span class="keyword">this</span>;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="function"><span class="keyword">public</span> T <span class="title">setOffsetX</span><span class="params">(<span class="keyword">int</span> mOffsetX)</span> </span>&#123;</span><br><span class="line">            <span class="keyword">this</span>.mOffsetX = mOffsetX;</span><br><span class="line">            <span class="keyword">return</span> (T) <span class="keyword">this</span>;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="function"><span class="keyword">public</span> T <span class="title">setOffsetY</span><span class="params">(<span class="keyword">int</span> mOffsetY)</span> </span>&#123;</span><br><span class="line">            <span class="keyword">this</span>.mOffsetY = mOffsetY;</span><br><span class="line">            <span class="keyword">return</span> (T) <span class="keyword">this</span>;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="function"><span class="keyword">public</span> T <span class="title">setAnimation</span><span class="params">(<span class="keyword">int</span> mAnimation)</span> </span>&#123;</span><br><span class="line">            <span class="keyword">this</span>.mAnimation = mAnimation;</span><br><span class="line">            <span class="keyword">return</span> (T) <span class="keyword">this</span>;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="function"><span class="keyword">protected</span> <span class="keyword">abstract</span> D <span class="title">build</span><span class="params">()</span></span>;</span><br><span class="line"></span><br><span class="line">        <span class="function"><span class="keyword">protected</span> <span class="keyword">void</span> <span class="title">clear</span><span class="params">()</span> </span>&#123;</span><br><span class="line">            <span class="keyword">this</span>.mWidth = WRAP_CONTENT;</span><br><span class="line">            <span class="keyword">this</span>.mHeight = WRAP_CONTENT;</span><br><span class="line">            <span class="keyword">this</span>.mGravity = CENTER;</span><br><span class="line">            <span class="keyword">this</span>.mOffsetX = <span class="number">0</span>;</span><br><span class="line">            <span class="keyword">this</span>.mOffsetY = <span class="number">0</span>;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="二、如何方便的构建-Dialog"><a href="#二、如何方便的构建-Dialog" class="headerlink" title="二、如何方便的构建 Dialog"></a>二、如何方便的构建 Dialog</h2><p>这里我们以确认、取消选择框为例：</p>
+<h3 id="2-1-首先，我们需要新建-ConfirmDialog-继承于-我们的-BaseDialogFragment："><a href="#2-1-首先，我们需要新建-ConfirmDialog-继承于-我们的-BaseDialogFragment：" class="headerlink" title="2.1 首先，我们需要新建 ConfirmDialog 继承于 我们的 BaseDialogFragment："></a>2.1 首先，我们需要新建 ConfirmDialog 继承于 我们的 BaseDialogFragment：</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">ConfirmDialog</span> <span class="keyword">extends</span> <span class="title">BaseDialogFragment</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">protected</span> View <span class="title">setView</span><span class="params">(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">null</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="2-2-构造-Dialog-正常显示需要的值"><a href="#2-2-构造-Dialog-正常显示需要的值" class="headerlink" title="2.2 构造 Dialog 正常显示需要的值"></a>2.2 构造 Dialog 正常显示需要的值</h3><p>在通常的确认、取消选择框中，我们需要的传入值一般为：</p>
+<ul>
+<li>标题</li>
+<li>内容</li>
+<li>取消的提示文字</li>
+<li>确定的提示文字</li>
+</ul>
+<p>这里我们定义四个 静态字符换常量:</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> String LEFT_TEXT = <span class="string">"left_text"</span>;</span><br><span class="line"><span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> String RIGHT_TEXT = <span class="string">"right_text"</span>;</span><br><span class="line"><span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> String PARAM_TITLE = <span class="string">"title"</span>;</span><br><span class="line"><span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> String PARAM_MESSAGE = <span class="string">"message"</span>;</span><br></pre></td></tr></table></figure>
+<p>接下来我们需要在 Builder 中传入这些值：</p>
+<p>新建 Buidler 继承于 BaseDialogFragment 的 Buidler：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> <span class="class"><span class="keyword">class</span> <span class="title">Builder</span> <span class="keyword">extends</span> <span class="title">BaseDialogFragment</span>.<span class="title">Builder</span>&lt;<span class="title">Builder</span>, <span class="title">ConfirmDialog</span>&gt; </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> String mTitle;</span><br><span class="line">    <span class="keyword">private</span> String mMessage;</span><br><span class="line">    <span class="keyword">private</span> String leftText;</span><br><span class="line">    <span class="keyword">private</span> String rightText;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> Builder <span class="title">setTitle</span><span class="params">(String title)</span> </span>&#123;</span><br><span class="line">        mTitle = title;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">this</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> Builder <span class="title">setMessage</span><span class="params">(String message)</span> </span>&#123;</span><br><span class="line">        mMessage = message;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">this</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> Builder <span class="title">setLeftText</span><span class="params">(String leftText)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.leftText = leftText;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">this</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> Builder <span class="title">setRightText</span><span class="params">(String rightText)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.rightText = rightText;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">this</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">protected</span> ConfirmDialog <span class="title">build</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> ConfirmDialog.newInstance(<span class="keyword">this</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>在 build 方法中我们返回了 ConfirmDialog的实例，来看下 newInstance 方法：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">static</span> ConfirmDialog <span class="title">newInstance</span><span class="params">(Builder builder)</span> </span>&#123;</span><br><span class="line">    ConfirmDialog dialog = <span class="keyword">new</span> ConfirmDialog();</span><br><span class="line">    Bundle bundle = getArgumentBundle(builder);</span><br><span class="line">    bundle.putString(LEFT_TEXT, builder.leftText);</span><br><span class="line">    bundle.putString(RIGHT_TEXT, builder.rightText);</span><br><span class="line">    bundle.putString(PARAM_TITLE, builder.mTitle);</span><br><span class="line">    bundle.putString(PARAM_MESSAGE, builder.mMessage);</span><br><span class="line">    dialog.setArguments(bundle);</span><br><span class="line">    <span class="keyword">return</span> dialog;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>可以看到，我们 new 出了一个 ConfirmDialog 实例，然后通过 getArgumentBundle(builder) 获得了在 BaseDialogFragment 中获取的到值，并且放到了 Bundle 中。</p>
+<p>很显然，我们这个 ConfirmDialog 还需要 </p>
+<ul>
+<li>标题 <code>builder.mTitle</code></li>
+<li>内容 <code>builder.mMessage</code></li>
+<li>取消的提示文字 <code>builder.leftText</code></li>
+<li>确定的提示文字 <code>builder.rightText</code></li>
+</ul>
+<p>最后通过 <code>dialog.setArguments(bundle);</code>传入到 ConfirmDialog 中，返回我们新建的 dialog 实例。</p>
+<h3 id="2-3-把值展示到界面上"><a href="#2-3-把值展示到界面上" class="headerlink" title="2.3 把值展示到界面上"></a>2.3 把值展示到界面上</h3><p>我们新建 dialog_confirm.xml：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br></pre></td><td class="code"><pre><span class="line">&lt;?xml version=&quot;1.0&quot; encoding=&quot;utf-8&quot;?&gt;</span><br><span class="line">&lt;LinearLayout xmlns:android=&quot;http://schemas.android.com/apk/res/android&quot;</span><br><span class="line">    android:layout_width=&quot;match_parent&quot;</span><br><span class="line">    android:layout_height=&quot;match_parent&quot;</span><br><span class="line">    android:background=&quot;#ffffff&quot;</span><br><span class="line">    android:orientation=&quot;vertical&quot;&gt;</span><br><span class="line">    </span><br><span class="line">    &lt;RelativeLayout</span><br><span class="line">        android:layout_width=&quot;match_parent&quot;</span><br><span class="line">        android:layout_height=&quot;200dp&quot;</span><br><span class="line">        android:background=&quot;#ffffff&quot;&gt;</span><br><span class="line">        &lt;TextView</span><br><span class="line">            android:background=&quot;#9d9d9d&quot;</span><br><span class="line">            android:id=&quot;@+id/title&quot;</span><br><span class="line">            android:layout_width=&quot;match_parent&quot;</span><br><span class="line">            android:layout_height=&quot;48dp&quot;</span><br><span class="line">            android:gravity=&quot;center&quot;</span><br><span class="line">            android:text=&quot;我是标题&quot; /&gt;</span><br><span class="line">        &lt;TextView</span><br><span class="line">            android:padding=&quot;24dp&quot;</span><br><span class="line">            android:id=&quot;@+id/message&quot;</span><br><span class="line">            android:layout_width=&quot;match_parent&quot;</span><br><span class="line">            android:layout_height=&quot;match_parent&quot;</span><br><span class="line">            android:layout_below=&quot;@+id/title&quot;</span><br><span class="line">            android:gravity=&quot;start&quot;</span><br><span class="line">            android:text=&quot;我是message&quot; /&gt;</span><br><span class="line">    &lt;/RelativeLayout&gt;</span><br><span class="line"></span><br><span class="line">    &lt;LinearLayout</span><br><span class="line">        android:layout_width=&quot;match_parent&quot;</span><br><span class="line">        android:layout_height=&quot;match_parent&quot;&gt;</span><br><span class="line"></span><br><span class="line">        &lt;Button</span><br><span class="line">            android:id=&quot;@+id/cancel_btn&quot;</span><br><span class="line">            android:layout_width=&quot;101dp&quot;</span><br><span class="line">            android:layout_height=&quot;46dp&quot;</span><br><span class="line">            android:layout_weight=&quot;1&quot;</span><br><span class="line">            android:text=&quot;取消&quot; /&gt;</span><br><span class="line">        &lt;Button</span><br><span class="line">            android:id=&quot;@+id/confirm_btn&quot;</span><br><span class="line">            android:layout_width=&quot;103dp&quot;</span><br><span class="line">            android:layout_height=&quot;48dp&quot;</span><br><span class="line">            android:layout_weight=&quot;1&quot;</span><br><span class="line">            android:text=&quot;确定&quot; /&gt;</span><br><span class="line">    &lt;/LinearLayout&gt;</span><br><span class="line">&lt;/LinearLayout&gt;</span><br></pre></td></tr></table></figure>
+<p>这个时候就需要在 setView 方法中获取到 dialog_confirm.xml 的控件，然后进行赋值和事件操作：</p>
+<p>setView() 方法如下:</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Override</span></span><br><span class="line"><span class="function"><span class="keyword">protected</span> View <span class="title">setView</span><span class="params">(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState)</span> </span>&#123;</span><br><span class="line">    View view = inflater.inflate(R.layout.dialog_confirm, container, <span class="keyword">false</span>);</span><br><span class="line">    TextView titleTv = view.findViewById(R.id.title);</span><br><span class="line">    TextView messageTv = view.findViewById(R.id.message);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> (!TextUtils.isEmpty(getArguments().getString(PARAM_TITLE))) &#123;</span><br><span class="line">        titleTv.setText(getArguments().getString(PARAM_TITLE));</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">if</span> (!TextUtils.isEmpty(getArguments().getString(PARAM_MESSAGE))) &#123;</span><br><span class="line">        messageTv.setText(getArguments().getString(PARAM_MESSAGE));</span><br><span class="line">    &#125;</span><br><span class="line">    setBottomButton(view);</span><br><span class="line">    <span class="keyword">return</span> view;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">protected</span> <span class="keyword">void</span> <span class="title">setBottomButton</span><span class="params">(View view)</span> </span>&#123;</span><br><span class="line">    Button cancelBtn = view.findViewById(R.id.cancel_btn);</span><br><span class="line">    Button confirmBtn = view.findViewById(R.id.confirm_btn);</span><br><span class="line">    <span class="keyword">if</span> (getArguments() != <span class="keyword">null</span>) &#123;</span><br><span class="line">        cancelBtn.setText(getArguments().getString(LEFT_TEXT));</span><br><span class="line">        confirmBtn.setText(getArguments().getString(RIGHT_TEXT));</span><br><span class="line">        cancelBtn.setOnClickListener(<span class="keyword">new</span> View.OnClickListener() &#123;</span><br><span class="line">            <span class="meta">@Override</span></span><br><span class="line">            <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onClick</span><span class="params">(View view)</span> </span>&#123;</span><br><span class="line">                <span class="keyword">if</span> (mDialogResultListener != <span class="keyword">null</span>) &#123;</span><br><span class="line">                    mDialogResultListener.result(<span class="keyword">false</span>);</span><br><span class="line">                    dismiss();</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;);</span><br><span class="line">        confirmBtn.setOnClickListener(<span class="keyword">new</span> View.OnClickListener() &#123;</span><br><span class="line">            <span class="meta">@Override</span></span><br><span class="line">            <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onClick</span><span class="params">(View view)</span> </span>&#123;</span><br><span class="line">                <span class="keyword">if</span> (mDialogResultListener != <span class="keyword">null</span>) &#123;</span><br><span class="line">                    mDialogResultListener.result(<span class="keyword">true</span>);</span><br><span class="line">                    dismiss();</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="3-4-最后的调用："><a href="#3-4-最后的调用：" class="headerlink" title="3.4 最后的调用："></a>3.4 最后的调用：</h3><p>在 MainActivity 中:</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">ConfirmDialog.newConfirmBuilder()</span><br><span class="line">        .setTitle(<span class="string">"这是一个带有确认、取消的dialog"</span>)</span><br><span class="line">        .setMessage(<span class="string">"这是一个带有确认、取消的dialog的message"</span>)</span><br><span class="line">        .setLeftText(<span class="string">"我点错了"</span>)</span><br><span class="line">        .setRightText(<span class="string">"我确定"</span>)</span><br><span class="line">        .setAnimation(R.style.DialogAnimFromCenter)</span><br><span class="line">        .build()</span><br><span class="line">        .setDialogResultListener(<span class="keyword">new</span> DialogResultListener&lt;Boolean&gt;() &#123;</span><br><span class="line">            <span class="meta">@Override</span></span><br><span class="line">            <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">result</span><span class="params">(Boolean result)</span> </span>&#123;</span><br><span class="line">                Toast.makeText(mContext, <span class="string">"你点击了："</span> + (result ? <span class="string">"确定"</span> : <span class="string">"取消"</span>), Toast.LENGTH_SHORT).show();</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;)</span><br><span class="line">        .setDialogDismissListener(<span class="keyword">new</span> DialogDismissListener() &#123;</span><br><span class="line">            <span class="meta">@Override</span></span><br><span class="line">            <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">dismiss</span><span class="params">(DialogFragment dialog)</span> </span>&#123;</span><br><span class="line">                Toast.makeText(mContext, <span class="string">"我的tag："</span> + dialog.getTag(), Toast.LENGTH_SHORT).show();</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;)</span><br><span class="line">        .show(getFragmentManager(), <span class="string">"confirmDialog"</span>);</span><br></pre></td></tr></table></figure>
+<p>是不是调用起来很简单，当项目中的 Dialog 样式统一的时候，用这种封装是很方便的，我们只用更改传入的值就可以得到不同的 Dialog，不用写那么多的重复代码，省下的时间可以让我们做很多事情。</p>
+<p>最后贴下代码地址：</p>
+<p><a href="https://github.com/smartsean/MyDialog">源码地址</a></p>
+<p>如果你有更好的想法，欢迎提出来~~~</p>
+
+    </div>
+
+    <div class="post-footer">   
+        <div>
+            
+                转载声明：商业转载请联系作者获得授权,非商业转载请注明出处 © <a href="" target="_blank">smartsean</a>
+            
+        </div>
+        <div>
+            
+        </div>  
+    </div>
+</article>
+
+<div class="article-nav prev-next-wrap clearfix">
+    
+    
+        <a href="/2018/01/17/清晰的Retrofit使用案例/" class="next-post btn btn-default">下一篇<i class="fa fa-angle-right fa-fw"></i></a>
+    
+</div>
+
+
+    <div id="comments">
+        
+	
+<div id="lv-container" data-id="city" data-uid="MTAyMC8zMzA1MS85NjEz">
+  <script type="text/javascript">
+     (function(d, s) {
+         var j, e = d.getElementsByTagName(s)[0];
+         if (typeof LivereTower === 'function') { return; }
+         j = d.createElement(s);
+         j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+         j.async = true;
+         e.parentNode.insertBefore(j, e);
+     })(document, 'script');
+  </script>
+</div>
+
+
+    </div>
+
+
+
+
+
+                </main>
+                
+    <aside class="col-md-4 sidebar">
+        
+        
+    <div class="widget">    
+        <h3 class="title">搜索</h3>
+        <div id="search-form">
+            <div id="result-mask" class="hide"></div>
+            <div class="search-area">
+                
+                    <input id="search-key" type="search" autocomplete="off" placeholder="搜点什么呢?">
+                    <button type="button" class="search-form-submit" id="search-local">站内搜索</button>
+                
+                
+            </div>
+            <div id="result-wrap" class="hide">
+                <div id="search-result"></div>
+            </div>
+            <div class="hide">
+                <template id="search-tpl">
+                    <div class="item">
+                        <a href="/{path}" title="{title}">
+                            <div class="title">{title}</div>
+                            <div class="content">{content}</div>
+                        </a>
+                    </div>
+                </template>
+            </div>
+        </div>
+    </div>
+
+        
+        
+    <div class="widget">
+      <h3 class="title">社交</h3> 
+        <div class="content social">
+            
+	            <a href="https://github.com/smartsean" rel="external nofollow" title="Github" target="_blank">
+			    	<i class="git fa fa-git"></i>
+			    </a>
+            
+        </div>
+    </div>
+
+
+        
+        
+    <div class="widget">
+        <h3 class="title">分类</h3>
+        <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/Android/"><i class="fa" aria-hidden="true">Android</i></a><span class="category-list-count">41</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Android/工具/"><i class="fa" aria-hidden="true">工具</i></a><span class="category-list-count">3</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Android/工具/我/"><i class="fa" aria-hidden="true">我</i></a><span class="category-list-count">1</span></li></ul></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Ionic/"><i class="fa" aria-hidden="true">Ionic</i></a><span class="category-list-count">7</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Ionic/其他/"><i class="fa" aria-hidden="true">其他</i></a><span class="category-list-count">7</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/工具/"><i class="fa" aria-hidden="true">工具</i></a><span class="category-list-count">4</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/工具/Android/"><i class="fa" aria-hidden="true">Android</i></a><span class="category-list-count">1</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/工具/Android/我/"><i class="fa" aria-hidden="true">我</i></a><span class="category-list-count">1</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/工具/我/"><i class="fa" aria-hidden="true">我</i></a><span class="category-list-count">1</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/我/"><i class="fa" aria-hidden="true">我</i></a><span class="category-list-count">4</span></li></ul>
+    </div>
+
+
+        
+        
+  <div class="widget">
+    <h3 class="title">标签云</h3>
+    <div class="content tag-cloud">
+        <a href="/tags/Android/" style="font-size: 20px;">Android</a> <a href="/tags/AndroidStudio/" style="font-size: 12px;">AndroidStudio</a> <a href="/tags/Git/" style="font-size: 10px;">Git</a> <a href="/tags/Ionic/" style="font-size: 18px;">Ionic</a> <a href="/tags/Java/" style="font-size: 12px;">Java</a> <a href="/tags/Java-Java基础/" style="font-size: 10px;">Java Java基础</a> <a href="/tags/工具/" style="font-size: 16px;">工具</a> <a href="/tags/异常/" style="font-size: 12px;">异常</a> <a href="/tags/我/" style="font-size: 14px;">我</a> <a href="/tags/模拟器/" style="font-size: 10px;">模拟器</a> <a href="/tags/自定义View/" style="font-size: 10px;">自定义View</a>
+    </div>
+  </div>
+
+
+        
+        
+    <div class="widget notification">
+        <h3 class="title">网站公告</h3>
+        <div>
+            <p>暂无公告~ <br/>
+        </div>
+    </div>
+
+        
+        
+    <div class="widget">
+      <h3 class="title">归档</h3>
+        <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/01/"><i class="fa" aria-hidden="true">一月 2018</i></a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/12/"><i class="fa" aria-hidden="true">十二月 2017</i></a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/09/"><i class="fa" aria-hidden="true">九月 2017</i></a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/08/"><i class="fa" aria-hidden="true">八月 2017</i></a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/07/"><i class="fa" aria-hidden="true">七月 2017</i></a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/05/"><i class="fa" aria-hidden="true">五月 2017</i></a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/04/"><i class="fa" aria-hidden="true">四月 2017</i></a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/03/"><i class="fa" aria-hidden="true">三月 2017</i></a><span class="archive-list-count">7</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/02/"><i class="fa" aria-hidden="true">二月 2017</i></a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/01/"><i class="fa" aria-hidden="true">一月 2017</i></a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/12/"><i class="fa" aria-hidden="true">十二月 2016</i></a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/11/"><i class="fa" aria-hidden="true">十一月 2016</i></a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/10/"><i class="fa" aria-hidden="true">十月 2016</i></a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/09/"><i class="fa" aria-hidden="true">九月 2016</i></a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/08/"><i class="fa" aria-hidden="true">八月 2016</i></a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/06/"><i class="fa" aria-hidden="true">六月 2016</i></a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/04/"><i class="fa" aria-hidden="true">四月 2016</i></a><span class="archive-list-count">10</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/03/"><i class="fa" aria-hidden="true">三月 2016</i></a><span class="archive-list-count">3</span></li></ul>
+    </div>
+
+
+        
+        
+    <div class="widget">
+        <h3 class="title">友链</h3>
+        <div class="content friends-link">
+        
+            <a href="http://www.shenliyang.com" class="fa" target="_blank">个人博客</a>
+        
+        </div>
+    </div>
+
+
+        
+    </aside>
+
+            </div>
+        </div>
+    </section>
+    <footer class="main-footer">
+    <div class="container">
+        <div class="row">
+        </div>
+    </div>
+</footer>
+
+<a id="back-to-top" class="hide">
+	<i class="fa fa-chevron-up"></i>
+</a>
+
+
+
+
+    <div class="copyright">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12"> 
+                <span>Copyright &copy; 2018
+                </span> | 
+                <span>
+                    Powered by <a href="//hexo.io" class="copyright-links" target="_blank" rel="nofollow">Hexo</a>
+                </span> | 
+                <span>
+                    Theme by <a href="//github.com/shenliyang/hexo-theme-snippet.git" class="copyright-links" target="_blank" rel="nofollow">Snippet</a>
+                </span>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+	<script src="/js/search.js?rev=@@hash"></script>
+
+
+<script src="/js/app.js?rev=@@hash"></script>
+
+
+</body>
+</html>
