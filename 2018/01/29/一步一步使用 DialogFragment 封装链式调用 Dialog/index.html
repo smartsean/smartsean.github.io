@@ -153,6 +153,11 @@
     
     <div class="post-body post-content">
         <h1 id="一步一步使用-DialogFragment-封装链式调用-Dialog"><a href="#一步一步使用-DialogFragment-封装链式调用-Dialog" class="headerlink" title="一步一步使用 DialogFragment 封装链式调用 Dialog"></a>一步一步使用 DialogFragment 封装链式调用 Dialog</h1><h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>日常开发中，Dialog 是一个每个 app 所必备的。</p>
+<hr>
+<h2 id="2018-01-31更新"><a href="#2018-01-31更新" class="headerlink" title="2018-01-31更新"></a>2018-01-31更新</h2><p>最后封装好的 BaseDialogFragment 已经添加到我的快速开发 lib 包中。</p>
+<p>可以通过：<code>implementation cn.smartsean:lib:0.0.7</code> 快速引入，</p>
+<p>也可以去 <a href="https://github.com/smartsean/AndroidCode/blob/master/app/src/main/java/com/sean/demo/ui/a/activity/MyDialogActivity.java">AndroidCode</a> 查看示例源码。</p>
+<hr>
 <p>通常来说，每个 app 的Dialog 的样式一般都是统一风格的，比如说有：</p>
 <ul>
 <li>确认、取消的 Dialog</li>
@@ -168,7 +173,6 @@
 <p>那么接下来我们就一步一步的来封装出一个便于我们使用的 DialogFragment。</p>
 <p>还是先看下效果图吧，可能有点不是很好看，毕竟没有 ui，哈哈</p>
 <p><img src="http://p2oza5z62.bkt.clouddn.com/2018-01-29-15172244663397.gif" alt="效果图"></p>
-<p><a href="https://github.com/smartsean/MyDialog">源码地址</a>     可以先去下载代码对照着看。</p>
 <h2 id="一、构建-BaseDialogFragment"><a href="#一、构建-BaseDialogFragment" class="headerlink" title="一、构建 BaseDialogFragment"></a>一、构建 BaseDialogFragment</h2><h3 id="1-1-明确我们需要的属性"><a href="#1-1-明确我们需要的属性" class="headerlink" title="1.1 明确我们需要的属性"></a>1.1 明确我们需要的属性</h3><p>在构建 BaseDialogFragment 之前，我们先分析下正常情况下，我们使用 Dialog 都需要哪些属性：</p>
 <ul>
 <li>Dialog 的宽和高</li>
@@ -267,8 +271,6 @@
 <h3 id="3-4-最后的调用："><a href="#3-4-最后的调用：" class="headerlink" title="3.4 最后的调用："></a>3.4 最后的调用：</h3><p>在 MainActivity 中:</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">ConfirmDialog.newConfirmBuilder()</span><br><span class="line">        .setTitle(<span class="string">"这是一个带有确认、取消的dialog"</span>)</span><br><span class="line">        .setMessage(<span class="string">"这是一个带有确认、取消的dialog的message"</span>)</span><br><span class="line">        .setLeftText(<span class="string">"我点错了"</span>)</span><br><span class="line">        .setRightText(<span class="string">"我确定"</span>)</span><br><span class="line">        .setAnimation(R.style.DialogAnimFromCenter)</span><br><span class="line">        .build()</span><br><span class="line">        .setDialogResultListener(<span class="keyword">new</span> DialogResultListener&lt;Boolean&gt;() &#123;</span><br><span class="line">            <span class="meta">@Override</span></span><br><span class="line">            <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">result</span><span class="params">(Boolean result)</span> </span>&#123;</span><br><span class="line">                Toast.makeText(mContext, <span class="string">"你点击了："</span> + (result ? <span class="string">"确定"</span> : <span class="string">"取消"</span>), Toast.LENGTH_SHORT).show();</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;)</span><br><span class="line">        .setDialogDismissListener(<span class="keyword">new</span> DialogDismissListener() &#123;</span><br><span class="line">            <span class="meta">@Override</span></span><br><span class="line">            <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">dismiss</span><span class="params">(DialogFragment dialog)</span> </span>&#123;</span><br><span class="line">                Toast.makeText(mContext, <span class="string">"我的tag："</span> + dialog.getTag(), Toast.LENGTH_SHORT).show();</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;)</span><br><span class="line">        .show(getFragmentManager(), <span class="string">"confirmDialog"</span>);</span><br></pre></td></tr></table></figure>
 <p>是不是调用起来很简单，当项目中的 Dialog 样式统一的时候，用这种封装是很方便的，我们只用更改传入的值就可以得到不同的 Dialog，不用写那么多的重复代码，省下的时间可以让我们做很多事情。</p>
-<p>最后贴下代码地址：</p>
-<p><a href="https://github.com/smartsean/MyDialog">源码地址</a></p>
 <p>如果你有更好的想法，欢迎提出来~~~</p>
 
     </div>
