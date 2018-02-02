@@ -24,7 +24,7 @@
     <!--Title-->
 
 
-<title>Android 获得Bitmap | SmartSean的小站</title>
+<title>归档：2018/2 | SmartSean的小站</title>
 
 
     <link rel="alternate" href="/atom.xml" title="SmartSean的小站" type="application/atom+xml">
@@ -113,128 +113,21 @@
     <section class="content-wrap">
         <div class="container">
             <div class="row">
-                <main class="col-md-8 main-content m-post">
-                    <p id="process"></p>
-<article class="post">
-    <div class="post-head">
-        <h1 id="Android 获得Bitmap">
-            
-	            Android 获得Bitmap
-            
-        </h1>
-        <div class="post-meta">
-    
-    
-    <span class="categories-meta fa-wrap">
-        <i class="fa fa-folder-open-o"></i>
-        <span>Android</span>
-    </span>
-    
-    
-    <span class="fa-wrap">
-        <i class="fa fa-tags"></i>
-        <span class="tags-meta">
-            
-            Android
-            
-        </span>
-    </span>
-    
-    
-    <span class="fa-wrap">
-        <i class="fa fa-clock-o"></i>
-        <span class="date-meta">2016/04/06</span>
-    </span>
-</div>
-
-            
-            
-            <p class="fa fa-exclamation-triangle warning">
-                本文于<strong>667</strong>天之前发表，文中内容可能已经过时。
-            </p>
+                <main class="col-md-8 main-content ">
+                    <div id="main">
+  <div id="post-list">
+    <ul class="archives-post-list">
+    	<h1 class="info">2018年 2月</h1>
         
-    </div>
-    
-    <div class="post-body post-content">
-        <p> 1、 本地url转换为Bitmap</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">/**</span><br><span class="line">   * @param uri：图片的本地url地址</span><br><span class="line">   * @return Bitmap；</span><br><span class="line">   */</span><br><span class="line">  private Bitmap decodeUriAsBitmap(Uri uri) &#123;</span><br><span class="line">      Bitmap bitmap = null;</span><br><span class="line">      try &#123;</span><br><span class="line">          bitmap = BitmapFactory.decodeStream(getContentResolver().openInputStream(uri));</span><br><span class="line">      &#125; catch (FileNotFoundException e) &#123;</span><br><span class="line">          e.printStackTrace();</span><br><span class="line">          return null;</span><br><span class="line">      &#125;</span><br><span class="line">      return bitmap;</span><br><span class="line">  &#125;</span><br></pre></td></tr></table></figure>
-<p>2、网络url转换为Bitmap</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line">/**</span><br><span class="line"> * 根据图片的url路径获得Bitmap对象</span><br><span class="line"> * @param url</span><br><span class="line"> * @return</span><br><span class="line"> */</span><br><span class="line">private Bitmap decodeUriAsBitmapFromNet(String url) &#123;</span><br><span class="line">    URL fileUrl = null;</span><br><span class="line">    Bitmap bitmap = null;</span><br><span class="line"> </span><br><span class="line">    try &#123;</span><br><span class="line">        fileUrl = new URL(url);</span><br><span class="line">    &#125; catch (MalformedURLException e) &#123;</span><br><span class="line">        e.printStackTrace();</span><br><span class="line">    &#125;</span><br><span class="line"> </span><br><span class="line">    try &#123;</span><br><span class="line">        HttpURLConnection conn = (HttpURLConnection) fileUrl</span><br><span class="line">                .openConnection();</span><br><span class="line">        conn.setDoInput(true);</span><br><span class="line">        conn.connect();</span><br><span class="line">        InputStream is = conn.getInputStream();</span><br><span class="line">        bitmap = BitmapFactory.decodeStream(is);</span><br><span class="line">        is.close();</span><br><span class="line">    &#125; catch (IOException e) &#123;</span><br><span class="line">        e.printStackTrace();</span><br><span class="line">    &#125;</span><br><span class="line">    return bitmap;</span><br><span class="line"> </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>3、获取指定大小的 Bitmap</p>
-<pre><code>/**
-     * @param path:图片的物理路径
-     * @param display_width：设置图片的宽
-     * @param display_height：设置图片的高
-     * @return
-     * @throws Exception
-     */
-    private Bitmap decodeBitmap(String path,float display_width,float display_height) throws Exception {
-        if (Float.compare(display_width,0.0f) == 0 || Float.compare(display_width,0.0f) == 0) {
-            throw new Exception(&quot;图片的宽高均不能为0！&quot;);
-        }
-        BitmapFactory.Options op = new BitmapFactory.Options();
-        //inJustDecodeBounds
-        //If set to true, the decoder will return null (no bitmap), but the out…
-        op.inJustDecodeBounds = true;
-        Bitmap bmp = BitmapFactory.decodeFile(path, op); //获取尺寸信息
-        //获取比例大小
-        int wRatio = (int)Math.ceil(op.outWidth/display_width);
-        int hRatio = (int)Math.ceil(op.outHeight/display_height);
-        //如果超出指定大小，则缩小相应的比例
-        if(wRatio &gt; 1 &amp;&amp; hRatio &gt; 1){
-            if(wRatio &gt; hRatio){
-                op.inSampleSize = wRatio;
-            }else{
-                op.inSampleSize = hRatio;
-            }
-        }
-        op.inJustDecodeBounds = false;
-        bmp = BitmapFactory.decodeFile(path, op);
-        return bmp;
-    }
-</code></pre>
-    </div>
-
-    <div class="post-footer">   
-        <div>
-            
-                转载声明：商业转载请联系作者获得授权,非商业转载请注明出处 © <a href="" target="_blank">smartsean</a>
-            
-        </div>
-        <div>
-            
-        </div>  
-    </div>
-</article>
-
-<div class="article-nav prev-next-wrap clearfix">
-    
-        <a href="/2016/04/10/Android Studio常用快捷键及设置/" class="pre-post btn btn-default"><i class="fa fa-angle-left fa-fw"></i>上一篇</a>
-    
-    
-        <a href="/2016/03/29/Android组件之广播（Broadcast）/" class="next-post btn btn-default">下一篇<i class="fa fa-angle-right fa-fw"></i></a>
-    
-</div>
-
-
-    <div id="comments">
+          <li class="post-items" _href="/2018/02/02/我追求的高效之路/">
+            <h3 class="post-item-title">
+            	<a href="/2018/02/02/我追求的高效之路/"> 【事故】项目开发中的生产事故 </a>
+            </h3>  
+          </li>
         
-	
-<div id="lv-container" data-id="city" data-uid="MTAyMC8zMzA1MS85NjEz">
-  <script type="text/javascript">
-     (function(d, s) {
-         var j, e = d.getElementsByTagName(s)[0];
-         if (typeof LivereTower === 'function') { return; }
-         j = d.createElement(s);
-         j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
-         j.async = true;
-         e.parentNode.insertBefore(j, e);
-     })(document, 'script');
-  </script>
+    </ul>
+  </div>
 </div>
-
-
-    </div>
 
 
 
