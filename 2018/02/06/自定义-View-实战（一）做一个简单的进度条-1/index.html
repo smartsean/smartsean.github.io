@@ -1,0 +1,439 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+    <!--Setting-->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+    <meta http-equiv="Cache-Control" content="no-siteapp">
+    <meta name="renderer" content="webkit|ie-comp|ie-stand">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="format-detection" content="telephone=no,email=no,adress=no">
+    <meta name="browsermode" content="application">
+    <meta name="screen-orientation" content="portrait">
+    <link rel="dns-prefetch" href="https://github.com/smartsean/smartsean.github.io">
+    <!--SEO-->
+
+
+
+<meta name="robots" content="all" />
+<meta name="google" content="all" />
+<meta name="googlebot" content="all" />
+<meta name="verify" content="all" />
+    <!--Title-->
+
+
+<title>自定义 View 实战（一）做一个简单的进度条 | SmartSean的小站</title>
+
+
+    <link rel="alternate" href="/atom.xml" title="SmartSean的小站" type="application/atom+xml">
+
+
+    <link rel="icon" href="/favicon.ico">
+
+    
+
+
+
+<link rel="stylesheet" href="//cdn.bootcss.com/bootstrap/3.3.4/css/bootstrap.min.css?rev=3.3.4">
+<link rel="stylesheet" href="//cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.min.css">
+<link rel="stylesheet" href="/css/style.css?rev=@@hash">
+
+
+
+
+    
+    <div class="hide">
+    	<script src="https://s4.cnzz.com/z_stat.php?id=1263868967&web_id=1263868967" language="JavaScript"></script>
+    </div>
+
+
+
+
+
+
+    
+</head>
+
+
+<!--[if lte IE 8]>
+<style>
+    html{ font-size: 1em }
+</style>
+<![endif]-->
+<!--[if lte IE 9]>
+<div style="ie">你使用的浏览器版本过低，为了你更好的阅读体验，请更新浏览器的版本或者使用其他现代浏览器，比如Chrome、Firefox、Safari等。</div>
+<![endif]-->
+
+<body>
+    <header class="main-header"  style="background-image:url(http://7xpw2b.com1.z0.glb.clouddn.com/hexo-sinppet/img/banner2.jpg)"  >
+    <div class="main-header-box">
+        <a class="header-avatar" href="/" title="">
+            <img src="/img/avatar.jpg" alt="logo头像">
+        </a>
+        <div class="branding">
+        	<!--<h2 class="text-hide">Snippet主题,从未如此简单有趣</h2>-->
+            
+                <h2> 仰望星空，脚踏实地。 </h2>
+             
+    	</div>
+    </div>
+</header>
+    <nav class="main-navigation">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="navbar-header"><span class="nav-toggle-button collapsed" data-toggle="collapse" data-target="#main-menu" id="mnav">
+                    <span class="sr-only">Toggle navigation</span>
+                    <i class="fa fa-bars"></i>
+                    </span>
+                </div>
+                <div class="collapse navbar-collapse" id="main-menu">
+                    <ul class="menu">
+                        
+                            <li role="presentation"><a href="/"><i class="fa fa-fw "></i>首页</a>
+                            </li>
+                        
+                            <li role="presentation"><a href="/categories/Android/"><i class="fa fa-fw "></i>Android</a>
+                            </li>
+                        
+                            <li role="presentation"><a href="/categories/工具/"><i class="fa fa-fw "></i>工具</a>
+                            </li>
+                        
+                            <li role="presentation"><a href="/categories/我/"><i class="fa fa-fw "></i>我</a>
+                            </li>
+                        
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</nav>
+    <section class="content-wrap">
+        <div class="container">
+            <div class="row">
+                <main class="col-md-8 main-content m-post">
+                    <p id="process"></p>
+<article class="post">
+    <div class="post-head">
+        <h1 id="自定义 View 实战（一）做一个简单的进度条">
+            
+	            自定义 View 实战（一）做一个简单的进度条
+            
+        </h1>
+        <div class="post-meta">
+    
+    
+    <span class="categories-meta fa-wrap">
+        <i class="fa fa-folder-open-o"></i>
+        <span>Android</span>
+    </span>
+    
+    
+    <span class="fa-wrap">
+        <i class="fa fa-tags"></i>
+        <span class="tags-meta">
+            
+            Android
+            
+        </span>
+    </span>
+    
+    
+    <span class="fa-wrap">
+        <i class="fa fa-clock-o"></i>
+        <span class="date-meta">2018/02/06</span>
+    </span>
+</div>
+
+            
+            
+    </div>
+    
+    <div class="post-body post-content">
+        <h1 id="自定义-View-实战（一）做一个简单的进度条"><a href="#自定义-View-实战（一）做一个简单的进度条" class="headerlink" title="自定义 View 实战（一）做一个简单的进度条"></a>自定义 View 实战（一）做一个简单的进度条</h1><h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>自定义 View 是每个 Android 程序员走向高级必经之路，本篇通过实现一个非常简单的自定义 View ，来简单了解下自定义 View 的流程。（最后会给出源码）</p>
+<p>先看下效果：</p>
+<p><img src="http://p2oza5z62.bkt.clouddn.com/2018-02-05-15178462831619.gif" alt="自定义LineProgressBar"></p>
+<p>录制的 gif 可能看不清，欢迎去 <a href="https://github.com/smartsean/AndroidCode">Github</a>下载项目运行查看。</p>
+<h2 id="一、分析需求"><a href="#一、分析需求" class="headerlink" title="一、分析需求"></a>一、分析需求</h2><p>这个 View 是我前段时间做公司项目的时候写的，要求的功能比较简单:</p>
+<ul>
+<li>根据给出的百分比显示进度条</li>
+<li>中间一直存在的线条</li>
+<li>进度条的颜色</li>
+<li>线条的颜色</li>
+<li>进度条是否有动画效果</li>
+</ul>
+<p>需求简单，所以实现起来也很简单的，接下来就一步一步的实现。</p>
+<h2 id="二、定义属性并获取"><a href="#二、定义属性并获取" class="headerlink" title="二、定义属性并获取"></a>二、定义属性并获取</h2><p>根据上面的分析，我们在 res/values 下面新建文件 attrs.xml，定义我们需要的属性如下：</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">&lt;?xml version="1.0" encoding="utf-8"?&gt;</span><br><span class="line"><span class="tag">&lt;<span class="name">resources</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">declare-styleable</span> <span class="attr">name</span>=<span class="string">"LineProgressBar"</span>&gt;</span></span><br><span class="line">        <span class="comment">&lt;!--进度条颜色--&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">attr</span> <span class="attr">name</span>=<span class="string">"progress_color"</span> <span class="attr">format</span>=<span class="string">"color"</span> /&gt;</span></span><br><span class="line">        <span class="comment">&lt;!--中间线的颜色--&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">attr</span> <span class="attr">name</span>=<span class="string">"progress_line_color"</span> <span class="attr">format</span>=<span class="string">"color"</span> /&gt;</span></span><br><span class="line">        <span class="comment">&lt;!--进度条的值--&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">attr</span> <span class="attr">name</span>=<span class="string">"progress"</span> <span class="attr">format</span>=<span class="string">"integer"</span> /&gt;</span></span><br><span class="line">        <span class="comment">&lt;!--是否有动画效果--&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">attr</span> <span class="attr">name</span>=<span class="string">"is_smooth_progress"</span> <span class="attr">format</span>=<span class="string">"boolean"</span> /&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">declare-styleable</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">resources</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<p>上面的属性的定义是在布局文件中使用的。</p>
+<p>然后我们需要在自定义的 View 里面对应获取 xml 中定义的属性。</p>
+<p>由于我们定义的是进度条，需要有最大值，根据百分比来显示进度。</p>
+<p>新建 LineProgressBar 继承于 View：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@author</span> smartsean</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">LineProgressBar</span> <span class="keyword">extends</span> <span class="title">View</span> </span>&#123;</span><br><span class="line">    <span class="comment">//进度条的最大值</span></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="keyword">int</span> MAX_PROGRESS = <span class="number">100</span>;</span><br><span class="line">    <span class="comment">//默认中间线颜色</span></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="keyword">int</span> DEFAULT_LINE_COLOR = Color.parseColor(<span class="string">"#e6e6e6"</span>);</span><br><span class="line">    <span class="comment">//默认进度条颜色</span></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="keyword">int</span> DEFAULT_PROGRESS_COLOR = Color.parseColor(<span class="string">"#71db77"</span>);</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * progress底部线的画笔</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="keyword">private</span> Paint linePaint;</span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * progress画笔</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="keyword">private</span> Paint progressPaint;</span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * progress底部线的颜色</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">int</span> lineColor;</span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * progress的颜色</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">int</span> progressColor;</span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 进度值 百分比</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">float</span> progress;</span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 是否平滑显示progress</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">boolean</span> isSmoothProgress;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">LineProgressBar</span><span class="params">(Context context)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">this</span>(context, <span class="keyword">null</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">LineProgressBar</span><span class="params">(Context context, AttributeSet attrs)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">this</span>(context, attrs, <span class="number">0</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">LineProgressBar</span><span class="params">(Context context, AttributeSet attrs, <span class="keyword">int</span> defStyleAttr)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">super</span>(context, attrs, defStyleAttr);</span><br><span class="line">        init(context, attrs);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>接下来，我们需要在 <code>init(context, attrs)</code> 里面获取 <code>attrs.xml</code> 中定义的属性，并进行一些初始化。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 初始化参数</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">init</span><span class="params">(Context context, AttributeSet attrs)</span> </span>&#123;</span><br><span class="line">    TypedArray attributes = context.obtainStyledAttributes(attrs, R.styleable.LineProgressBar);</span><br><span class="line">    lineColor = attributes.getColor(R.styleable.LineProgressBar_progress_line_color, DEFAULT_LINE_COLOR);</span><br><span class="line">    progressColor = attributes.getColor(R.styleable.LineProgressBar_progress_color, DEFAULT_PROGRESS_COLOR);</span><br><span class="line">    progress = attributes.getInteger(R.styleable.LineProgressBar_progress, <span class="number">0</span>) / MAX_PROGRESS;</span><br><span class="line">    isSmoothProgress = attributes.getBoolean(R.styleable.LineProgressBar_is_smooth_progress, <span class="keyword">true</span>);</span><br><span class="line">    attributes.recycle();</span><br><span class="line">    initializePainters();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="三、测量"><a href="#三、测量" class="headerlink" title="三、测量"></a>三、测量</h2><p>重写 <code>onMeasure</code> 方法，测量 View 的真实宽高</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Override</span></span><br><span class="line"><span class="function"><span class="keyword">protected</span> <span class="keyword">void</span> <span class="title">onMeasure</span><span class="params">(<span class="keyword">int</span> widthMeasureSpec, <span class="keyword">int</span> heightMeasureSpec)</span> </span>&#123;</span><br><span class="line">    setMeasuredDimension(measure(widthMeasureSpec, <span class="keyword">true</span>), measure(heightMeasureSpec, <span class="keyword">false</span>));</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">int</span> <span class="title">measure</span><span class="params">(<span class="keyword">int</span> measureSpec, <span class="keyword">boolean</span> isWidth)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">int</span> result;</span><br><span class="line">    <span class="keyword">int</span> mode = MeasureSpec.getMode(measureSpec);</span><br><span class="line">    <span class="keyword">int</span> size = MeasureSpec.getSize(measureSpec);</span><br><span class="line">    <span class="keyword">int</span> padding = isWidth ? getPaddingLeft() + getPaddingRight() : getPaddingTop() + getPaddingBottom();</span><br><span class="line">    <span class="keyword">if</span> (mode == MeasureSpec.EXACTLY) &#123;</span><br><span class="line">        result = size;</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">        result = isWidth ? getSuggestedMinimumWidth() : getSuggestedMinimumHeight();</span><br><span class="line">        result += padding;</span><br><span class="line">        <span class="keyword">if</span> (mode == MeasureSpec.AT_MOST) &#123;</span><br><span class="line">            <span class="keyword">if</span> (isWidth) &#123;</span><br><span class="line">                result = Math.max(result, size);</span><br><span class="line">            &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">                result = Math.min(result, size);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> result;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>分析之前先看几个概念： 一个 <code>MeasureSpec</code> 被分为两部分</p>
+<ul>
+<li>mode 用来存储测量模式，由 MeasureSpec 的高两位存储</li>
+<li>size 用来存储大小，由 MeasureSpec 的低30位存储</li>
+</ul>
+<p>mode 模式分为三种：</p>
+<ul>
+<li>UNSPECIFIED 未指定模式，View 想多大就多大，父容器不做限制，一般用于系统内部的测量</li>
+<li>AT_MOST ：最大模式，对应于 layout_width 或者 layout_height 设置为 wrap_content ，子 View 的最终大小是最终父 View 指定的 size 值，并且子 View 的最终大小不能大于这个 size 值。</li>
+<li>EXACTLY 精确模式，对应于layout_width 或者 layout_height 设置为 match_parent 或者 具体的值（比如12dp），父容器测量出 View 所需的大小，也就是 size 的值。</li>
+</ul>
+<p>接下来开始具体的测量，首先 measure 是一个公共方法，用来测量 View 宽和高。</p>
+<p>这里以测量宽为例分析下 measure 方法：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">int</span> mode = MeasureSpec.getMode(measureSpec);</span><br><span class="line"><span class="keyword">int</span> size = MeasureSpec.getSize(measureSpec);</span><br></pre></td></tr></table></figure>
+<p>MeasureSpec.getMode(measureSpec) 获得测量模式 mode<br>MeasureSpec.getSize(measureSpec) 大小 size。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">int</span> padding = isWidth ? getPaddingLeft() + getPaddingRight() : getPaddingTop() + getPaddingBottom();</span><br></pre></td></tr></table></figure>
+<p>如果是测量宽，获取左侧和右侧的 padding 之和赋值给 padding。<br>如果是测量高，获取底部和顶部的 padding 之和赋值给 padding。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> (mode == MeasureSpec.EXACTLY) &#123;</span><br><span class="line">    result = size;</span><br><span class="line">&#125; <span class="keyword">else</span> &#123;</span><br><span class="line">    result = isWidth ? getSuggestedMinimumWidth() : getSuggestedMinimumHeight();</span><br><span class="line">    result += padding;</span><br><span class="line">    <span class="keyword">if</span> (mode == MeasureSpec.AT_MOST) &#123;</span><br><span class="line">        <span class="keyword">if</span> (isWidth) &#123;</span><br><span class="line">            result = Math.max(result, size);</span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">            result = Math.min(result, size);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>如果测量值为精确模式 MeasureSpec.EXACTLY ，View 已经明确了自己的大小，那么直接返回 size。</p>
+<p>如果测量模式是 UNSPECIFIED 或者 AT_MOST，取 getSuggestedMinimumWidth ，也就是对应 xml 中的 <code>android:minWidth</code> ，赋值给 result。原因很简单，如果你设置了 wrap_content，并且同时设置了 minWidth ，那肯定得按照 minWidth 的值显示。</p>
+<p>可能 View 设置了 leftPadding 或者 rightPadding，然后再把上面计算的 padding 加到 result 上。</p>
+<p>如果测量模式是 AT_MOST，也就是设置了 MATCH_PARENT 或者设置了具体的值（比如12dp），这个时候取 result 和 size 中的最大值作为 View 最终的宽。</p>
+<p>最后返回 result。</p>
+<p>View 的<strong>宽度</strong>测量完毕，<strong>高度测量和宽度测量差不多</strong>，可以仔细体会下。</p>
+<h2 id="四、绘制"><a href="#四、绘制" class="headerlink" title="四、绘制"></a>四、绘制</h2><p>绘制就比较简单了，只有两行代码：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Override</span></span><br><span class="line"><span class="function"><span class="keyword">protected</span> <span class="keyword">void</span> <span class="title">onDraw</span><span class="params">(Canvas canvas)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">super</span>.onDraw(canvas);</span><br><span class="line">    canvas.drawLine(<span class="number">0</span>, getHeight() / <span class="number">2.0f</span>, getWidth(), getHeight() / <span class="number">2.0f</span>, linePaint);</span><br><span class="line">    canvas.drawRoundRect(<span class="keyword">new</span> RectF(<span class="number">0</span>, <span class="number">0</span>, progress * getWidth(), getHeight()), getHeight() / <span class="number">2.0f</span>, getHeight() / <span class="number">2.0f</span>, progressPaint);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>先来看第一行代码：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">canvas.drawLine(0, getHeight() / 2.0f, getWidth(), getHeight() / 2.0f, linePaint);</span><br></pre></td></tr></table></figure>
+<p>通过 canvas 的 drawLine 方法画出中间的线。</p>
+<p>前两个参数表示画线的起点</p>
+<ul>
+<li>0代表从 x 轴的起点开始画</li>
+<li>getHeight() / 2.0f 表示从 y 轴向下 getHeight() / 2.0f 开始画。</li>
+</ul>
+<p>后两个参数表示画线的终点</p>
+<ul>
+<li>getWidth() 也就是整个 View 的宽度</li>
+<li>getHeight() / 2.0f 依旧表示从 y 轴向下 getHeight() / 2.0f 开始画。</li>
+</ul>
+<p>再来看第二行代码：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">canvas.drawRoundRect(<span class="keyword">new</span> RectF(<span class="number">0</span>, <span class="number">0</span>, progress * getWidth(), getHeight()), getHeight() / <span class="number">2.0f</span>, getHeight() / <span class="number">2.0f</span>, progressPaint);</span><br></pre></td></tr></table></figure>
+<p>第一个参数：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//表示整个View的所在的矩形</span></span><br><span class="line"><span class="keyword">new</span> RectF(<span class="number">0</span>, <span class="number">0</span>, progress * getWidth(), getHeight())</span><br></pre></td></tr></table></figure>
+<p>第二个参数和第三个参数都是 <code>getHeight() / 2.0f</code> ，表示的是 View 在 x 轴和 y 轴上的圆角半径。</p>
+<p>最后一个参数是画进度条的画笔。</p>
+<p>只有这两行代码就可以实现整个自定义 View 的绘制。</p>
+<p>整个核心绘制已经结束了。</p>
+<p>但是我们需要在 Java 代码中动态的更改 View 的进度，所以需要在 View 添加 setProgress 方法如下：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 设置进度</span></span><br><span class="line"><span class="comment"> *</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@param</span> pProgress</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setProgress</span><span class="params">(<span class="keyword">float</span> pProgress)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (pProgress &gt; <span class="number">1</span>) &#123;</span><br><span class="line">        pProgress = <span class="number">1</span>;</span><br><span class="line">    &#125; <span class="keyword">else</span> <span class="keyword">if</span> (pProgress &lt; <span class="number">0</span>) &#123;</span><br><span class="line">        pProgress = <span class="number">0</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">if</span> (isSmoothProgress) &#123;</span><br><span class="line">        smoothRun(<span class="keyword">this</span>.progress, pProgress);</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">        <span class="keyword">this</span>.progress = pProgress;</span><br><span class="line">        invalidate();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>很简单，如果大于 1，那么就绘制最大进度值 1，<br>如果小于 0，就绘制最小进度值 0.<br>如果在 0 和 1 之间：</p>
+<ul>
+<li>设置带动画的滑动就调用 smoothRun 这个方法。</li>
+<li>如果不带动画，就直接 invalidate 刷新。</li>
+</ul>
+<p>看下 smoothRun 方法：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 设置平滑滑动</span></span><br><span class="line"><span class="comment"> *</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@param</span> currentProgress</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@param</span> targetProgress</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">smoothRun</span><span class="params">(<span class="keyword">float</span> currentProgress, <span class="keyword">float</span> targetProgress)</span> </span>&#123;</span><br><span class="line">    ValueAnimator valueAnimator = ValueAnimator.ofFloat(currentProgress, targetProgress);</span><br><span class="line">    valueAnimator.setTarget(<span class="keyword">this</span>.progress);</span><br><span class="line">    valueAnimator.setDuration(<span class="number">1000</span>);</span><br><span class="line">    valueAnimator.addUpdateListener(<span class="keyword">new</span> ValueAnimator.AnimatorUpdateListener() &#123;</span><br><span class="line">        <span class="meta">@Override</span></span><br><span class="line">        <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onAnimationUpdate</span><span class="params">(ValueAnimator animation)</span> </span>&#123;</span><br><span class="line">            progress = (<span class="keyword">float</span>) animation.getAnimatedValue();</span><br><span class="line">            invalidate();</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;);</span><br><span class="line">    valueAnimator.start();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<ol>
+<li>首先根据传入的当前的进度值和要显示的进度值创建 ValueAnimator 对象。</li>
+<li>设置操作的动画属性为  this.progress。</li>
+<li>设置动画时长 1000 毫秒。</li>
+<li>然后监听动画过程，动态的给 progress 赋值，不断的刷新 View ，达到动画效果。</li>
+<li>最后再开始动画。</li>
+</ol>
+<h2 id="最后"><a href="#最后" class="headerlink" title="最后"></a>最后</h2><p>前面就是绘制一个简单的自定义 View 的全部过程，虽然代码量不多，但是要考虑的东西还是不少的。接下来还会继续把项目中用到的自定义 View 分享出来。 </p>
+<p>代码地址如下：<br><a href="https://github.com/smartsean/AndroidCode/blob/master/app/src/main/res/values/attrs.xml">attrs.xml</a></p>
+<p><a href="https://github.com/smartsean/AndroidCode/blob/master/app/src/main/java/com/sean/demo/widget/progress/LineProgressBar.java">LineProgressBar.java</a></p>
+<p><a href="https://github.com/smartsean/AndroidCode/blob/master/app/src/main/java/com/sean/demo/ui/a/activity/ProgressViewActivity.java">使用实例</a></p>
+<blockquote>
+<p>你可以通过以下方式关注我：</p>
+<ol>
+<li><a href="http://blog.csdn.net/sean_css" target="_blank" rel="noopener">CSDN</a></li>
+<li><a href="https://juejin.im/user/583c3f44a22b9d006dd146df/posts" target="_blank" rel="noopener">掘金</a></li>
+<li><a href="http://smartsean.cn/" target="_blank" rel="noopener">个人博客</a></li>
+</ol>
+</blockquote>
+
+    </div>
+
+    <div class="post-footer">   
+        <div>
+            
+                转载声明：商业转载请联系作者获得授权,非商业转载请注明出处 © <a href="" target="_blank">smartsean</a>
+            
+        </div>
+        <div>
+            
+        </div>  
+    </div>
+</article>
+
+<div class="article-nav prev-next-wrap clearfix">
+    
+    
+        <a href="/2018/02/02/我追求的高效之路/" class="next-post btn btn-default">下一篇<i class="fa fa-angle-right fa-fw"></i></a>
+    
+</div>
+
+
+    <div id="comments">
+        
+	
+<div id="lv-container" data-id="city" data-uid="MTAyMC8zMzA1MS85NjEz">
+  <script type="text/javascript">
+     (function(d, s) {
+         var j, e = d.getElementsByTagName(s)[0];
+         if (typeof LivereTower === 'function') { return; }
+         j = d.createElement(s);
+         j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+         j.async = true;
+         e.parentNode.insertBefore(j, e);
+     })(document, 'script');
+  </script>
+</div>
+
+
+    </div>
+
+
+
+
+
+                </main>
+                
+    <aside class="col-md-4 sidebar">
+        
+        
+    <div class="widget">    
+        <h3 class="title">搜索</h3>
+        <div id="search-form">
+            <div id="result-mask" class="hide"></div>
+            <div class="search-area">
+                
+                    <input id="search-key" type="search" autocomplete="off" placeholder="搜点什么呢?">
+                    <button type="button" class="search-form-submit" id="search-local">站内搜索</button>
+                
+                
+            </div>
+            <div id="result-wrap" class="hide">
+                <div id="search-result"></div>
+            </div>
+            <div class="hide">
+                <template id="search-tpl">
+                    <div class="item">
+                        <a href="/{path}" title="{title}">
+                            <div class="title">{title}</div>
+                            <div class="content">{content}</div>
+                        </a>
+                    </div>
+                </template>
+            </div>
+        </div>
+    </div>
+
+        
+        
+    <div class="widget">
+      <h3 class="title">社交</h3> 
+        <div class="content social">
+            
+	            <a href="https://github.com/smartsean" rel="external nofollow" title="Github" target="_blank">
+			    	<i class="git fa fa-git"></i>
+			    </a>
+            
+        </div>
+    </div>
+
+
+        
+        
+    <div class="widget">
+        <h3 class="title">分类</h3>
+        <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/Android/"><i class="fa" aria-hidden="true">Android</i></a><span class="category-list-count">42</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Ionic/"><i class="fa" aria-hidden="true">Ionic</i></a><span class="category-list-count">7</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/工具/"><i class="fa" aria-hidden="true">工具</i></a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/我/"><i class="fa" aria-hidden="true">我</i></a><span class="category-list-count">6</span></li></ul>
+    </div>
+
+
+        
+        
+  <div class="widget">
+    <h3 class="title">标签云</h3>
+    <div class="content tag-cloud">
+        <a href="/tags/Android/" style="font-size: 20px;">Android</a> <a href="/tags/AndroidStudio/" style="font-size: 12px;">AndroidStudio</a> <a href="/tags/Git/" style="font-size: 10px;">Git</a> <a href="/tags/Ionic/" style="font-size: 18px;">Ionic</a> <a href="/tags/Java/" style="font-size: 12px;">Java</a> <a href="/tags/Java-Java基础/" style="font-size: 10px;">Java Java基础</a> <a href="/tags/工具/" style="font-size: 16px;">工具</a> <a href="/tags/异常/" style="font-size: 12px;">异常</a> <a href="/tags/我/" style="font-size: 14px;">我</a> <a href="/tags/模拟器/" style="font-size: 10px;">模拟器</a> <a href="/tags/自定义View/" style="font-size: 12px;">自定义View</a>
+    </div>
+  </div>
+
+
+        
+        
+    <div class="widget notification">
+        <h3 class="title">网站公告</h3>
+        <div>
+            <p>暂无公告~ <br/>
+        </div>
+    </div>
+
+        
+        
+    <div class="widget">
+      <h3 class="title">归档</h3>
+        <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/02/"><i class="fa" aria-hidden="true">二月 2018</i></a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/01/"><i class="fa" aria-hidden="true">一月 2018</i></a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/12/"><i class="fa" aria-hidden="true">十二月 2017</i></a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/09/"><i class="fa" aria-hidden="true">九月 2017</i></a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/08/"><i class="fa" aria-hidden="true">八月 2017</i></a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/07/"><i class="fa" aria-hidden="true">七月 2017</i></a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/05/"><i class="fa" aria-hidden="true">五月 2017</i></a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/04/"><i class="fa" aria-hidden="true">四月 2017</i></a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/03/"><i class="fa" aria-hidden="true">三月 2017</i></a><span class="archive-list-count">7</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/02/"><i class="fa" aria-hidden="true">二月 2017</i></a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/01/"><i class="fa" aria-hidden="true">一月 2017</i></a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/12/"><i class="fa" aria-hidden="true">十二月 2016</i></a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/11/"><i class="fa" aria-hidden="true">十一月 2016</i></a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/10/"><i class="fa" aria-hidden="true">十月 2016</i></a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/09/"><i class="fa" aria-hidden="true">九月 2016</i></a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/08/"><i class="fa" aria-hidden="true">八月 2016</i></a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/06/"><i class="fa" aria-hidden="true">六月 2016</i></a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/04/"><i class="fa" aria-hidden="true">四月 2016</i></a><span class="archive-list-count">10</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/03/"><i class="fa" aria-hidden="true">三月 2016</i></a><span class="archive-list-count">3</span></li></ul>
+    </div>
+
+
+        
+        
+    <div class="widget">
+        <h3 class="title">友链</h3>
+        <div class="content friends-link">
+        
+            <a href="http://www.shenliyang.com" class="fa" target="_blank">个人博客</a>
+        
+        </div>
+    </div>
+
+
+        
+    </aside>
+
+            </div>
+        </div>
+    </section>
+    <footer class="main-footer">
+    <div class="container">
+        <div class="row">
+        </div>
+    </div>
+</footer>
+
+<a id="back-to-top" class="hide">
+	<i class="fa fa-chevron-up"></i>
+</a>
+
+
+
+
+    <div class="copyright">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12"> 
+                <span>Copyright &copy; 2018
+                </span> | 
+                <span>
+                    Powered by <a href="//hexo.io" class="copyright-links" target="_blank" rel="nofollow">Hexo</a>
+                </span> | 
+                <span>
+                    Theme by <a href="//github.com/shenliyang/hexo-theme-snippet.git" class="copyright-links" target="_blank" rel="nofollow">Snippet</a>
+                </span>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+	<script src="/js/search.js?rev=@@hash"></script>
+
+
+<script src="/js/app.js?rev=@@hash"></script>
+
+
+</body>
+</html>
