@@ -195,9 +195,27 @@
 <p>如果是测量宽，获取左侧和右侧的 padding 之和赋值给 padding。<br>如果是测量高，获取底部和顶部的 padding 之和赋值给 padding。</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> (mode == MeasureSpec.EXACTLY) &#123;</span><br><span class="line">    result = size;</span><br><span class="line">&#125; <span class="keyword">else</span> &#123;</span><br><span class="line">    result = isWidth ? getSuggestedMinimumWidth() : getSuggestedMinimumHeight();</span><br><span class="line">    result += padding;</span><br><span class="line">    <span class="keyword">if</span> (mode == MeasureSpec.AT_MOST) &#123;</span><br><span class="line">        <span class="keyword">if</span> (isWidth) &#123;</span><br><span class="line">            result = Math.max(result, size);</span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">            result = Math.min(result, size);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p>如果测量值为精确模式 MeasureSpec.EXACTLY ，View 已经明确了自己的大小，那么直接返回 size。</p>
-<p>如果测量模式是 UNSPECIFIED 或者 AT_MOST，取 getSuggestedMinimumWidth ，也就是对应 xml 中的 <code>android:minWidth</code> ，赋值给 result。原因很简单，如果你设置了 wrap_content，并且同时设置了 minWidth ，那肯定得按照 minWidth 的值显示。</p>
-<p>可能 View 设置了 leftPadding 或者 rightPadding，然后再把上面计算的 padding 加到 result 上。</p>
-<p>如果测量模式是 AT_MOST，也就是设置了 MATCH_PARENT 或者设置了具体的值（比如12dp），这个时候取 result 和 size 中的最大值作为 View 最终的宽。</p>
+<p>如果测量模式是 UNSPECIFIED 或者 AT_MOST，取 getSuggestedMinimumWidth ，那么这个 getSuggestedMinimumWidth（） 是什么呢？</p>
+<p>来看下源码：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">protected</span> <span class="keyword">int</span> <span class="title">getSuggestedMinimumWidth</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> (mBackground == <span class="keyword">null</span>) ? mMinWidth : max(mMinWidth, mBackground.getMinimumWidth());</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>可以看到，先判断了背景 mBackground 是不是为空</p>
+<ul>
+<li>如果为空，就直接取 mMinWidth 的值，也就是对应 xml 中的 <code>android:minWidth</code></li>
+<li>如果不为空，取 mMinWidth 和 mBackground 背景的最小宽度。</li>
+</ul>
+<p>具体到本实例就是说：如果你设置了 wrap_content，</p>
+<ul>
+<li>设置了 minWidth ，没有设置背景，就按照 minWidth</li>
+<li>设置了 minWidth ，有设置背景，就取 minWidth 和 mBackground.getMinimumWidth() 的最大值</li>
+<li>没设置 minWidth ，没有设置背景，就取 minWidth 的默认值0.</li>
+<li>没设置了 minWidth ，有设置背景，就取 minWidth（默认值为0） 和 mBackground.getMinimumWidth() 的最大值</li>
+</ul>
+<blockquote>
+<p>mBackground.getMinimumWidth() 就是背景 Drawable 的原始宽高。</p>
+</blockquote>
+<p>有可能我们的 View 设置了 leftPadding 或者 rightPadding，然后再把上面计算的 padding 加到 result 上。</p>
+<p>如果测量模式是 UNSPECIFIED ，那么本次测量就结束了。</p>
+<p>但是如果测量模式是 AT_MOST，也就是设置了 MATCH_PARENT 或者设置了具体的值（比如12dp），还得继续取 result 和 size 中的最大值作为 View 最终的宽。</p>
 <p>最后返回 result。</p>
 <p>View 的<strong>宽度</strong>测量完毕，<strong>高度测量和宽度测量差不多</strong>，可以仔细体会下。</p>
 <h2 id="四、绘制"><a href="#四、绘制" class="headerlink" title="四、绘制"></a>四、绘制</h2><p>绘制就比较简单了，只有两行代码：</p>
