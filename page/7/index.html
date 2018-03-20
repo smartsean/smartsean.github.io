@@ -24,7 +24,7 @@
     <!--Title-->
 
 
-<title> Android控件之CheckBox换图标、焦点问题 | SmartSean的小站</title>
+<title>SmartSean的小站</title>
 
 
     <link rel="alternate" href="/atom.xml" title="SmartSean的小站" type="application/atom+xml">
@@ -113,16 +113,46 @@
     <section class="content-wrap">
         <div class="container">
             <div class="row">
-                <main class="col-md-8 main-content m-post">
-                    <p id="process"></p>
+                <main class="col-md-8 main-content ">
+                    <div class="carousel">
+    <img src="/img/head-img.jpg">
+</div>
+
+
+
+
 <article class="post">
-    <div class="post-head">
-        <h1 id=" Android控件之CheckBox换图标、焦点问题">
-            
-	             Android控件之CheckBox换图标、焦点问题
-            
-        </h1>
-        <div class="post-meta">
+    
+        <div class="post-media">
+            <a href="/2016/03/29/Android-UI模板设计-TopBar-标题栏/">
+                <img class="img-ajax" src="/img/loading.gif"  data-src="http://img.blog.csdn.net/20160328111836070"   alt="Android UI模板设计---TopBar(标题栏)"> 
+            </a>
+        </div>
+    
+    <div class="post-content">
+        <div class="post-head home-post-head">
+            <h1 class="post-title">
+                <a href="/2016/03/29/Android-UI模板设计-TopBar-标题栏/">Android UI模板设计---TopBar(标题栏)</a>
+            </h1>
+            <div class="post-meta">  &bull;
+                <time class="post-date" datetime="" title="">
+                    2016年03月29日
+                </time>
+            </div>
+        </div>
+        <p class="brief">
+            之前在郭神的书上看到了自定义控件这个概念，今天在慕课网又接触了自定义模板，今天就把学习到的自定义TopBar模板的总结写在这里。
+自定义主要分为三步：
+
+
+设置自定义模板需要的属性
+在java代码中实现我们的自定义模板
+在布局文件中引...
+        </p> 
+    </div>
+    <footer class="post-footer clearfix">
+        <div class="pull-left tag-list">
+            <div class="post-meta">
     
     
     <span class="categories-meta fa-wrap">
@@ -143,73 +173,26 @@
     
     <span class="fa-wrap">
         <i class="fa fa-clock-o"></i>
-        <span class="date-meta">2016/04/19</span>
+        <span class="date-meta">2016/03/29</span>
     </span>
 </div>
 
-            
-            
-            <p class="fa fa-exclamation-triangle warning">
-                本文于<strong>699</strong>天之前发表，文中内容可能已经过时。
-            </p>
-        
-    </div>
-    
-    <div class="post-body post-content">
-        <p>今天在实现ListView点击事件的时候，发现点击之后没有效果，查了下，发现是Item布局里面的CheckBox控件截取了焦点，只需要把CheckBox中的focusable属性设置为false即可</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">android:focusable=&quot;false&quot;</span><br></pre></td></tr></table></figure>
-<p>由于系统自带的图标满足不了我的需求，然后又重新定制了属于自己的图标，过程如下：<br>1、在Drawable下面新建文件，比如checkbox_for_addpending_0.xml</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;</span><br><span class="line">&lt;selector xmlns:android=&quot;http://schemas.android.com/apk/res/android&quot;&gt;</span><br><span class="line">    &lt;!-- 点击之后的图标 --&gt;</span><br><span class="line">    &lt;item</span><br><span class="line">        android:state_checked=&quot;true&quot;</span><br><span class="line">        android:drawable=&quot;@mipmap/priority_no&quot;</span><br><span class="line">        /&gt;</span><br><span class="line">    &lt;!-- 点击之前的图标 --&gt;</span><br><span class="line">    &lt;item</span><br><span class="line">        android:state_checked=&quot;false&quot;</span><br><span class="line">        android:drawable=&quot;@mipmap/priority_no_normal&quot;</span><br><span class="line">        /&gt;</span><br><span class="line">&lt;/selector&gt;</span><br></pre></td></tr></table></figure>
-<p>2、在布局文件中直接设置button属性指向这个文件即可<br>第一种写法：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">&lt;CheckBox</span><br><span class="line">        android:id=&quot;@+id/cb_is_finish_in_lv&quot;</span><br><span class="line">        android:focusable=&quot;false&quot;</span><br><span class="line">        android:layout_width=&quot;50dp&quot;</span><br><span class="line">        android:layout_height=&quot;50dp&quot;</span><br><span class="line">        android:button=&quot;@drawable/checkbox_for_addpending_0&quot;</span><br><span class="line">        /&gt;</span><br></pre></td></tr></table></figure></p>
-<p>如果按照上面的写法，你设置的图标不会再CheckBox的正中间显示，会垂直居中，而不会水平居中，并且当你点击的CheckBox控件的时候，会有灰色背景显示，很难看，按照下面的这种写法就可以解决上面的问题：</p>
-<p>第二种写法：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">&lt;CheckBox</span><br><span class="line">        android:id=&quot;@+id/cb_is_finish_in_lv&quot;</span><br><span class="line">        android:focusable=&quot;false&quot;</span><br><span class="line">        android:layout_width=&quot;50dp&quot;</span><br><span class="line">        android:layout_height=&quot;50dp&quot;</span><br><span class="line">        android:button=&quot;@null&quot;</span><br><span class="line">        android:drawableLeft=&quot;@drawable/checkbox_for_addpending_0&quot;</span><br><span class="line">        android:drawablePadding=&quot;10dip&quot;</span><br><span class="line">        android:paddingBottom=&quot;10dip&quot;</span><br><span class="line">        android:paddingLeft=&quot;10dip&quot;</span><br><span class="line">        android:paddingTop=&quot;10dip&quot;</span><br><span class="line">        android:background=&quot;#FFFFFF&quot;</span><br><span class="line">        /&gt;</span><br></pre></td></tr></table></figure></p>
-<p>按照上面写的话也有一定的弊端，比如我想更换CheckBox图片按钮的时候，就会在左侧加上你更新的图片，会很丑陋，这个时候可以使用第一种写法，然后把背景设置的和父布局一致，让CheckBox向右移动下，也可以实现第二种写法的效果。</p>
-<p>特此记录。</p>
-
-    </div>
-
-    <div class="post-footer">   
-        <div>
-            
-                转载声明：商业转载请联系作者获得授权,非商业转载请注明出处 © <a href="" target="_blank">smartsean</a>
-            
         </div>
-        <div>
-            
-        </div>  
-    </div>
+
+        <div class="post-permalink"> 
+            <a href="/2016/03/29/Android-UI模板设计-TopBar-标题栏/" class="btn btn-default">阅读全文</a>
+        </div>
+    </footer>
 </article>
 
-<div class="article-nav prev-next-wrap clearfix">
-    
-        <a href="/2016/04/22/Android-open-failed-ENOENT-No-such-file-or-directory-错误/" class="pre-post btn btn-default"><i class="fa fa-angle-left fa-fw"></i>上一篇</a>
-    
-    
-        <a href="/2016/04/18/【转】Android面试题精选/" class="next-post btn btn-default">下一篇<i class="fa fa-angle-right fa-fw"></i></a>
-    
-</div>
 
 
-    <div id="comments">
-        
-	
-<div id="lv-container" data-id="city" data-uid="MTAyMC8zMzA1MS85NjEz">
-  <script type="text/javascript">
-     (function(d, s) {
-         var j, e = d.getElementsByTagName(s)[0];
-         if (typeof LivereTower === 'function') { return; }
-         j = d.createElement(s);
-         j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
-         j.async = true;
-         e.parentNode.insertBefore(j, e);
-     })(document, 'script');
-  </script>
-</div>
 
-
-    </div>
-
-
+    <nav class="pagination" role="navigation">
+        <div id="page-nav">
+            <a class="extend prev" rel="prev" href="/page/6/"><i class='fa fa-angle-left'></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/5/">5</a><a class="page-number" href="/page/6/">6</a><span class="page-number current">7</span>
+        </div>
+    </nav>
 
 
 
