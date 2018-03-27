@@ -1,0 +1,533 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+    <!--Setting-->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+    <meta http-equiv="Cache-Control" content="no-siteapp">
+    <meta name="renderer" content="webkit|ie-comp|ie-stand">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="format-detection" content="telephone=no,email=no,adress=no">
+    <meta name="browsermode" content="application">
+    <meta name="screen-orientation" content="portrait">
+    <link rel="dns-prefetch" href="https://github.com/smartsean/smartsean.github.io">
+    <!--SEO-->
+
+
+
+<meta name="robots" content="all" />
+<meta name="google" content="all" />
+<meta name="googlebot" content="all" />
+<meta name="verify" content="all" />
+    <!--Title-->
+
+
+<title>Java反射笔记 | SmartSean的小站</title>
+
+
+    <link rel="alternate" href="/atom.xml" title="SmartSean的小站" type="application/atom+xml">
+
+
+    <link rel="icon" href="/favicon.ico">
+
+    
+
+
+
+<link rel="stylesheet" href="//cdn.bootcss.com/bootstrap/3.3.4/css/bootstrap.min.css?rev=3.3.4">
+<link rel="stylesheet" href="//cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.min.css">
+<link rel="stylesheet" href="/css/style.css?rev=@@hash">
+
+
+
+
+    
+    <div class="hide">
+    	<script src="https://s4.cnzz.com/z_stat.php?id=1263868967&web_id=1263868967" language="JavaScript"></script>
+    </div>
+
+
+
+
+
+
+    
+</head>
+
+
+<!--[if lte IE 8]>
+<style>
+    html{ font-size: 1em }
+</style>
+<![endif]-->
+<!--[if lte IE 9]>
+<div style="ie">你使用的浏览器版本过低，为了你更好的阅读体验，请更新浏览器的版本或者使用其他现代浏览器，比如Chrome、Firefox、Safari等。</div>
+<![endif]-->
+
+<body>
+    <header class="main-header"  style="background-image:url(http://7xpw2b.com1.z0.glb.clouddn.com/hexo-sinppet/img/banner2.jpg)"  >
+    <div class="main-header-box">
+        <a class="header-avatar" href="/" title="">
+            <img src="/img/avatar.jpg" alt="logo头像">
+        </a>
+        <div class="branding">
+        	<!--<h2 class="text-hide">Snippet主题,从未如此简单有趣</h2>-->
+            
+                <h2> 仰望星空，脚踏实地。 </h2>
+             
+    	</div>
+    </div>
+</header>
+    <nav class="main-navigation">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="navbar-header"><span class="nav-toggle-button collapsed" data-toggle="collapse" data-target="#main-menu" id="mnav">
+                    <span class="sr-only">Toggle navigation</span>
+                    <i class="fa fa-bars"></i>
+                    </span>
+                </div>
+                <div class="collapse navbar-collapse" id="main-menu">
+                    <ul class="menu">
+                        
+                            <li role="presentation"><a href="/"><i class="fa fa-fw "></i>首页</a>
+                            </li>
+                        
+                            <li role="presentation"><a href="/categories/Android/"><i class="fa fa-fw "></i>Android</a>
+                            </li>
+                        
+                            <li role="presentation"><a href="/categories/工具/"><i class="fa fa-fw "></i>工具</a>
+                            </li>
+                        
+                            <li role="presentation"><a href="/categories/我/"><i class="fa fa-fw "></i>我</a>
+                            </li>
+                        
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</nav>
+    <section class="content-wrap">
+        <div class="container">
+            <div class="row">
+                <main class="col-md-8 main-content m-post">
+                    <p id="process"></p>
+<article class="post">
+    <div class="post-head">
+        <h1 id="Java反射笔记">
+            
+	            Java反射笔记
+            
+        </h1>
+        <div class="post-meta">
+    
+    
+    <span class="categories-meta fa-wrap">
+        <i class="fa fa-folder-open-o"></i>
+        <span> </span>
+    </span>
+    
+    
+    <span class="fa-wrap">
+        <i class="fa fa-tags"></i>
+        <span class="tags-meta">
+            
+            null
+            
+        </span>
+    </span>
+    
+    
+    <span class="fa-wrap">
+        <i class="fa fa-clock-o"></i>
+        <span class="date-meta">2018/03/27</span>
+    </span>
+</div>
+
+            
+            
+    </div>
+    
+    <div class="post-body post-content">
+        <p>[toc]</p>
+<h1 id="Java反射笔记"><a href="#Java反射笔记" class="headerlink" title="Java反射笔记"></a>Java反射笔记</h1><h2 id="Class的获取"><a href="#Class的获取" class="headerlink" title="Class的获取"></a>Class的获取</h2><p>1、 Object.getClass()</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">Car car = <span class="keyword">new</span> Car();</span><br><span class="line">Class clazz = car.getClass();</span><br></pre></td></tr></table></figure>
+<p>这种方式不适合基本数据类型比如 int float等</p>
+<p>2、  String.class</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">Class clazz = Car.class;</span><br><span class="line">Class cls1 = <span class="keyword">int</span>.class;</span><br><span class="line">Class cls2 = String.class;</span><br></pre></td></tr></table></figure>
+<p>3、  Class.forName() </p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Class clz = Class.forName(&quot;com.frank.test.Car&quot;);</span><br></pre></td></tr></table></figure>
+<p><code>“com.frank.test.Car”</code> 就是 Car 这个类的全限定名称，它包括包名+类名。</p>
+<h2 id="Class-的名字"><a href="#Class-的名字" class="headerlink" title="Class 的名字"></a>Class 的名字</h2><p>这里放一个 Car 类，做 Demo</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> cn.smartsean;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Car</span> </span>&#123;</span><br><span class="line">    <span class="keyword">private</span> String mBand;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> Color mColor;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">enum</span> Color &#123;</span><br><span class="line">        RED,</span><br><span class="line">        WHITE,</span><br><span class="line">        BLACK,</span><br><span class="line">        BLUE,</span><br><span class="line">        YELLOW</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">Car</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">super</span>();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">Car</span><span class="params">(String band)</span> </span>&#123;</span><br><span class="line">        mBand = band;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">drive</span><span class="params">()</span></span>&#123;</span><br><span class="line">        System.out.println(<span class="string">"滴滴滴滴，开车了"</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> String <span class="title">toString</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="string">"Car [mBand="</span> + mBand + <span class="string">", 车的颜色是="</span> + mColor + <span class="string">"]"</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>测试类：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">Class clz = Car.class;</span><br><span class="line">System.out.println(clz.getName());</span><br><span class="line"></span><br><span class="line">Class clz1 = <span class="keyword">float</span>.class;</span><br><span class="line">System.out.println(clz1.getName());</span><br><span class="line"></span><br><span class="line">Class clz2 = Void.class;</span><br><span class="line">System.out.println(clz2.getName());</span><br><span class="line"></span><br><span class="line">Class clz3 = <span class="keyword">new</span> <span class="keyword">int</span>[]&#123;&#125;.getClass();</span><br><span class="line">System.out.println(clz3.getName());</span><br><span class="line"></span><br><span class="line">Class clz4 = <span class="keyword">new</span> Car[]&#123;&#125;.getClass();</span><br><span class="line">System.out.println(clz4.getName());</span><br></pre></td></tr></table></figure>
+<p>1、 Class.getName();</p>
+<ul>
+<li>当 Class 代表一个引用时</li>
+</ul>
+<p><code>getName()</code> 方法返回的是一个二进制形式的字符串 比如 <code>cn.smartsean.Car</code></p>
+<ul>
+<li>当 Class 代表一个基本数据类型</li>
+</ul>
+<p><code>getName()</code> 方法返回的是他们的关键字，比如 <code>int.class</code> 返回的是 int</p>
+<ul>
+<li>当 Class 代表的是基础数据类型的数组时 </li>
+</ul>
+<p>比如 <code>int[][][]</code> 这样的 3 维数组时, <code>getName()</code> 返回的是 <code>[[[I</code> 这样的字符串<br>这种情况的规则：<br><img src="http://p2oza5z62.bkt.clouddn.com/2018-03-27-15221411169941.jpg" alt=""></p>
+<hr>
+<p>最后上面的测试类运行结果:</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">cn.smartsean.Car</span><br><span class="line"><span class="keyword">float</span></span><br><span class="line">java.lang.Void</span><br><span class="line">[I</span><br><span class="line">[Lcn.smartsean.Car;</span><br></pre></td></tr></table></figure>
+<p>2、 Class.getSimpleName();<br>顾名思义，就是获取简易名字的。<br>上面测试类运行结果:</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">cn.smartsean.Car</span><br><span class="line">Car</span><br><span class="line"><span class="keyword">float</span></span><br><span class="line"><span class="keyword">float</span></span><br><span class="line">java.lang.Void</span><br><span class="line">Void</span><br><span class="line">[I</span><br><span class="line"><span class="keyword">int</span>[]</span><br><span class="line">[Lcn.smartsean.Car;</span><br><span class="line">Car[]</span><br></pre></td></tr></table></figure>
+<p><strong>需要注意的是对于匿名内部类。返回的是一个空的字符串（注意不是null是””）</strong></p>
+<p>3、 Class.getCanonicalName();<br>Canonical 是官方、标准的意思，那么 getCanonicalName() 自然就是返回一个 Class 对象的官方名字，这个官方名字 canonicalName 是 Java 语言规范制定的，如果 Class 对象没有 canonicalName 的话就返回 null。</p>
+<p>getCanonicalName() 是 getName() 和 getSimpleName() 的结合。</p>
+<ul>
+<li>getCanonicalName() 返回的也是全限定类名，但是对于内部类，不用 $ 开头，而用 .。</li>
+<li>getCanonicalName() 对于数组类型的 Class，同 simplename 一样直接在后面添加 [] 。</li>
+<li>getCanonicalName() 不同于 simplename 的地方是，不存在 canonicalName 的时候返回 <strong>null</strong> 而不是空字符串。</li>
+<li>局部类和匿名内部类不存在 canonicalName。</li>
+</ul>
+<p>上面测试类的运行结果：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">getName()：cn.smartsean.Car</span><br><span class="line">getSimpleName()：Car</span><br><span class="line">getCanonicalName()：cn.smartsean.Car</span><br><span class="line"></span><br><span class="line">getName()：<span class="keyword">float</span></span><br><span class="line">getSimpleName()：<span class="keyword">float</span></span><br><span class="line">getCanonicalName()：<span class="keyword">float</span></span><br><span class="line"></span><br><span class="line">getName()：java.lang.Void</span><br><span class="line">getSimpleName()：Void</span><br><span class="line">getCanonicalName()：java.lang.Void</span><br><span class="line"></span><br><span class="line">getName()：[I</span><br><span class="line">getSimpleName()：<span class="keyword">int</span>[]</span><br><span class="line">getCanonicalName()：<span class="keyword">int</span>[]</span><br><span class="line"></span><br><span class="line">getName()：[Lcn.smartsean.Car;</span><br><span class="line">getSimpleName()：Car[]</span><br><span class="line">getCanonicalName()：cn.smartsean.Car[]</span><br></pre></td></tr></table></figure>
+<h2 id="Class-的修饰符"><a href="#Class-的修饰符" class="headerlink" title="Class 的修饰符"></a>Class 的修饰符</h2><p>通常情况下，Java 类的修饰符有以下几种：</p>
+<ul>
+<li>限定作用域的 public private protected</li>
+<li>用来限制子类必须复写的 abstract</li>
+<li>用来标记静态的 static</li>
+<li>注解</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">Class clz = Test.class;</span><br><span class="line">System.out.println(<span class="string">"修饰符的id："</span> + clz.getModifiers());</span><br><span class="line">System.out.println(<span class="string">"修饰符的实际值："</span> + Modifier.toString(clz.getModifiers()));</span><br></pre></td></tr></table></figure>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">修饰符的id：<span class="number">1025</span></span><br><span class="line">修饰符的实际值：<span class="keyword">public</span> <span class="keyword">abstract</span></span><br></pre></td></tr></table></figure>
+<p>可以看出，通过 <code>Modifier.toString()</code>方法可以获得实际的修饰符</p>
+<blockquote>
+<p>一个类定义的时候可能会被多个修饰符修饰，为了一并获取，所以 Java 工程师考虑到了位运算，用一个 int 数值来记录所有的修饰符，然后不同的位对应不同的修饰符，这些修饰符对应的位都定义在 Modifier 这个类当中。</p>
+</blockquote>
+<p>Modifier 还提供了一系列的静态工具方法用来对修饰符进行操作:</p>
+<p>比如 isPublic、isPrivate、isProtected、isStatic、isFinal、isSynchronized、isVolatile、isTransient、isNative、isInterface、isAbstract、isStrict等</p>
+<h2 id="获取-Class-的成员"><a href="#获取-Class-的成员" class="headerlink" title="获取 Class 的成员"></a>获取 Class 的成员</h2><p>一个类的成员包括属性（有人翻译为字段或者域）、方法、构造方法（也是方法）。对应到 Class 中就是 Field、Method、Constructor。</p>
+<h3 id="获取-Filed"><a href="#获取-Filed" class="headerlink" title="获取 Filed"></a>获取 Filed</h3><h4 id="获取指定名字的属性"><a href="#获取指定名字的属性" class="headerlink" title="获取指定名字的属性"></a>获取指定名字的属性</h4><p>获取指定名字的属性有 2 个 API</p>
+<p>1、 getDeclaredField(String name)</p>
+<p>getDeclaredField() 获取的是 Class 中被 private 修饰的属性</p>
+<p>2、 getField(String name)</p>
+<p>getField() 方法获取的是非私有属性，并且 getField() 在当前 Class 获取不到时会向祖先类获取</p>
+<h4 id="获取所有属性"><a href="#获取所有属性" class="headerlink" title="获取所有属性"></a>获取所有属性</h4><p>1、getDeclaredFields（）<br>获取所有的属性， 比如private、protected、public 和 default 修饰的属性，<strong>但不包括从父类继承下来的属性</strong><br>2、getFields（）<br>获取自身的所有的 public 属性(仅获取被 public 修饰的)，包括从父类继承下来的。</p>
+<p>上面两个都是返回 Field[] 数组，存放所有获取到的值。</p>
+<p>测试代码：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Father</span> </span>&#123;</span><br><span class="line">    <span class="keyword">private</span> String father;</span><br><span class="line">    <span class="keyword">protected</span> String father1;</span><br><span class="line">    <span class="keyword">public</span> String father2;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Son</span> <span class="keyword">extends</span> <span class="title">Father</span> </span>&#123;</span><br><span class="line">    <span class="keyword">private</span> String son;</span><br><span class="line">    <span class="keyword">protected</span> String son1;</span><br><span class="line">    <span class="keyword">public</span> String son2l;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">Class clz1 = Son.class;</span><br><span class="line">System.out.println(<span class="string">"getDeclaredFields:"</span>);</span><br><span class="line">System.out.println();</span><br><span class="line"><span class="keyword">for</span> (Field field : clz1.getDeclaredFields()) &#123;</span><br><span class="line">    System.out.println(field.getName());</span><br><span class="line">&#125;</span><br><span class="line">System.out.println();</span><br><span class="line">System.out.println(<span class="string">"getFields:"</span>);</span><br><span class="line">System.out.println();</span><br><span class="line"><span class="keyword">for</span> (Field field : clz1.getFields()) &#123;</span><br><span class="line">    System.out.println(field.getName());</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>运行结果：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">getDeclaredFields:</span><br><span class="line"></span><br><span class="line">son</span><br><span class="line">son1</span><br><span class="line">son2l</span><br><span class="line"></span><br><span class="line">getFields:</span><br><span class="line"></span><br><span class="line">son2l</span><br><span class="line">father2</span><br></pre></td></tr></table></figure>
+<p><img src="http://p2oza5z62.bkt.clouddn.com/2018-03-27-15221546793502.jpg" alt=""></p>
+<h3 id="获取-Method"><a href="#获取-Method" class="headerlink" title="获取 Method"></a>获取 Method</h3><p>和上面的获取 Field 基本类似</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//获取指定方法</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> Method <span class="title">getDeclaredMethod</span><span class="params">(String name, Class&lt;?&gt;... parameterTypes)</span></span></span><br><span class="line"><span class="function"><span class="comment">//获取指定方法</span></span></span><br><span class="line"><span class="function"><span class="keyword">public</span> Method <span class="title">getMethod</span><span class="params">(String name, Class&lt;?&gt;... parameterTypes)</span></span></span><br><span class="line"><span class="function"><span class="comment">//获取**所有**方法</span></span></span><br><span class="line"><span class="function"><span class="keyword">public</span> Method[] <span class="title">getDeclaredMethods</span><span class="params">()</span> <span class="keyword">throws</span> SecurityException</span></span><br><span class="line"><span class="function"><span class="comment">//获取**所有**方法</span></span></span><br><span class="line"><span class="function"><span class="keyword">public</span> Method[] <span class="title">getMethods</span><span class="params">()</span> <span class="keyword">throws</span> SecurityException</span></span><br></pre></td></tr></table></figure>
+<h3 id="获取-Constructor"><a href="#获取-Constructor" class="headerlink" title="获取 Constructor"></a>获取 Constructor</h3><p>Java 反射把构造器从方法中单独拎出来了，用 Constructor 表示</p>
+<p><strong>Constructor 不能从父类继承，所以就没有办法通过 getConstructor() 获取到父类的 Constructor</strong></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//获取指定的构造方法</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> Constructor&lt;T&gt; <span class="title">getDeclaredConstructor</span><span class="params">(Class&lt;?&gt;... parameterTypes)</span></span></span><br><span class="line"><span class="function"><span class="comment">//获取指定的构造方法</span></span></span><br><span class="line"><span class="function"><span class="keyword">public</span> Constructor&lt;T&gt; <span class="title">getConstructor</span><span class="params">(Class&lt;?&gt;... parameterTypes)</span></span></span><br><span class="line"><span class="function"><span class="comment">//获取**所有**的构造方法</span></span></span><br><span class="line"><span class="function"><span class="keyword">public</span> Constructor&lt;?&gt;[] <span class="title">getDeclaredConstructors</span><span class="params">()</span> <span class="keyword">throws</span> SecurityException </span></span><br><span class="line"><span class="function"><span class="comment">//获取**所有**的构造方法</span></span></span><br><span class="line"><span class="function"><span class="keyword">public</span> Constructor&lt;?&gt;[] <span class="title">getConstructors</span><span class="params">()</span> <span class="keyword">throws</span> SecurityException</span></span><br></pre></td></tr></table></figure>
+<h2 id="Field-的操控"><a href="#Field-的操控" class="headerlink" title="Field 的操控"></a>Field 的操控</h2><p>Field 要么是 8 种基础类型 int、long、float、double、boolean、char、byte 和 short。或者是引用，所有的引用都是 Object 的后代。</p>
+<h3 id="Field-类型的获取"><a href="#Field-类型的获取" class="headerlink" title="Field 类型的获取"></a>Field 类型的获取</h3><p>获取 Field 的类型，通过 2 个方法：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">//能够获取到泛型类型,比getType更加的详细</span><br><span class="line">public Type getGenericType() &#123;&#125;</span><br><span class="line"></span><br><span class="line">public Class&lt;?&gt; getType() &#123;&#125;</span><br></pre></td></tr></table></figure>
+<p>测试代码：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Test</span> </span>&#123;</span><br><span class="line">    <span class="keyword">private</span> Car mCar;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">int</span>[] mInts;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> List&lt;String&gt; mStrings;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> Map&lt;String, Car&gt; mMap;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">Class clz = Test.class;</span><br><span class="line"><span class="keyword">for</span> (Field field : clz.getDeclaredFields()) &#123;</span><br><span class="line">    System.out.println(<span class="string">"name :"</span> + field.getName() + <span class="string">"       getType() :"</span> + field.getType() + <span class="string">"      getGenericType() :"</span> + field.getGenericType());</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>输出:</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:left">name</th>
+<th style="text-align:right">type()</th>
+<th style="text-align:center">genericType()</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left">mCar</td>
+<td style="text-align:right">class cn.smartsean.Car</td>
+<td style="text-align:center">class cn.smartsean.Car</td>
+</tr>
+<tr>
+<td style="text-align:left">mInts</td>
+<td style="text-align:right">class [I</td>
+<td style="text-align:center">class [I</td>
+</tr>
+<tr>
+<td style="text-align:left">mStrings</td>
+<td style="text-align:right">interface java.util.List</td>
+<td style="text-align:center">java.util.List<java.lang.string></java.lang.string></td>
+</tr>
+<tr>
+<td style="text-align:left">mMap</td>
+<td style="text-align:right">interface java.util.Map</td>
+<td style="text-align:center">java.util.Map<java.lang.string, cn.smartsean.car=""></java.lang.string,></td>
+</tr>
+</tbody>
+</table>
+<p><img src="http://p2oza5z62.bkt.clouddn.com/2018-03-27-15221449531484.jpg" alt=""></p>
+<h3 id="Field-修饰符的获取"><a href="#Field-修饰符的获取" class="headerlink" title="Field 修饰符的获取"></a>Field 修饰符的获取</h3><p>同 Class 一样，Field 也有很多修饰符。通过 getModifiers() 方法就可以轻松获取。<br>和获取 Class 的修饰符一样</p>
+<h3 id="Field-内容的读取与赋值"><a href="#Field-内容的读取与赋值" class="headerlink" title="Field 内容的读取与赋值"></a>Field 内容的读取与赋值</h3><p><strong>这个是反射机制中对 Field 最主要的目的。</strong></p>
+<p>Field 这个类定义了一系列的 get 方法来获取不同类型的值<br><img src="http://p2oza5z62.bkt.clouddn.com/2018-03-27-15221451306835.jpg" alt=""></p>
+<p>Field 也定义了一系列的 set 方法用来对其自身进行赋值。与上面的基本对应。</p>
+<p>其中Object 是类的实例引用。</p>
+<blockquote>
+<p>Class 本身不对成员进行储存，它只提供检索，所以需要用 Field、Method、Constructor 对象来承载这些成员，所以，针对成员的操作时，一般需要为成员指定类的实例引用。如果难于理解的话，可以这样理解，班级这个概念是一个类，一个班级有几十名学生，现在有A、B、C 3 个班级，将所有班级的学生抽出来集合到一个场地来考试，但是学生在试卷上写上自己名字的时候，还要指定自己的班级，这里涉及到的 Object 其实就是类似的作用，表示这个成员是具体属于哪个 Object。这个是为了精确定位。</p>
+</blockquote>
+<p>下面以实例说明对 Filed 的操控（设置一个String的值）</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Test1</span> </span>&#123;</span><br><span class="line">    <span class="keyword">private</span> String mString = <span class="string">"father"</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">Test1 test1 = <span class="keyword">new</span> Test1();</span><br><span class="line">Class clz1 = test1.getClass();</span><br><span class="line">Field  field = clz1.getDeclaredField(<span class="string">"mString"</span>);</span><br><span class="line">System.out.println(field.getName());</span><br><span class="line"><span class="comment">//反射中访问了 private 修饰的成员(String)，如果要消除异常的话，需要添加一句代码,如果是其他修饰符可以不加这一句</span></span><br><span class="line">field.setAccessible(<span class="keyword">true</span>);</span><br><span class="line">System.out.println(<span class="string">"mString的值="</span>+field.get(test1));</span><br><span class="line">field.set(test1,<span class="string">"son"</span>);</span><br><span class="line">System.out.println(<span class="string">"====修改 father 为 son===="</span>);</span><br><span class="line">System.out.println(<span class="string">"mString的值="</span>+field.get(test1));</span><br></pre></td></tr></table></figure>
+<p>结果为:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">mString</span><br><span class="line">mString的值=father</span><br><span class="line">====修改 father 为 son====</span><br><span class="line">mString的值=son</span><br></pre></td></tr></table></figure>
+<h2 id="Method-的操控"><a href="#Method-的操控" class="headerlink" title="Method 的操控"></a>Method 的操控</h2><p>方法由下面几个要素构成： </p>
+<ul>
+<li>方法名 </li>
+<li>方法参数 </li>
+<li>方法返回值 </li>
+<li>方法的修饰符 </li>
+<li>方法可能会抛出的异常</li>
+</ul>
+<h3 id="Method-获取方法名"><a href="#Method-获取方法名" class="headerlink" title="Method 获取方法名"></a>Method 获取方法名</h3><p>getName() 方法</p>
+<h3 id="Method-获取方法参数"><a href="#Method-获取方法参数" class="headerlink" title="Method 获取方法参数"></a>Method 获取方法参数</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">public Parameter[] getParameters() &#123;&#125;</span><br></pre></td></tr></table></figure>
+<p>返回的是一个 Parameter 数组，在反射中 Parameter 对象就是用来映射方法中的参数。经常使用的方法有：</p>
+<p>Parameter 常用方法</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 获取参数名字</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> String <span class="title">getName</span><span class="params">()</span> </span>&#123;&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 获取参数类型</span></span><br><span class="line"><span class="keyword">public</span> Class&lt;?&gt; getType() &#123;&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 获取参数的修饰符</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">getModifiers</span><span class="params">()</span> </span>&#123;&#125;</span><br></pre></td></tr></table></figure>
+<p>有时候我们不需要参数的名字，只要参数的类型就好了，通过 Method 中下面的方法获取。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 获取所有的参数类型，不包括泛型</span></span><br><span class="line"><span class="keyword">public</span> Class&lt;?&gt;[] getParameterTypes() &#123;&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 获取所有的参数类型，包括泛型</span></span><br><span class="line"><span class="keyword">public</span> Type[] getGenericParameterTypes() &#123;&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="Method-获取返回值类型"><a href="#Method-获取返回值类型" class="headerlink" title="Method 获取返回值类型"></a>Method 获取返回值类型</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 获取返回值类型</span></span><br><span class="line"><span class="keyword">public</span> Class&lt;?&gt; getReturnType() &#123;&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 获取返回值类型包括泛型</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> Type <span class="title">getGenericReturnType</span><span class="params">()</span> </span>&#123;&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="Method-获取修饰符"><a href="#Method-获取修饰符" class="headerlink" title="Method 获取修饰符"></a>Method 获取修饰符</h3><p>public int getModifiers() {}<br>然后通过 Modifier 类去获取</p>
+<h3 id="Method-获取异常类型"><a href="#Method-获取异常类型" class="headerlink" title="Method 获取异常类型"></a>Method 获取异常类型</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> Class&lt;?&gt;[] getExceptionTypes() &#123;&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> Type[] getGenericExceptionTypes() &#123;&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="Method-方法的执行"><a href="#Method-方法的执行" class="headerlink" title="Method 方法的执行"></a>Method 方法的执行</h3><p>是整个反射机制的核心内容了，很多时候运用反射目的其实就是为了以常规手段执行 Method。<br>Method 调用 invoke() 的时候，存在许多细节：</p>
+<ul>
+<li><p>invoke() 方法中第一个参数 Object 实质上是 Method 所依附的 Class 对应的类的实例，如果这个方法是一个静态方法，那么 ojb 为 null，后面的可变参数 Object 对应的自然就是参数。</p>
+</li>
+<li><p>invoke() 返回的对象是 Object，所以实际上执行的时候要进行强制转换。</p>
+</li>
+<li><p>在对 Method 调用 invoke() 的时候，如果方法本身会抛出异常，那么这个异常就会经过包装，由 Method 统一抛出 InvocationTargetException。而通过 InvocationTargetException.getCause() 可以获取真正的异常。</p>
+</li>
+</ul>
+<h2 id="Constructor-的操控"><a href="#Constructor-的操控" class="headerlink" title="Constructor 的操控"></a>Constructor 的操控</h2><p>Constructor 同 Method 差不多，但是它特别的地方在于，它能够创建一个对象。</p>
+<p>在 Java 反射机制中有两种方法可以用来创建类的对象实例：</p>
+<ul>
+<li>Class.newInstance() </li>
+<li>Constructor.newInstance()。</li>
+</ul>
+<p><strong>官方文档建议开发者使用后面这种方法</strong>，下面是原因。</p>
+<ul>
+<li>Class.newInstance() 只能调用无参的构造方法，而 Constructor.newInstance() 则可以调用任意的构造方法。</li>
+<li>Class.newInstance() 通过构造方法直接抛出异常，而 Constructor.newInstance() 会把抛出来的异常包装到 InvocationTargetException 里面去，这个和 Method 行为一致。</li>
+<li>Class.newInstance() 要求构造方法能够被访问，而 Constructor.newInstance() 却能够访问 private 修饰的构造器。</li>
+</ul>
+<p>下面实例说明：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">TestConstructor</span> </span>&#123;</span><br><span class="line">    <span class="keyword">private</span> String self;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">TestConstructor</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        self = <span class="string">" Frank "</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">TestConstructor</span><span class="params">(String self)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.self = self;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> String <span class="title">toString</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="string">"TestConstructor [self="</span> + self + <span class="string">"]"</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Main</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> <span class="keyword">throws</span> IllegalAccessException, InstantiationException, NoSuchMethodException, InvocationTargetException </span>&#123;</span><br><span class="line">        Class clz = TestConstructor.class;</span><br><span class="line"></span><br><span class="line">        TestConstructor test1 = (TestConstructor) clz.newInstance();</span><br><span class="line">        System.out.println(test1.toString());</span><br><span class="line"></span><br><span class="line">        Constructor constructor = clz.getConstructor(String.class);</span><br><span class="line">        TestConstructor testConstructor = (TestConstructor) constructor.newInstance(<span class="string">"smrtsean"</span>);</span><br><span class="line">        System.out.println(testConstructor.toString());</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>结果：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">TestConstructor [self= Frank ]</span><br><span class="line">TestConstructor [self=smrtsean]</span><br></pre></td></tr></table></figure>
+<h2 id="反射中的数组"><a href="#反射中的数组" class="headerlink" title="反射中的数组"></a>反射中的数组</h2><h3 id="数组的类型"><a href="#数组的类型" class="headerlink" title="数组的类型"></a>数组的类型</h3><p>数组本质上是一个 Class，而在 Class 中存在一个方法用来识别它是否为一个数组</p>
+<p>Class.java</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">public native boolean isArray();</span><br></pre></td></tr></table></figure>
+<p>测试代码：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">ShuZu</span> </span>&#123;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">int</span>[] array;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> Car[] cars;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Main</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span></span>&#123;</span><br><span class="line">        ShuZu shuZu = <span class="keyword">new</span> ShuZu();</span><br><span class="line">        Class clz = shuZu.getClass();</span><br><span class="line">        Field[] fields = clz.getDeclaredFields();</span><br><span class="line">        <span class="keyword">for</span> (Field field : fields) &#123;</span><br><span class="line">            Class c = field.getType();</span><br><span class="line">            <span class="keyword">if</span> (c.isArray())&#123;</span><br><span class="line">                System.out.println(<span class="string">"type是："</span>+c.getName());</span><br><span class="line">                System.out.println(<span class="string">"ComponentType type is :"</span>+c.getComponentType());</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>结果：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">type是：[I</span><br><span class="line">ComponentType type is :int</span><br><span class="line">type是：[Lcn.smartsean.Car;</span><br><span class="line">ComponentType type is :class cn.smartsean.Ca</span><br></pre></td></tr></table></figure>
+<h3 id="反射中动态创建数组"><a href="#反射中动态创建数组" class="headerlink" title="反射中动态创建数组"></a>反射中动态创建数组</h3><p>反射创建数组是通过 Array.newInstance() 这个方法。</p>
+<p>Array.java</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">public static Object newInstance(Class&lt;?&gt; componentType, int... dimensions)</span><br><span class="line">        throws IllegalArgumentException, NegativeArraySizeException &#123;&#125;</span><br></pre></td></tr></table></figure>
+<p>第一个参数指定的是数组内的元素类型，后面的是可变参数，表示的是相应维度的数组长度限制。</p>
+<p>比如，我要创建一个 int[2][3] 的数组。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Array.newInstance(int.class,2,3);</span><br></pre></td></tr></table></figure>
+<h3 id="Array-的读取与赋值"><a href="#Array-的读取与赋值" class="headerlink" title="Array 的读取与赋值"></a>Array 的读取与赋值</h3><h2 id="反射中的枚举-Enum"><a href="#反射中的枚举-Enum" class="headerlink" title="反射中的枚举 Enum"></a>反射中的枚举 Enum</h2><h3 id="反射中的枚举-Enum-1"><a href="#反射中的枚举-Enum-1" class="headerlink" title="反射中的枚举 Enum"></a>反射中的枚举 Enum</h3><p>同数组一样，枚举本质上也是一个 Class 而已，但反射中还是把它单独提出来了</p>
+<p>在 Java 反射中，可以把枚举看成一般的 Class，但是反射机制也提供了 3 个特别的的 API 用于操控枚举。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">// 用来判定 Class 对象是不是枚举类型</span><br><span class="line">Class.isEnum()</span><br><span class="line"></span><br><span class="line">// 获取所有的枚举常量</span><br><span class="line">Class.getEnumConstants()</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">// 判断一个 Field 是不是枚举常量</span><br><span class="line">java.lang.reflect.Field.isEnumConstant()</span><br></pre></td></tr></table></figure>
+<h3 id="枚举的获取与设定"><a href="#枚举的获取与设定" class="headerlink" title="枚举的获取与设定"></a>枚举的获取与设定</h3><p>因为等同于 Class，所以枚举的获取与设定就可以通过 Field 中的 get() 和 set() 方法。</p>
+<p><strong>需要注意的是，如果要获取枚举里面的 Field、Method、Constructor 可以调用 Class 的通用 API。</strong></p>
+<p>实例：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br></pre></td><td class="code"><pre><span class="line">public enum State &#123;</span><br><span class="line">    IDLE,</span><br><span class="line">    DRIVING,</span><br><span class="line">    STOPPING,</span><br><span class="line"></span><br><span class="line">    test();</span><br><span class="line"></span><br><span class="line">    int test1()&#123;</span><br><span class="line">        return 1;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">public class Meiju &#123;</span><br><span class="line">    private State state = State.DRIVING;</span><br><span class="line"></span><br><span class="line">    public State getState() &#123;</span><br><span class="line">        return state;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    public void setState(State state) &#123;</span><br><span class="line">        this.state = state;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">public class Main &#123;</span><br><span class="line">    public static void main(String[] args) throws NoSuchFieldException, IllegalAccessException &#123;</span><br><span class="line">        Class clz = State.class;</span><br><span class="line"></span><br><span class="line">        if (clz.isEnum()) &#123;</span><br><span class="line">            System.out.println(clz.getName() + &quot; is Enum&quot;);</span><br><span class="line">            System.out.println(Arrays.asList(clz.getEnumConstants()));</span><br><span class="line">            Field[] fields = clz.getDeclaredFields();</span><br><span class="line">            for (Field field : fields) &#123;</span><br><span class="line">                if (field.isEnumConstant()) &#123;</span><br><span class="line">                    System.out.println(field.getName() + &quot;is EnumConstant&quot;);</span><br><span class="line">                &#125; else &#123;</span><br><span class="line">                    System.out.println(field.getName() + &quot;is not EnumConstant&quot;);</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line"></span><br><span class="line">        &#125;</span><br><span class="line">        Class cMeiJu = Meiju.class;</span><br><span class="line">        Meiju meiju = new Meiju();</span><br><span class="line"></span><br><span class="line">        Field field = cMeiJu.getDeclaredField(&quot;state&quot;);</span><br><span class="line">        field.setAccessible(true);</span><br><span class="line"></span><br><span class="line">        State state = (State) field.get(meiju);</span><br><span class="line">        System.out.println(&quot;state:=====&quot;+state);</span><br><span class="line">        field.set(meiju, State.STOPPING);</span><br><span class="line">        </span><br><span class="line">        System.out.println(&quot;State current is &quot;+meiju.getState());</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>结果:</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">cn.smartsean.enumreflect.State is Enum</span><br><span class="line">[IDLE, DRIVING, STOPPING, test]</span><br><span class="line">IDLEis EnumConstant</span><br><span class="line">DRIVINGis EnumConstant</span><br><span class="line">STOPPINGis EnumConstant</span><br><span class="line">testis EnumConstant</span><br><span class="line">$VALUESis not EnumConstant</span><br><span class="line">state:=====DRIVING</span><br><span class="line">State current is STOPPING</span><br></pre></td></tr></table></figure>
+<h2 id="反射总结"><a href="#反射总结" class="headerlink" title="反射总结"></a>反射总结</h2><p>1、Java 中的反射是非常规编码方式。<br>2、Java 反射机制的操作入口是获取 Class 文件。 有 Class.forName()、 .class 和 Object.getClass() 3 种。<br>3、获取 Class 对象后还不够，需要获取它的 Members，包含 Field、Method、Constructor。<br>4、Field 操作主要涉及到类别的获取，及数值的读取与赋值。<br>5、Method 算是反射机制最核心的内容，通常的反射都是为了调用某个 Method 的 invoke() 方法。<br>6、通过 Class.newInstance() 和 Constructor.newInstance() 都可以创建类的对象实例，但推荐后者。因为它适应于任何构造方法，而前者只会调用可见的无参数的构造方法。<br>7、数组和枚举可以被看成普通的 Class 对待。<br>最后，需要注意的是。</p>
+<p><strong>反射是非常规开发手段，它会抛弃 Java 虚拟机的很多优化，所以同样功能的代码，反射要比正常方式要慢，所以考虑到采用反射时，要考虑它的时间成本。另外，就如无人驾驶之于汽车一样，用着很爽的同时，其实风险未知。</strong></p>
+<p><img src="http://p2oza5z62.bkt.clouddn.com/2018-03-27-15221547663693.jpg" alt=""></p>
+
+    </div>
+
+    <div class="post-footer">   
+        <div>
+            
+                转载声明：商业转载请联系作者获得授权,非商业转载请注明出处 © <a href="" target="_blank">smartsean</a>
+            
+        </div>
+        <div>
+            
+        </div>  
+    </div>
+</article>
+
+<div class="article-nav prev-next-wrap clearfix">
+    
+    
+        <a href="/2018/02/06/自定义-View-实战（一）做一个简单的进度条-1/" class="next-post btn btn-default">下一篇<i class="fa fa-angle-right fa-fw"></i></a>
+    
+</div>
+
+
+    <div id="comments">
+        
+	
+<div id="lv-container" data-id="city" data-uid="MTAyMC8zMzA1MS85NjEz">
+  <script type="text/javascript">
+     (function(d, s) {
+         var j, e = d.getElementsByTagName(s)[0];
+         if (typeof LivereTower === 'function') { return; }
+         j = d.createElement(s);
+         j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+         j.async = true;
+         e.parentNode.insertBefore(j, e);
+     })(document, 'script');
+  </script>
+</div>
+
+
+    </div>
+
+
+
+
+
+                </main>
+                
+    <aside class="col-md-4 sidebar">
+        
+        
+    <div class="widget">    
+        <h3 class="title">搜索</h3>
+        <div id="search-form">
+            <div id="result-mask" class="hide"></div>
+            <div class="search-area">
+                
+                    <input id="search-key" type="search" autocomplete="off" placeholder="搜点什么呢?">
+                    <button type="button" class="search-form-submit" id="search-local">站内搜索</button>
+                
+                
+            </div>
+            <div id="result-wrap" class="hide">
+                <div id="search-result"></div>
+            </div>
+            <div class="hide">
+                <template id="search-tpl">
+                    <div class="item">
+                        <a href="/{path}" title="{title}">
+                            <div class="title">{title}</div>
+                            <div class="content">{content}</div>
+                        </a>
+                    </div>
+                </template>
+            </div>
+        </div>
+    </div>
+
+        
+        
+    <div class="widget">
+      <h3 class="title">社交</h3> 
+        <div class="content social">
+            
+	            <a href="https://github.com/smartsean" rel="external nofollow" title="Github" target="_blank">
+			    	<i class="git fa fa-git"></i>
+			    </a>
+            
+        </div>
+    </div>
+
+
+        
+        
+    <div class="widget">
+        <h3 class="title">分类</h3>
+        <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/Android/"><i class="fa" aria-hidden="true">Android</i></a><span class="category-list-count">43</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Ionic/"><i class="fa" aria-hidden="true">Ionic</i></a><span class="category-list-count">7</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/工具/"><i class="fa" aria-hidden="true">工具</i></a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/我/"><i class="fa" aria-hidden="true">我</i></a><span class="category-list-count">6</span></li></ul>
+    </div>
+
+
+        
+        
+  <div class="widget">
+    <h3 class="title">标签云</h3>
+    <div class="content tag-cloud">
+        <a href="/tags/Android/" style="font-size: 20px;">Android</a> <a href="/tags/AndroidStudio/" style="font-size: 12px;">AndroidStudio</a> <a href="/tags/Git/" style="font-size: 10px;">Git</a> <a href="/tags/Ionic/" style="font-size: 18px;">Ionic</a> <a href="/tags/Java/" style="font-size: 12px;">Java</a> <a href="/tags/Java-Java基础/" style="font-size: 10px;">Java Java基础</a> <a href="/tags/工具/" style="font-size: 16px;">工具</a> <a href="/tags/异常/" style="font-size: 12px;">异常</a> <a href="/tags/我/" style="font-size: 14px;">我</a> <a href="/tags/模拟器/" style="font-size: 10px;">模拟器</a> <a href="/tags/自定义View/" style="font-size: 12px;">自定义View</a>
+    </div>
+  </div>
+
+
+        
+        
+    <div class="widget notification">
+        <h3 class="title">网站公告</h3>
+        <div>
+            <p>暂无公告~ <br/>
+        </div>
+    </div>
+
+        
+        
+    <div class="widget">
+      <h3 class="title">归档</h3>
+        <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/03/"><i class="fa" aria-hidden="true">三月 2018</i></a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/02/"><i class="fa" aria-hidden="true">二月 2018</i></a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/01/"><i class="fa" aria-hidden="true">一月 2018</i></a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/12/"><i class="fa" aria-hidden="true">十二月 2017</i></a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/09/"><i class="fa" aria-hidden="true">九月 2017</i></a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/08/"><i class="fa" aria-hidden="true">八月 2017</i></a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/07/"><i class="fa" aria-hidden="true">七月 2017</i></a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/05/"><i class="fa" aria-hidden="true">五月 2017</i></a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/04/"><i class="fa" aria-hidden="true">四月 2017</i></a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/03/"><i class="fa" aria-hidden="true">三月 2017</i></a><span class="archive-list-count">7</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/02/"><i class="fa" aria-hidden="true">二月 2017</i></a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/01/"><i class="fa" aria-hidden="true">一月 2017</i></a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/12/"><i class="fa" aria-hidden="true">十二月 2016</i></a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/11/"><i class="fa" aria-hidden="true">十一月 2016</i></a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/10/"><i class="fa" aria-hidden="true">十月 2016</i></a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/09/"><i class="fa" aria-hidden="true">九月 2016</i></a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/08/"><i class="fa" aria-hidden="true">八月 2016</i></a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/06/"><i class="fa" aria-hidden="true">六月 2016</i></a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/04/"><i class="fa" aria-hidden="true">四月 2016</i></a><span class="archive-list-count">10</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/03/"><i class="fa" aria-hidden="true">三月 2016</i></a><span class="archive-list-count">3</span></li></ul>
+    </div>
+
+
+        
+        
+    <div class="widget">
+        <h3 class="title">友链</h3>
+        <div class="content friends-link">
+        
+            <a href="http://www.shenliyang.com" class="fa" target="_blank">个人博客</a>
+        
+        </div>
+    </div>
+
+
+        
+    </aside>
+
+            </div>
+        </div>
+    </section>
+    <footer class="main-footer">
+    <div class="container">
+        <div class="row">
+        </div>
+    </div>
+</footer>
+
+<a id="back-to-top" class="hide">
+	<i class="fa fa-chevron-up"></i>
+</a>
+
+
+
+
+    <div class="copyright">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12"> 
+                <span>Copyright &copy; 2018
+                </span> | 
+                <span>
+                    Powered by <a href="//hexo.io" class="copyright-links" target="_blank" rel="nofollow">Hexo</a>
+                </span> | 
+                <span>
+                    Theme by <a href="//github.com/shenliyang/hexo-theme-snippet.git" class="copyright-links" target="_blank" rel="nofollow">Snippet</a>
+                </span>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+	<script src="/js/search.js?rev=@@hash"></script>
+
+
+<script src="/js/app.js?rev=@@hash"></script>
+
+
+</body>
+</html>
