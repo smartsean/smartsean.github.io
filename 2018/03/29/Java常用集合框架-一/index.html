@@ -1,0 +1,494 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+    <!--Setting-->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+    <meta http-equiv="Cache-Control" content="no-siteapp">
+    <meta name="renderer" content="webkit|ie-comp|ie-stand">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="format-detection" content="telephone=no,email=no,adress=no">
+    <meta name="browsermode" content="application">
+    <meta name="screen-orientation" content="portrait">
+    <link rel="dns-prefetch" href="https://github.com/smartsean/smartsean.github.io">
+    <!--SEO-->
+
+
+
+<meta name="robots" content="all" />
+<meta name="google" content="all" />
+<meta name="googlebot" content="all" />
+<meta name="verify" content="all" />
+    <!--Title-->
+
+
+<title>Java常用集合框架(一) | SmartSean的小站</title>
+
+
+    <link rel="alternate" href="/atom.xml" title="SmartSean的小站" type="application/atom+xml">
+
+
+    <link rel="icon" href="/favicon.ico">
+
+    
+
+
+
+<link rel="stylesheet" href="//cdn.bootcss.com/bootstrap/3.3.4/css/bootstrap.min.css?rev=3.3.4">
+<link rel="stylesheet" href="//cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.min.css">
+<link rel="stylesheet" href="/css/style.css?rev=@@hash">
+
+
+
+
+    
+    <div class="hide">
+    	<script src="https://s4.cnzz.com/z_stat.php?id=1263868967&web_id=1263868967" language="JavaScript"></script>
+    </div>
+
+
+
+
+
+
+    
+</head>
+
+
+<!--[if lte IE 8]>
+<style>
+    html{ font-size: 1em }
+</style>
+<![endif]-->
+<!--[if lte IE 9]>
+<div style="ie">你使用的浏览器版本过低，为了你更好的阅读体验，请更新浏览器的版本或者使用其他现代浏览器，比如Chrome、Firefox、Safari等。</div>
+<![endif]-->
+
+<body>
+    <header class="main-header"  style="background-image:url(http://7xpw2b.com1.z0.glb.clouddn.com/hexo-sinppet/img/banner2.jpg)"  >
+    <div class="main-header-box">
+        <a class="header-avatar" href="/" title="">
+            <img src="/img/avatar.jpg" alt="logo头像">
+        </a>
+        <div class="branding">
+        	<!--<h2 class="text-hide">Snippet主题,从未如此简单有趣</h2>-->
+            
+                <h2> 仰望星空，脚踏实地。 </h2>
+             
+    	</div>
+    </div>
+</header>
+    <nav class="main-navigation">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="navbar-header"><span class="nav-toggle-button collapsed" data-toggle="collapse" data-target="#main-menu" id="mnav">
+                    <span class="sr-only">Toggle navigation</span>
+                    <i class="fa fa-bars"></i>
+                    </span>
+                </div>
+                <div class="collapse navbar-collapse" id="main-menu">
+                    <ul class="menu">
+                        
+                            <li role="presentation"><a href="/"><i class="fa fa-fw "></i>首页</a>
+                            </li>
+                        
+                            <li role="presentation"><a href="/categories/Android/"><i class="fa fa-fw "></i>Android</a>
+                            </li>
+                        
+                            <li role="presentation"><a href="/categories/工具/"><i class="fa fa-fw "></i>工具</a>
+                            </li>
+                        
+                            <li role="presentation"><a href="/categories/我/"><i class="fa fa-fw "></i>我</a>
+                            </li>
+                        
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</nav>
+    <section class="content-wrap">
+        <div class="container">
+            <div class="row">
+                <main class="col-md-8 main-content m-post">
+                    <p id="process"></p>
+<article class="post">
+    <div class="post-head">
+        <h1 id="Java常用集合框架(一)">
+            
+	            Java常用集合框架(一)
+            
+        </h1>
+        <div class="post-meta">
+    
+    
+    <span class="categories-meta fa-wrap">
+        <i class="fa fa-folder-open-o"></i>
+        <span>Android</span>
+    </span>
+    
+    
+    <span class="fa-wrap">
+        <i class="fa fa-tags"></i>
+        <span class="tags-meta">
+            
+            Android
+            
+        </span>
+    </span>
+    
+    
+    <span class="fa-wrap">
+        <i class="fa fa-clock-o"></i>
+        <span class="date-meta">2018/03/29</span>
+    </span>
+</div>
+
+            
+            
+    </div>
+    
+    <div class="post-body post-content">
+        <p>[TOC]</p>
+<h1 id="Java常用集合框架-一"><a href="#Java常用集合框架-一" class="headerlink" title="Java常用集合框架(一)"></a>Java常用集合框架(一)</h1><h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>Java 集合框架在我们日常的开发学习中应该是经常用到。那么什么是集合框架呢？</p>
+<p>从字面意思来看，就是集合的框架。</p>
+<p>网友给出了以下解释：</p>
+<blockquote>
+<p>数据结构是以某种形式将数据组织在一起的集合，它不仅存储数据，还支持访问和处理数据的操作。Java提供了几个能有效地组织和操作数据的数据结构，这些数据结构通常称为Java集合框架。</p>
+</blockquote>
+<p>有人可能会说，数组不也是把数据组织在一起的集合吗？有什么区别？</p>
+<p>实际上数组长度在初始化时指定，只能保存定长的数据，另外它可以保存基本数据类型和对象引用。</p>
+<p>但是集合就不一样了，它可以保存数量不确定的数据，同时可以保存具有映射关系的数据（比如Map<k,v>），另外只能保存对象引用，不能保存基本数据类型;</k,v></p>
+<p>我们常见的集合框架大体分为两种：</p>
+<p>1、实现 Collection 接口的</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">// 实现List接口</span><br><span class="line">List&lt;String&gt; lists = new ArrayList&lt;&gt;();</span><br><span class="line">// 实现Set接口</span><br><span class="line">Set&lt;String&gt; sets = new HashSet&lt;&gt;();</span><br><span class="line">// 实现Quene接口</span><br><span class="line">Queue&lt;String&gt; queues = new LinkedList&lt;&gt;();</span><br></pre></td></tr></table></figure>
+<p>2、实现 Map<k,v> 接口的</k,v></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Map&lt;String,String&gt; maps = <span class="keyword">new</span> HashMap&lt;&gt;();</span><br></pre></td></tr></table></figure>
+<p>其中：</p>
+<ul>
+<li>Set 代表无序、不可重复的集合；</li>
+<li>List 代表有序、重复的集合；</li>
+<li>Queue 代表一种队列集合实现；</li>
+<li>Map 代表具有映射关系的集合，键值对存在</li>
+</ul>
+<p>先来看下我画的集合框架的大体结构（一些不常用的没列出来）：</p>
+<p><img src="http://p2oza5z62.bkt.clouddn.com/2018-03-29-Java集合框架.png" alt="Java集合框架"></p>
+<p>看不清的，请点击看大图：<a href="">大图地址</a></p>
+<p>其中可以看到我们经常用到的 ArrayList、LinkedList、HashSet、TreeSet、HashMap、TreeMap等集合框架</p>
+<h2 id="一、实现了-Collection-接口"><a href="#一、实现了-Collection-接口" class="headerlink" title="一、实现了 Collection 接口"></a>一、实现了 Collection<e> 接口</e></h2><p>先来看下 Collection<e> 这个接口：<br><img src="http://p2oza5z62.bkt.clouddn.com/2018-03-29-15222266429880.jpg" alt=""></e></p>
+<p>可以看到，这个接口继承了 Iterable<e> 这个接口，那么这个接口是干啥的呢？我们进去看一下：</e></p>
+<p>我们在 Api 文档看到了这样一句话:</p>
+<p><img src="http://p2oza5z62.bkt.clouddn.com/2018-03-29-15222273671371.jpg" alt=""></p>
+<p>官方的描述是：通过实现这个接口允许一个对象成为for-each循环语句的目标。并且是从 1.5 引入的</p>
+<p>这个地方对应的就是我们使用迭代器（Iterator<e>）进行集合遍历，比如:</e></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">Set&lt;String&gt; set = new HashSet&lt;&gt;();</span><br><span class="line">set.add(&quot;11111&quot;);</span><br><span class="line">set.add(&quot;22222&quot;);</span><br><span class="line">Iterator&lt;String&gt; iterator = set.iterator();</span><br><span class="line">while (iterator.hasNext())&#123;</span><br><span class="line">    System.out.println(iterator.next());</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>另外我们可以看到他有超多的子接口和实现类，其中就包括我们下面要分析的。</p>
+<p>再来看下 Collection<e> 的方法：</e></p>
+<p><img src="http://p2oza5z62.bkt.clouddn.com/2018-03-29-15222284887462.jpg" alt=""></p>
+<p>我们经常使用的 add 、remove、clear 等方法，都是在这个地方定义的，我们使用的实现类都是要直接或间接实现这些接口。</p>
+<p>好了，接下来就来看下具体的List、 Map、 Queue 等接口。</p>
+<h3 id="1-1、List-接口"><a href="#1-1、List-接口" class="headerlink" title="1.1、List 接口"></a>1.1、List<e> 接口</e></h3><p> 看下官方 Api ：</p>
+<p> <img src="http://p2oza5z62.bkt.clouddn.com/2018-03-29-15222287730652.jpg" alt=""></p>
+<p>最下面的那段官方说明:<br>该接口的用户对插入的每个元素的位置有精确的控制。用户可以通过其整数索引(列表中的位置)访问元素，并搜索列表中的元素。</p>
+<p>可以看到 List<e> 接口扩展自 Collection<e> 接口，它主要定义了一个<strong>允许重复</strong>的<strong>有序</strong>集合，并且增加了面向位置的操作，允许在指定位置上进行操作。比如：<code>add(int index,E element )、addAll(int index,Collection c)、get(int index)</code>等。</e></e></p>
+<p>结合上面的思维导图可以看到，List<e> 接口扩展自 Collection<e> 接口，而 Collection<e> 接口继承于 Iterable<e> 接口，那么可以知道，实现了 List<e> 接口的子类也是可以使用迭代器进行遍历的。此外，还增加了一个能够双向遍历线性表迭代器 ListIterator。</e></e></e></e></e></p>
+<p>List<e> 接口有一个很重要的抽象实现类： AbstractList<e> ，它实现了 List<e> 的大部分方法。</e></e></e></p>
+<p>List 承诺可以将元素维护在特定的序列中，List 在 Collection 接口的基础上添加了大量的方法，使得可以在 List 的中间插入和移除元素。</p>
+<p>有两种类型的 List ：</p>
+<ul>
+<li>ArrayList 数组实现，它的长项在于随机访问元素，但是在 List 的中间插入和移除元素时较慢</li>
+<li>LinkedList 链表实现，它通过代价较低的在 List 中间进行插入和移除操作，提供了优化的顺序访问，LinekedList 在随机访问方面比较慢，但是它的特性集较 ArrayList 大（提供了更多的操作控件）</li>
+</ul>
+<p>下面具体看下这两个 List 的实现类。</p>
+<h4 id="1-1-1-ArrayList"><a href="#1-1-1-ArrayList" class="headerlink" title="1.1.1 ArrayList"></a>1.1.1 ArrayList</h4><p><strong>ArrayList 是一个有序的集合，随机访问元素比较快，但是往 List 中间插入和移除元素较慢。</strong></p>
+<p>ArrayList 是一个其容量能够动态增长的动态数组。它继承了 AbstractList ，实现了 List、RandomAccess, Cloneable, java.io.Serializable。 </p>
+<p>为什么说 ArrayList 实际上是个数组呢？</p>
+<p>我们通过源码来看下:</p>
+<p>先看下成员变量：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br></pre></td><td class="code"><pre><span class="line">public class ArrayList&lt;E&gt; extends AbstractList&lt;E&gt;</span><br><span class="line">        implements List&lt;E&gt;, RandomAccess, Cloneable, java.io.Serializable</span><br><span class="line">&#123;</span><br><span class="line">    private static final long serialVersionUID = 8683452581122892189L;</span><br><span class="line"></span><br><span class="line">    /**</span><br><span class="line">     * 默认的数组容量大小</span><br><span class="line">     */</span><br><span class="line">    private static final int DEFAULT_CAPACITY = 10;</span><br><span class="line"></span><br><span class="line">    /**</span><br><span class="line">     * 定义的一个空数组，</span><br><span class="line">     */</span><br><span class="line">    private static final Object[] EMPTY_ELEMENTDATA = &#123;&#125;;</span><br><span class="line"></span><br><span class="line">    /**</span><br><span class="line">     * 这个也是个空数组，是为了和 EMPTY_ELEMENTDATA 空数组区分，用来知道当第一个元素被添加的时候，数组会增大多少</span><br><span class="line">     */</span><br><span class="line">    private static final Object[] DEFAULTCAPACITY_EMPTY_ELEMENTDATA = &#123;&#125;;</span><br><span class="line"></span><br><span class="line">    /**</span><br><span class="line">     * 用于保存ArrayList中数据的数组</span><br><span class="line">     */</span><br><span class="line">    transient Object[] elementData; // non-private to simplify nested class access</span><br><span class="line"></span><br><span class="line">    /**</span><br><span class="line">     * The size of the ArrayList (the number of elements it contains).</span><br><span class="line">     * 数组的大小</span><br><span class="line">     */</span><br><span class="line">    private int size;</span><br><span class="line">    </span><br><span class="line">    /**</span><br><span class="line">     * 数组最大长度</span><br><span class="line">     */</span><br><span class="line">    private static final int MAX_ARRAY_SIZE = Integer.MAX_VALUE - 8;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>再来通过一个我们常用的 add 方法来分析下。</p>
+<p>add方法：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * Appends the specified element to the end of this list.</span></span><br><span class="line"><span class="comment"> *</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@param</span> e element to be appended to this list</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@return</span> &lt;tt&gt;true&lt;/tt&gt; (as specified by &#123;<span class="doctag">@link</span> Collection#add&#125;)</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">add</span><span class="params">(E e)</span> </span>&#123;</span><br><span class="line">    ensureCapacityInternal(size + <span class="number">1</span>);  <span class="comment">// Increments modCount!!</span></span><br><span class="line">    elementData[size++] = e;</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">true</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>来看下 ensureCapacityInternal(size + 1) 方法:</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">ensureCapacityInternal</span><span class="params">(<span class="keyword">int</span> minCapacity)</span> </span>&#123;</span><br><span class="line">    ensureExplicitCapacity(calculateCapacity(elementData, minCapacity));</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>此时 minCapacity 为数组大小加1.<br>在 ensureCapacityInternal 方法里面又先调用了 calculateCapacity 方法:</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">int</span> <span class="title">calculateCapacity</span><span class="params">(Object[] elementData, <span class="keyword">int</span> minCapacity)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (elementData == DEFAULTCAPACITY_EMPTY_ELEMENTDATA) &#123;</span><br><span class="line">        <span class="keyword">return</span> Math.max(DEFAULT_CAPACITY, minCapacity);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> minCapacity;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>可以看到在 calculateCapacity 方法里面会拿 elementData 数组和默认的空数组进行比较：</p>
+<p>如果是相等的，也就是说 elementData 是个空数组，那么 calculateCapacity() 返回默认数组大小和此时 minCapacity 之间的最大值，也就是 DEFAULT_CAPACITY 的值 8 ，</p>
+<p>如果不相等，说明数组不为空，那么就返回 minCapacity 的值，即当前数组 size + 1;</p>
+<p>然后把返回的值给 ensureExplicitCapacity() :</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">ensureExplicitCapacity</span><span class="params">(<span class="keyword">int</span> minCapacity)</span> </span>&#123;</span><br><span class="line">    modCount++;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// overflow-conscious code</span></span><br><span class="line">    <span class="keyword">if</span> (minCapacity - elementData.length &gt; <span class="number">0</span>)</span><br><span class="line">        grow(minCapacity);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>modCount 这个字段我们不需关心，是给迭代器用的。重要看下面:</p>
+<p>如果说 minCapacity 减去当前数组的长度大于0，就去执行 grow（）方法：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * Increases the capacity to ensure that it can hold at least the</span></span><br><span class="line"><span class="comment"> * number of elements specified by the minimum capacity argument.</span></span><br><span class="line"><span class="comment"> *</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@param</span> minCapacity the desired minimum capacity</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">grow</span><span class="params">(<span class="keyword">int</span> minCapacity)</span> </span>&#123;</span><br><span class="line">    <span class="comment">// overflow-conscious code</span></span><br><span class="line">    <span class="keyword">int</span> oldCapacity = elementData.length;</span><br><span class="line">    <span class="keyword">int</span> newCapacity = oldCapacity + (oldCapacity &gt;&gt; <span class="number">1</span>);</span><br><span class="line">    <span class="keyword">if</span> (newCapacity - minCapacity &lt; <span class="number">0</span>)</span><br><span class="line">        newCapacity = minCapacity;</span><br><span class="line">    <span class="keyword">if</span> (newCapacity - MAX_ARRAY_SIZE &gt; <span class="number">0</span>)</span><br><span class="line">        newCapacity = hugeCapacity(minCapacity);</span><br><span class="line">    <span class="comment">// minCapacity is usually close to size, so this is a win:</span></span><br><span class="line">    elementData = Arrays.copyOf(elementData, newCapacity);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>我们一行一行来分析:</p>
+<p>首先，把当前数组长度赋值给 oldCapacity</p>
+<p>接着用 oldCapacity 加上 oldCapacity / 2 计算出来的值为 newCapacity </p>
+<p>如果 newCapacity 小于 minCapacity,那么把大的值 minCapacity 赋值给 newCapacity</p>
+<p>如果 newCapacity 大于数组的最大长度 MAX_ARRAY_SIZE，去执行：hugeCapacity(minCapacity)：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">int</span> <span class="title">hugeCapacity</span><span class="params">(<span class="keyword">int</span> minCapacity)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (minCapacity &lt; <span class="number">0</span>) <span class="comment">// overflow</span></span><br><span class="line">        <span class="keyword">throw</span> <span class="keyword">new</span> OutOfMemoryError();</span><br><span class="line">    <span class="keyword">return</span> (minCapacity &gt; MAX_ARRAY_SIZE) ?</span><br><span class="line">        Integer.MAX_VALUE :</span><br><span class="line">        MAX_ARRAY_SIZE;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>如果是 minCapacity 大于最大数组长度，那么返回 Integer 的最大值，否则返回 最大数组长度 MAX_ARRAY_SIZE。</p>
+<p>继续看 grow 方法的最后一句：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">elementData = Arrays.copyOf(elementData, newCapacity);</span><br></pre></td></tr></table></figure>
+<p>很清晰了，调用 Arrays.copyOf 方法，生成 一个长度为 newCapacity 的新数组，赋值给 elementData。</p>
+<p>好了，add方法已经分析完了。</p>
+<p>总结下：</p>
+<p><strong>ArrayList 是用数组实现的，并且是动态的，默认长度为 8，如果当前长度已用完，那么每次增长的长度为当前长度的一半。</strong></p>
+<h4 id="1-1-2-LinkedList"><a href="#1-1-2-LinkedList" class="headerlink" title="1.1.2 LinkedList"></a>1.1.2 LinkedList</h4><p>LinkedList 也像 ArrayList 一样实现了基本的 List 接口，但是它执行某些操作（在 List 的中间插入和移除）相比 ArrayList 更高效，但是在随机访问逊色于 ArrayList。</p>
+<p><strong>这是因为 LinkedList 的实现机制与 ArrayList 完全不同。</strong></p>
+<p>ArrayList 内部是以数组的形式来保存集合中的元素的，因此随机访问集合元素时有较好的性能；</p>
+<p>LinkedList内部以双向链表的形式来保存集合中的元素，因此随机访问集合元素时性能较差，但在插入、删除元素时性能比较出色。它也可以被当作<strong>堆栈、队列或双端队列</strong>进行操作。</p>
+<p>由于内部是使用链表实现的，那么必然会增加一些有链表特性的方法，比如:</p>
+<ul>
+<li>void addFirst(E e):将指定元素插入此列表的开头。</li>
+<li>void addLast(E e): 将指定元素添加到此列表的结尾。</li>
+<li>E getFirst(E e): 返回此列表的第一个元素。</li>
+<li>E getLast(E e): 返回此列表的最后一个元素。</li>
+<li>boolean offerFirst(E e): 在此列表的开头插入指定的元素。</li>
+<li>boolean offerLast(E e): 在此列表末尾插入指定的元素。</li>
+<li>E peekFirst(E e): 获取但不移除此列表的第一个元素；如果此列表为空，则返回 null。</li>
+<li>E peekLast(E e): 获取但不移除此列表的最后一个元素；如果此列表为空，则返回 null。</li>
+<li>E pollFirst(E e): 获取并移除此列表的第一个元素；如果此列表为空，则返回 null。</li>
+<li>E pollLast(E e): 获取并移除此列表的最后一个元素；如果此列表为空，则返回 null。</li>
+<li>E removeFirst(E e): 移除并返回此列表的第一个元素。<br>boolean removeFirstOccurrence(Objcet o): 从此列表中移除第一次出现的指定元素（从头部到尾部遍历列表时）。</li>
+<li>E removeLast(E e): 移除并返回此列表的最后一个元素。</li>
+<li>boolean removeLastOccurrence(Objcet o): 从此列表中移除最后一次出现的指定元素（从头部到尾部遍历列表时）。</li>
+</ul>
+<p>这里我们就不过多的分析，有兴趣的可以自己去看下 LinkedList 的源码</p>
+<h4 id="1-1-3-ArrayList-LinkedList-使用场景"><a href="#1-1-3-ArrayList-LinkedList-使用场景" class="headerlink" title="1.1.3 ArrayList LinkedList 使用场景"></a>1.1.3 ArrayList LinkedList 使用场景</h4><ul>
+<li>对于需要快速插入，删除元素，使用LinkedList。</li>
+<li>对于需要快速随机访问元素，使用ArrayList。</li>
+</ul>
+<h3 id="1-2、-Set-接口"><a href="#1-2、-Set-接口" class="headerlink" title="1.2、 Set 接口"></a>1.2、 Set<e> 接口</e></h3><p>Set 不保存重复的元素，所以你可以件容易的得到一个对象是否存在某个 Set 中，正因为如此，查找是 Set 中最重要的操作，因此通常通过实现类 HashSet 来优化查找的速度。</p>
+<p>Set 与 List 不同的是，List 继承与 Collection，并且有自己的实现，Set 具有和 Collection 一样的接口，没有特殊的功能，实际上 Set 就是 Collection，只是他们的行为不同（Set 用来存放无序的、不重复的对象的集合，这是典型的多态，Set 用来表现不同的行为）。</p>
+<blockquote>
+<p>存入 Set 的每个元素都必须是唯一的，因为 Set 不保存重复元素，加入 Set 的元素必须定义 equals 方法以确保对象的唯一性（正常情况下最好同时重写 hashCode方法）。Set 和 Collection 有完全一样的接口，Set 接口不保证维护元素的次序。</p>
+</blockquote>
+<p>Set 接口主要有三个实现类：</p>
+<ul>
+<li>HashSet 散列集，查找速度快</li>
+<li>LinkedHashSet 链式散列集，查找速度快，遍历时会按照插入的顺序显示，底层为 链表维护</li>
+<li>TreeSet 树形集，有序的 Set，底层为树结构</li>
+</ul>
+<h4 id="1-2-1-HashSet"><a href="#1-2-1-HashSet" class="headerlink" title="1.2.1 HashSet"></a>1.2.1 HashSet</h4><p>HashSet 是专门为快速查找而设计的 Set，存入 HashSet 的元素必须重新定义 hashCode（）。</p>
+<h4 id="1-2-2-LinkedHashSet"><a href="#1-2-2-LinkedHashSet" class="headerlink" title="1.2.2 LinkedHashSet"></a>1.2.2 LinkedHashSet</h4><p> 具有HashSet的查询速度，且内部使用链表维护元素的顺序（插入的次序）。于是在使用迭代器遍历Set时，结果会按元素插入的次序显示。也必须重新定义 hashCode（）。</p>
+<h4 id="1-2-3-TreeSet"><a href="#1-2-3-TreeSet" class="headerlink" title="1.2.3 TreeSet"></a>1.2.3 TreeSet</h4><p>保存次序的Set, 底层为树结构。使用它可以从Set中提取有序的序列。 </p>
+<h3 id="1-3、-Queue"><a href="#1-3、-Queue" class="headerlink" title="1.3、 Queue"></a>1.3、 Queue</h3><p>Queue 是一个后进先出的容器，即从容器的一端放入事物，从另一端取出，并且事物放入容器的顺序与取出的顺序是相同的，队列通常被当做一种可靠的将对象从程序的某个区域传输到另一个区域的途径。队列在并发编程中特别重要，因为他们可以安全第一将对象从一个任务传输给另一个任务。</p>
+<p>从 思维导图中可以看出，LinkedList 不仅继承自 AbstractList。并且还实现了 Queue 接口。因此 LinkedList 可以作为 Queue 的一种实现。</p>
+<p>如果你将 LinkedList 向上转型为 Queue，那么转换后的 对象会不能使用 LinkedList 的部分功能（继承于 AbstractList 的功能）。</p>
+<h2 id="二、实现了-Map-接口"><a href="#二、实现了-Map-接口" class="headerlink" title="二、实现了 Map 接口"></a>二、实现了 Map<k,v> 接口</k,v></h2><p>Map 是一种将对象与对象相关联的设计。</p>
+<p>Map 提供 key 到 value 的映射，你可以通过“键”查找“值”。一个 Map 中不能包含相同的 key ，每个 key 只能映射一个 value </p>
+<p>所以 key 不可以相同，但是 value 是可以相同的。</p>
+<p>常见以下几种不同的 Map ： </p>
+<ul>
+<li>HashMap, </li>
+<li>TreeMap, </li>
+<li>LinkedHashMap</li>
+</ul>
+<p>它们都有同样的基本接口 Map ，但是行为、效率、排序策略、保存对象的生命周期和判定“键”等价的策略等各不相同。</p>
+<p>我们注意到在讲实现 Collection 接口的集合的时候，通过继承于 Iterable<e> 接口，我们让实现了 Collection 的集合框架具有了使用迭代器的能力，但是这里的 Map<e> 接口好像没有继承与 Iterable<e> 接口，那么，我们是否可以也让 Map 接口具有使用迭代器的能力呢？</e></e></e></p>
+<p>答案是肯定的，只是要通过 Map 里面的一个内部接口来实现。</p>
+<p>Map 接口有一个重要的泛型内部接口 Entry<k,v>，它表示 Map 中的一个实体（一个 key-value 对）。接口中有 getKey(),getValue 方法。</k,v></p>
+<ul>
+<li>我们可以通过 Map<k,v> 的 keySet() 方法获取 Map 中的 K（key） 值集合（Set<v> 类型），</v></k,v></li>
+<li>通过 values() 方法 获得 Map 中的 V（value） 类型的集合 Collection<v></v></li>
+<li>通过 entrySet() 方法获取 Map 的 Entry 集合 Set&lt;Map.Entry<k, v="">&gt;。</k,></li>
+</ul>
+<p>即：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">Map&lt;Integer,String&gt; map = <span class="keyword">new</span> HashSet&lt;&gt;();</span><br><span class="line"><span class="comment">// 获取 key 集合</span></span><br><span class="line">Set&lt;Integer&gt; keys =  map.keySet();</span><br><span class="line"><span class="comment">// 获取 value 集合</span></span><br><span class="line">Collection&lt;String&gt; values = map.values();</span><br><span class="line"><span class="comment">// 获取 Entry 集合</span></span><br><span class="line">Set&lt;Map.Entry&lt;Integer,String&gt;&gt; entrys = map.entrySet();</span><br></pre></td></tr></table></figure>
+<p>细心的你可能已经发现了：存储 key 的集合和 存储 Entry 的集合使用的都是 Set 接口，而存储 value 的集合使用的是 Collection 接口。</p>
+<p>原因前面已经说了：在 Map 中，不允许存在重复元素，key 是唯一的，Entry 也是唯一的，不存在重复值，正好 Set 是不允许重复值的，所以 key 和 Entry 都是使用的 Set 接口；然后在 Map 中  value 是可以重复的（只要 key 不重复），那么自然就可以使用 Collection 接口了。 </p>
+<p>也就是说，要遍历 Map，就要借助这个很重要的内部接口 Map.Entry<k,v></k,v></p>
+<h3 id="2-1、-HashMap"><a href="#2-1、-HashMap" class="headerlink" title="2.1、 HashMap"></a>2.1、 HashMap</h3><p>HashMap 基于散列表实现（它取代了Hashtable），它存储的内容是键值对 (key-value) 映射，插入和查询键值对的开销是固定的，可以通过构造器设置容量和敷在因子，已调整容器的性能。</p>
+<p>该类实现了 Map 接口，根据键的 HashCode 值存储数据，具有很快的访问速度，最多允许一条记录的键为 null ，不支持线程同步。</p>
+<h3 id="2-2、-LinkedHashMap"><a href="#2-2、-LinkedHashMap" class="headerlink" title="2.2、 LinkedHashMap"></a>2.2、 LinkedHashMap</h3><p>类似于 HashMap，但是迭代遍历它时，取得键值对的顺序是其 <strong>插入顺序</strong>，或者是最近最少使用的次序，只比 HashMap 慢一点，而在迭代访问时反而更快，因为是通过链表维护内部次序。</p>
+<h3 id="2-3、-TreeMap"><a href="#2-3、-TreeMap" class="headerlink" title="2.3、 TreeMap"></a>2.3、 TreeMap</h3><p>基于红黑树实现，查看 键 或者 键值对 时，他们会被排序，（排序规则由 Comparable 或 Comparator 决定），TreeMap 的特点是，得到的结果是经过排序的，TreeMap 是唯一带有 subMap() 方法的 Map，可返回一个子树。</p>
+
+    </div>
+
+    <div class="post-footer">   
+        <div>
+            
+                转载声明：商业转载请联系作者获得授权,非商业转载请注明出处 © <a href="" target="_blank">smartsean</a>
+            
+        </div>
+        <div>
+            
+        </div>  
+    </div>
+</article>
+
+<div class="article-nav prev-next-wrap clearfix">
+    
+    
+        <a href="/2018/03/27/Java反射笔记/" class="next-post btn btn-default">下一篇<i class="fa fa-angle-right fa-fw"></i></a>
+    
+</div>
+
+
+    <div id="comments">
+        
+	
+<div id="lv-container" data-id="city" data-uid="MTAyMC8zMzA1MS85NjEz">
+  <script type="text/javascript">
+     (function(d, s) {
+         var j, e = d.getElementsByTagName(s)[0];
+         if (typeof LivereTower === 'function') { return; }
+         j = d.createElement(s);
+         j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+         j.async = true;
+         e.parentNode.insertBefore(j, e);
+     })(document, 'script');
+  </script>
+</div>
+
+
+    </div>
+
+
+
+
+
+                </main>
+                
+    <aside class="col-md-4 sidebar">
+        
+        
+    <div class="widget">    
+        <h3 class="title">搜索</h3>
+        <div id="search-form">
+            <div id="result-mask" class="hide"></div>
+            <div class="search-area">
+                
+                    <input id="search-key" type="search" autocomplete="off" placeholder="搜点什么呢?">
+                    <button type="button" class="search-form-submit" id="search-local">站内搜索</button>
+                
+                
+            </div>
+            <div id="result-wrap" class="hide">
+                <div id="search-result"></div>
+            </div>
+            <div class="hide">
+                <template id="search-tpl">
+                    <div class="item">
+                        <a href="/{path}" title="{title}">
+                            <div class="title">{title}</div>
+                            <div class="content">{content}</div>
+                        </a>
+                    </div>
+                </template>
+            </div>
+        </div>
+    </div>
+
+        
+        
+    <div class="widget">
+      <h3 class="title">社交</h3> 
+        <div class="content social">
+            
+	            <a href="https://github.com/smartsean" rel="external nofollow" title="Github" target="_blank">
+			    	<i class="git fa fa-git"></i>
+			    </a>
+            
+        </div>
+    </div>
+
+
+        
+        
+    <div class="widget">
+        <h3 class="title">分类</h3>
+        <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/Android/"><i class="fa" aria-hidden="true">Android</i></a><span class="category-list-count">44</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Ionic/"><i class="fa" aria-hidden="true">Ionic</i></a><span class="category-list-count">7</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/工具/"><i class="fa" aria-hidden="true">工具</i></a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/我/"><i class="fa" aria-hidden="true">我</i></a><span class="category-list-count">6</span></li></ul>
+    </div>
+
+
+        
+        
+  <div class="widget">
+    <h3 class="title">标签云</h3>
+    <div class="content tag-cloud">
+        <a href="/tags/Android/" style="font-size: 20px;">Android</a> <a href="/tags/AndroidStudio/" style="font-size: 12px;">AndroidStudio</a> <a href="/tags/Git/" style="font-size: 10px;">Git</a> <a href="/tags/Ionic/" style="font-size: 18px;">Ionic</a> <a href="/tags/Java/" style="font-size: 12px;">Java</a> <a href="/tags/Java-Java基础/" style="font-size: 10px;">Java Java基础</a> <a href="/tags/工具/" style="font-size: 16px;">工具</a> <a href="/tags/异常/" style="font-size: 12px;">异常</a> <a href="/tags/我/" style="font-size: 14px;">我</a> <a href="/tags/模拟器/" style="font-size: 10px;">模拟器</a> <a href="/tags/自定义View/" style="font-size: 12px;">自定义View</a>
+    </div>
+  </div>
+
+
+        
+        
+    <div class="widget notification">
+        <h3 class="title">网站公告</h3>
+        <div>
+            <p>暂无公告~ <br/>
+        </div>
+    </div>
+
+        
+        
+    <div class="widget">
+      <h3 class="title">归档</h3>
+        <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/03/"><i class="fa" aria-hidden="true">三月 2018</i></a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/02/"><i class="fa" aria-hidden="true">二月 2018</i></a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/01/"><i class="fa" aria-hidden="true">一月 2018</i></a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/12/"><i class="fa" aria-hidden="true">十二月 2017</i></a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/09/"><i class="fa" aria-hidden="true">九月 2017</i></a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/08/"><i class="fa" aria-hidden="true">八月 2017</i></a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/07/"><i class="fa" aria-hidden="true">七月 2017</i></a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/05/"><i class="fa" aria-hidden="true">五月 2017</i></a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/04/"><i class="fa" aria-hidden="true">四月 2017</i></a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/03/"><i class="fa" aria-hidden="true">三月 2017</i></a><span class="archive-list-count">7</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/02/"><i class="fa" aria-hidden="true">二月 2017</i></a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/01/"><i class="fa" aria-hidden="true">一月 2017</i></a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/12/"><i class="fa" aria-hidden="true">十二月 2016</i></a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/11/"><i class="fa" aria-hidden="true">十一月 2016</i></a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/10/"><i class="fa" aria-hidden="true">十月 2016</i></a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/09/"><i class="fa" aria-hidden="true">九月 2016</i></a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/08/"><i class="fa" aria-hidden="true">八月 2016</i></a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/06/"><i class="fa" aria-hidden="true">六月 2016</i></a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/04/"><i class="fa" aria-hidden="true">四月 2016</i></a><span class="archive-list-count">10</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/03/"><i class="fa" aria-hidden="true">三月 2016</i></a><span class="archive-list-count">3</span></li></ul>
+    </div>
+
+
+        
+        
+    <div class="widget">
+        <h3 class="title">友链</h3>
+        <div class="content friends-link">
+        
+            <a href="http://www.shenliyang.com" class="fa" target="_blank">个人博客</a>
+        
+        </div>
+    </div>
+
+
+        
+    </aside>
+
+            </div>
+        </div>
+    </section>
+    <footer class="main-footer">
+    <div class="container">
+        <div class="row">
+        </div>
+    </div>
+</footer>
+
+<a id="back-to-top" class="hide">
+	<i class="fa fa-chevron-up"></i>
+</a>
+
+
+
+
+    <div class="copyright">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12"> 
+                <span>Copyright &copy; 2018
+                </span> | 
+                <span>
+                    Powered by <a href="//hexo.io" class="copyright-links" target="_blank" rel="nofollow">Hexo</a>
+                </span> | 
+                <span>
+                    Theme by <a href="//github.com/shenliyang/hexo-theme-snippet.git" class="copyright-links" target="_blank" rel="nofollow">Snippet</a>
+                </span>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+	<script src="/js/search.js?rev=@@hash"></script>
+
+
+<script src="/js/app.js?rev=@@hash"></script>
+
+
+</body>
+</html>
