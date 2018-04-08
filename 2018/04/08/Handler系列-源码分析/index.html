@@ -378,10 +378,9 @@
 <p>可以看到，正是这里抛出的异常。从上面的分析可知，是我们在子线程中 setText 的时候，抛出的这个异常。</p>
 <p>看下 mThread 是什么：</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">public final class ViewRootImpl implements ViewParent,</span><br><span class="line">        View.AttachInfo.Callbacks, ThreadedRenderer.DrawCallbacks &#123;</span><br><span class="line">    final Thread mThread;</span><br><span class="line">    public ViewRootImpl(Context context, Display disp</span><br><span class="line">        mThread = Thread.currentThread();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>可以看到 mThread 是在生成 ViewRootImpl 对象的时候赋值的，也就是说 Thread.currentThread() 得到的线程如果拥有 ViewRootImpl 对象的话，就不会抛出这个异常，就可以进行更新 UI 的操作。</p>
-<p>也就是说，如果一个线程拥有 ViewRootImpl 对象，那么他就可以更新 UI。</p>
-<p>也就是说问题出在我们使用 ViewRootImpl 对象的时候，当前子线程中并没有 ViewRootImpl 对象，也就导致了 checkThread()。</p>
-<p>篇幅原因，这里不再过多介绍 ViewRootImpl，建议大家看下<a href="https://juejin.im/entry/58d36b27128fe1006cb056a6" target="_blank" rel="noopener">这篇文章</a>，里面讲到了 ViewRootImpl 相关的内容，后面我也会写下我对 ViewRootImpl 的认识。</p>
+<p>可以看到 mThread 是在生成 ViewRootImpl 对象的时候赋值的。</p>
+<p>上篇文章我们讲了在子线程中更新 UI 必须在 onResume 之前，就是因为在 onResume 之前 ViewRootImpl 还没生成，所以没法检查更新 UI 操作是不是在主线程，所以不会报错。</p>
+<p>鉴于篇幅原因，这里不再过多介绍 ViewRootImpl，建议大家看下<a href="https://juejin.im/entry/58d36b27128fe1006cb056a6" target="_blank" rel="noopener">这篇文章</a>，里面讲到了 ViewRootImpl 相关的内容，后面我也会写下我对 ViewRootImpl 的认识。</p>
 <h2 id="四、总结"><a href="#四、总结" class="headerlink" title="四、总结"></a>四、总结</h2><p>到此，希望你能对 Android 中的消息机制有了进一步的认识。另外，看源码的时候一定不能着急，并且不要每个地方都看明白，找到重点看就行了，不然你会哭的。。。</p>
 <p>其实关于 Handler 的文章很早就想写来总结下，但是一直没有写，一忙起来就懒得写东西了，以后还得坚持记录。</p>
 
@@ -480,7 +479,7 @@
         
     <div class="widget">
         <h3 class="title">分类</h3>
-        <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/Android/"><i class="fa" aria-hidden="true">Android</i></a><span class="category-list-count">46</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Ionic/"><i class="fa" aria-hidden="true">Ionic</i></a><span class="category-list-count">7</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/工具/"><i class="fa" aria-hidden="true">工具</i></a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/我/"><i class="fa" aria-hidden="true">我</i></a><span class="category-list-count">6</span></li></ul>
+        <ul class="category-list"><li class="category-list-item"><a class="category-list-link current" href="/categories/Android/"><i class="fa" aria-hidden="true">Android</i></a><span class="category-list-count">46</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Ionic/"><i class="fa" aria-hidden="true">Ionic</i></a><span class="category-list-count">7</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/工具/"><i class="fa" aria-hidden="true">工具</i></a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/我/"><i class="fa" aria-hidden="true">我</i></a><span class="category-list-count">6</span></li></ul>
     </div>
 
 
