@@ -1,0 +1,379 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+    <!--Setting-->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+    <meta http-equiv="Cache-Control" content="no-siteapp">
+    <meta name="renderer" content="webkit|ie-comp|ie-stand">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="format-detection" content="telephone=no,email=no,adress=no">
+    <meta name="browsermode" content="application">
+    <meta name="screen-orientation" content="portrait">
+    <link rel="dns-prefetch" href="https://github.com/smartsean/smartsean.github.io">
+    <!--SEO-->
+
+
+
+<meta name="robots" content="all" />
+<meta name="google" content="all" />
+<meta name="googlebot" content="all" />
+<meta name="verify" content="all" />
+    <!--Title-->
+
+
+<title>从一个异常认识Android中的 commit() 和 commitAllowingStateLoss() | SmartSean的小站</title>
+
+
+    <link rel="alternate" href="/atom.xml" title="SmartSean的小站" type="application/atom+xml">
+
+
+    <link rel="icon" href="/favicon.ico">
+
+    
+
+
+
+<link rel="stylesheet" href="//cdn.bootcss.com/bootstrap/3.3.4/css/bootstrap.min.css?rev=3.3.4">
+<link rel="stylesheet" href="//cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.min.css">
+<link rel="stylesheet" href="/css/style.css?rev=@@hash">
+
+
+
+
+    
+    <div class="hide">
+    	<script src="https://s4.cnzz.com/z_stat.php?id=1263868967&web_id=1263868967" language="JavaScript"></script>
+    </div>
+
+
+
+
+
+
+    
+</head>
+
+
+<!--[if lte IE 8]>
+<style>
+    html{ font-size: 1em }
+</style>
+<![endif]-->
+<!--[if lte IE 9]>
+<div style="ie">你使用的浏览器版本过低，为了你更好的阅读体验，请更新浏览器的版本或者使用其他现代浏览器，比如Chrome、Firefox、Safari等。</div>
+<![endif]-->
+
+<body>
+    <header class="main-header"  style="background-image:url(http://7xpw2b.com1.z0.glb.clouddn.com/hexo-sinppet/img/banner2.jpg)"  >
+    <div class="main-header-box">
+        <a class="header-avatar" href="/" title="">
+            <img src="/img/avatar.jpg" alt="logo头像">
+        </a>
+        <div class="branding">
+        	<!--<h2 class="text-hide">Snippet主题,从未如此简单有趣</h2>-->
+            
+                <h2> 仰望星空，脚踏实地。 </h2>
+             
+    	</div>
+    </div>
+</header>
+    <nav class="main-navigation">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="navbar-header"><span class="nav-toggle-button collapsed" data-toggle="collapse" data-target="#main-menu" id="mnav">
+                    <span class="sr-only">Toggle navigation</span>
+                    <i class="fa fa-bars"></i>
+                    </span>
+                </div>
+                <div class="collapse navbar-collapse" id="main-menu">
+                    <ul class="menu">
+                        
+                            <li role="presentation"><a href="/"><i class="fa fa-fw "></i>首页</a>
+                            </li>
+                        
+                            <li role="presentation"><a href="/categories/Android/"><i class="fa fa-fw "></i>Android</a>
+                            </li>
+                        
+                            <li role="presentation"><a href="/categories/工具/"><i class="fa fa-fw "></i>工具</a>
+                            </li>
+                        
+                            <li role="presentation"><a href="/categories/我/"><i class="fa fa-fw "></i>我</a>
+                            </li>
+                        
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</nav>
+    <section class="content-wrap">
+        <div class="container">
+            <div class="row">
+                <main class="col-md-8 main-content m-post">
+                    <p id="process"></p>
+<article class="post">
+    <div class="post-head">
+        <h1 id="从一个异常认识Android中的 commit() 和 commitAllowingStateLoss()">
+            
+	            从一个异常认识Android中的 commit() 和 commitAllowingStateLoss()
+            
+        </h1>
+        <div class="post-meta">
+    
+    
+    <span class="categories-meta fa-wrap">
+        <i class="fa fa-folder-open-o"></i>
+        <span>Android</span>
+    </span>
+    
+    
+    <span class="fa-wrap">
+        <i class="fa fa-tags"></i>
+        <span class="tags-meta">
+            
+            Android
+            
+        </span>
+    </span>
+    
+    
+    <span class="fa-wrap">
+        <i class="fa fa-clock-o"></i>
+        <span class="date-meta">2018/04/09</span>
+    </span>
+</div>
+
+            
+            
+    </div>
+    
+    <div class="post-body post-content">
+        <h1 id="从一个异常认识Android中的-commit-和-commitAllowingStateLoss"><a href="#从一个异常认识Android中的-commit-和-commitAllowingStateLoss" class="headerlink" title="从一个异常认识Android中的 commit() 和 commitAllowingStateLoss()"></a>从一个异常认识Android中的 commit() 和 commitAllowingStateLoss()</h1><p>[toc]</p>
+<h2 id="一、重现以及解决"><a href="#一、重现以及解决" class="headerlink" title="一、重现以及解决"></a>一、重现以及解决</h2><p>前段时间实现可一个录制语音等信息发送到后台的功能。</p>
+<p>大家都知道，现在使用录音权限<code>（Manifest.permission.RECORD_AUDIO）</code> 是需要动态申请权限的，项目中使用的权限管理的是 <code>RxPermission</code> 这个开源库。</p>
+<p>之前项目中大部分的权限申请基本都是在 <code>Activity</code> 中申请的，申请完之后的操作一般是打开新的 Activity、定位等操作。</p>
+<p>现在的需求是申请完权限后打开一个弹窗，让用户输入信息、录制语音等，所有就有了下面的代码：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line">getRxPermissions().request(Manifest.permission.RECORD_AUDIO)</span><br><span class="line">        .subscribe(new Action1&lt;Boolean&gt;() &#123;</span><br><span class="line">            @Override</span><br><span class="line">            public void call(Boolean aBoolean) &#123;</span><br><span class="line">                if (aBoolean) &#123;</span><br><span class="line">                    LaunchAssistDialog.newBuilder()</span><br><span class="line">                            .setSize((int) (ScreenUtils.getScreenWidth(getContext()) * 0.85), WRAP_CONTENT)</span><br><span class="line">                            .setAnimation(R.style.DialogAnimFromCenter)</span><br><span class="line">                            .setGravity(CENTER)</span><br><span class="line">                            .setMtId(String.valueOf(bean1.getId()))</span><br><span class="line">                            .build()</span><br><span class="line">                            .setIRequestSuccess(new LaunchAssistDialog.IRequestSuccess() &#123;</span><br><span class="line">                                @Override</span><br><span class="line">                                public void isSuccess(boolean isSuccess) &#123;</span><br><span class="line">                                    if (isSuccess) &#123;</span><br><span class="line">                                        getMtList();</span><br><span class="line">                                    &#125;</span><br><span class="line">                                &#125;</span><br><span class="line">                            &#125;)</span><br><span class="line">                            .show(getSupportFragmentManager(), &quot;launchAssistDialog&quot;);</span><br><span class="line">                &#125; else &#123;</span><br><span class="line">                    ToastUtil.toastError(getContext(), ResourceUtils.getString(mContext, R.string.need_record_permission_string));</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;);</span><br><span class="line">``` </span><br><span class="line"></span><br><span class="line">看上去没啥问题，先申请权限，得到 aBoolean ：</span><br><span class="line"></span><br><span class="line">- 如果是 `true`    弹出弹窗</span><br><span class="line">- 如果是 `false`   使用Toast 提示</span><br><span class="line"></span><br><span class="line">但是，就是这么看起来很正常的代码，却在第一次申请权限的时候，会抛出异常</span><br></pre></td></tr></table></figure>
+<p>Caused by: rx.exceptions.OnErrorNotImplementedException: Can not perform this action after onSaveInstanceState<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">字面意思就是：不能在 onSaveInstanceState 之后执行这个动作（commit()方法）。</span><br><span class="line"></span><br><span class="line">带着疑问去 `RxPermission` 的 `Issues` 中寻找问题的答案，看到有人说把 `FragmentTransaction` 的 `commit()` 方法 换成 `commitAllowingStateLoss()` 就可以解决问题，</span><br><span class="line"></span><br><span class="line">但是我的 `LaunchAssistDialog` 是我封装好的，并且直接调用的 `DialogFragment` 的 `show()` 方法弹出的。</span><br><span class="line"></span><br><span class="line">也就是说我要重写 `DialogFragment` 的 `show()` 方法。</span><br><span class="line"></span><br><span class="line">`DialogFragment` 的 `show()` 方法源码：</span><br></pre></td></tr></table></figure></p>
+<p>public void show(FragmentManager manager, String tag) {<br>    mDismissed = false;<br>    mShownByMe = true;<br>    FragmentTransaction ft = manager.beginTransaction();<br>    ft.add(this, tag);<br>    ft.commit();<br>}<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">可以看到，除了正常使用 Fragment 需要开启事务管理，再提交的流程外，还需要把 mDismissed 置为 false; mShownByMe 置为 true; </span><br><span class="line"></span><br><span class="line">这就比较尴尬了，不得已我们只能使用反射来解决。</span><br><span class="line"></span><br><span class="line">下面是我重写的 show() 方法:</span><br></pre></td></tr></table></figure></p>
+<p>public void show(android.support.v4.app.FragmentManager manager, String tag) {<br>    setBooleanField(“mDismissed”, false);<br>    setBooleanField(“mShownByMe”, true);<br>    FragmentTransaction ft = manager.beginTransaction();<br>    ft.add(this, tag);<br>    ft.commitAllowingStateLoss();<br>}</p>
+<p>private void setBooleanField(String fieldName, boolean value) {<br>    try {<br>        Field field = DialogFragment.class.getDeclaredField(fieldName);<br>        field.setAccessible(true);<br>        field.set(this, value);<br>    } catch (NoSuchFieldException e) {<br>        e.printStackTrace();<br>    } catch (IllegalAccessException e) {<br>        e.printStackTrace();<br>    }<br>}<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"></span><br><span class="line">现在再来调用最开始的代码，异常确实不会再抛出了。问题算是解决了</span><br><span class="line"></span><br><span class="line">下面继续深究下究竟是为什么会抛出这个异常：</span><br><span class="line"></span><br><span class="line">## 二、原因分析</span><br><span class="line"></span><br><span class="line">### 2.1 commitAllowingStateLoss 与 commit 的区别</span><br><span class="line"></span><br><span class="line">先来看下源码中的区别：</span><br></pre></td></tr></table></figure></p>
+<p>@Override<br>public int commit() {<br>    return commitInternal(false);<br>}<br>@Override<br>public int commitAllowingStateLoss() {<br>    return commitInternal(true);<br>}<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">看来都调用了 `commitInternal` 方法，只是参数不同，来看下 commitInternal 方法。</span><br></pre></td></tr></table></figure></p>
+<p>int commitInternal(boolean allowStateLoss) {<br>    if (mCommitted) throw new IllegalStateException(“commit already called”);<br>    if (FragmentManagerImpl.DEBUG) {<br>        Log.v(TAG, “Commit: “ + this);<br>        LogWriter logw = new LogWriter(TAG);<br>        PrintWriter pw = new PrintWriter(logw);<br>        dump(“  “, null, pw, null);<br>        pw.close();<br>    }<br>    mCommitted = true;<br>    if (mAddToBackStack) {<br>        mIndex = mManager.allocBackStackIndex(this);<br>    } else {<br>        mIndex = -1;<br>    }<br>    mManager.enqueueAction(this, allowStateLoss);<br>    return mIndex;<br>}<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">主要看下形参：allowStateLoss在哪使用：</span><br></pre></td></tr></table></figure></p>
+<p>mManager.enqueueAction(this, allowStateLoss);</p>
+<p>public void enqueueAction(OpGenerator action, boolean allowStateLoss) {<br>    if (!allowStateLoss) {<br>        checkStateLoss();<br>    }<br>    synchronized (this) {<br>        if (mDestroyed || mHost == null) {<br>            throw new IllegalStateException(“Activity has been destroyed”);<br>        }<br>        if (mPendingActions == null) {<br>            mPendingActions = new ArrayList&lt;&gt;();<br>        }<br>        mPendingActions.add(action);<br>        scheduleCommit();<br>    }<br>}<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">一路看下来，看到了最终这个参数是用来判断是不是执行 checkStateLoss() 方法的，</span><br><span class="line"></span><br><span class="line">- commit 传入的参数是 false ，要执行 checkStateLoss()</span><br><span class="line">- commitAllowingStateLoss 传入的参数是 true ，不执行 checkStateLoss()</span><br><span class="line"></span><br><span class="line">再来看下 checkStateLoss() ：</span><br></pre></td></tr></table></figure></p>
+<p>private void checkStateLoss() {<br>    if (mStateSaved) {<br>        throw new IllegalStateException(<br>                “Can not perform this action after onSaveInstanceState”);<br>    }<br>    if (mNoTransactionsBecause != null) {<br>        throw new IllegalStateException(<br>                “Can not perform this action inside of “ + mNoTransactionsBecause);<br>    }<br>}<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">是不是看到了我们刚才看到的异常 Can not perform this action after onSaveInstanceState。</span><br><span class="line"></span><br><span class="line">不会，抛出这个异常还有个前提条件，mStateSaved == true，字面意思是 状态有没有被保存。</span><br><span class="line"></span><br><span class="line">来看下官方的定义：</span><br><span class="line"></span><br><span class="line">![](http://p2oza5z62.bkt.clouddn.com/2018-04-09-15232571145543.jpg)</span><br><span class="line"></span><br><span class="line">可以看到对于 commitAllowingStateLoss 的解释就是，类似于 commit ，但是它允许在 Activity 状态被保存了之后被执行。也就是说在 activity 调用了 onSaveInstanceState() 之后，再 commit 一个事务就会出现该异常，使用 commitAllowingStateLoss 却不会出现该异常。</span><br><span class="line"></span><br><span class="line">但是后面也说了，这是一个危险的操作，因为如果 Activity 恢复了 ，那么可能导致 commit 的内容丢失，所以 commitAllowingStateLoss 适应于 UI 的变化对用户来说是可接受的。</span><br><span class="line"></span><br><span class="line">那么问题来了?为什么我就申请个权限，却会调用 Activity 的 onSaveInstanceState 方法呢？</span><br><span class="line"></span><br><span class="line">别急，继续往下看</span><br><span class="line"></span><br><span class="line">### 2.2 Android 6.0 权限申请</span><br><span class="line"></span><br><span class="line">首先我们得知道，Google 为什么提供了权限申请的方法，只是用起来比较复杂，所以我们使用 RxPermission 来进行权限申请。</span><br><span class="line"></span><br><span class="line">RxPermission 作为一个权限申请框架，必然是对系统提供方法的封装。</span><br><span class="line"></span><br><span class="line">不信？继续看 RxPermission 的源码</span><br><span class="line"></span><br><span class="line">我们的 rxPermissions 的 request 方法最终调用的是下面这行代码：</span><br></pre></td></tr></table></figure></p>
+<p>@TargetApi(Build.VERSION_CODES.M)<br>void requestPermissionsFromFragment(String[] permissions) {<br>    mRxPermissionsFragment.log(“requestPermissionsFromFragment “ + TextUtils.join(“, “, permissions));<br>    mRxPermissionsFragment.requestPermissions(permissions);<br>}<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">这里又调用了 RxPermissionsFragment 的 requestPermissions 方法，来看下：</span><br></pre></td></tr></table></figure></p>
+<p>@TargetApi(Build.VERSION_CODES.M)<br>void requestPermissions(@NonNull String[] permissions) {<br>    requestPermissions(permissions, PERMISSIONS_REQUEST_CODE);<br>}</p>
+<p>public final void requestPermissions(@NonNull String[] permissions, int requestCode) {<br>    if (mHost == null) {<br>        throw new IllegalStateException(“Fragment “ + this + “ not attached to Activity”);<br>    }<br>    mHost.onRequestPermissionsFromFragment(this, permissions,requestCode);<br>}<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">看到最终调用的是 mHost 的 onRequestPermissionsFromFragment 方法，关键就在于 mHost，我们知道 Fragment 是的宿主是 Android 四大组件之一的 Activity，所以这里的 mHost 指的就是 Activity，来看下 Activity 的 onRequestPermissionsFromFragment 方法：</span><br></pre></td></tr></table></figure></p>
+<p> @Override<br> public void onRequestPermissionsFromFragment(Fragment fragment, String[] permissions,<br>         int requestCode) {<br>     String who = REQUEST_PERMISSIONS_WHO_PREFIX + fragment.mWho;<br>     Intent intent = getPackageManager().buildRequestPermissionsIntent(permissions);<br>     startActivityForResult(who, intent, requestCode, null);<br> }<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">看到，我们首先得到一个 Intent，我们通过源码查看，得到了下面这个返回 Intent 的方法：</span><br></pre></td></tr></table></figure></p>
+<p>public Intent buildRequestPermissionsIntent(@NonNull String[] permissions) {<br>    if (ArrayUtils.isEmpty(permissions)) {<br>       throw new IllegalArgumentException(“permission cannot be null or empty”);<br>    }<br>    Intent intent = new Intent(ACTION_REQUEST_PERMISSIONS);<br>    intent.putExtra(EXTRA_REQUEST_PERMISSIONS_NAMES, permissions);<br>    intent.setPackage(getPermissionControllerPackageName());<br>    return intent;<br>}</p>
+<p>/**</p>
+<ul>
+<li>The action used to request that the user approve a permission request</li>
+<li>from the application.<br>*</li>
+<li>@hide<br>*/<br>@SystemApi<br>public static final String ACTION_REQUEST_PERMISSIONS =<pre><code>&quot;android.content.pm.action.REQUEST_PERMISSIONS&quot;;
+</code></pre>```</li>
+</ul>
+<p>可以看到，通过隐式启动 Activity 的方法去启动了一个系统提供的 Activity，所以这个时候，我们申请权限的 Activity 可能被 kill 掉，所以执行了 onPause 方法 和 onSaveInstanceState 方法。</p>
+<p>所以这个时候我们前面提到的 mStateSaved 这个变量被置为了 true，所以如果使用 commit 的话，就会执行 checkStateLoss(); 方法，进而抛出异常，如果使用 commitAllowingStateLoss 的话，就不会执行 checkStateLoss(); 方法，不会抛出异常。</p>
+<p>到现在，总算搞清楚到底是怎么回事了，是不是有一种豁然开朗的感觉呢？</p>
+<h2 id="三、总结"><a href="#三、总结" class="headerlink" title="三、总结"></a>三、总结</h2><p>对于我这次出现的异常，知道了是因为 申请权限的时候，调用了系统的 Activity ，导致宿主 Activity 执行了 onSaveInstanceState 方法，让 mStateSaved 变为 true，调用 commit() 的时候，执行 checkStateLoss() 检查，抛出了异常。</p>
+<p>解决方法就是重写 DialogFragment 的 show() 方法，把 commit() 变为 commitAllowingStateLoss() 方法。</p>
+<p>对于日常开发来说：</p>
+<ul>
+<li>如果强制 Fragment 一定要显示，即使让程序 Crash 也要显示的，使用 commit() ，比如用户比较关心的数据：金融相关等</li>
+<li>如果要显示 Fragment 消失对用户没有特别大的影响，建议使用 commitAllowingStateLoss() ，能在一定程度上保证程序的稳定性。</li>
+</ul>
+<p>此外，还要尽量避免在异步的回调方法中使用 commit() ，因为此时是感受不到 Activity 的声明周期的。</p>
+<p>就此，祝好。</p>
+
+    </div>
+
+    <div class="post-footer">   
+        <div>
+            
+                转载声明：商业转载请联系作者获得授权,非商业转载请注明出处 © <a href="" target="_blank">smartsean</a>
+            
+        </div>
+        <div>
+            
+        </div>  
+    </div>
+</article>
+
+<div class="article-nav prev-next-wrap clearfix">
+    
+    
+        <a href="/2018/04/08/Handler系列-源码分析/" class="next-post btn btn-default">下一篇<i class="fa fa-angle-right fa-fw"></i></a>
+    
+</div>
+
+
+    <div id="comments">
+        
+	
+<div id="lv-container" data-id="city" data-uid="MTAyMC8zMzA1MS85NjEz">
+  <script type="text/javascript">
+     (function(d, s) {
+         var j, e = d.getElementsByTagName(s)[0];
+         if (typeof LivereTower === 'function') { return; }
+         j = d.createElement(s);
+         j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+         j.async = true;
+         e.parentNode.insertBefore(j, e);
+     })(document, 'script');
+  </script>
+</div>
+
+
+    </div>
+
+
+
+
+
+                </main>
+                
+    <aside class="col-md-4 sidebar">
+        
+        
+    <div class="widget">    
+        <h3 class="title">搜索</h3>
+        <div id="search-form">
+            <div id="result-mask" class="hide"></div>
+            <div class="search-area">
+                
+                    <input id="search-key" type="search" autocomplete="off" placeholder="搜点什么呢?">
+                    <button type="button" class="search-form-submit" id="search-local">站内搜索</button>
+                
+                
+            </div>
+            <div id="result-wrap" class="hide">
+                <div id="search-result"></div>
+            </div>
+            <div class="hide">
+                <template id="search-tpl">
+                    <div class="item">
+                        <a href="/{path}" title="{title}">
+                            <div class="title">{title}</div>
+                            <div class="content">{content}</div>
+                        </a>
+                    </div>
+                </template>
+            </div>
+        </div>
+    </div>
+
+        
+        
+    <div class="widget">
+      <h3 class="title">社交</h3> 
+        <div class="content social">
+            
+	            <a href="https://github.com/smartsean" rel="external nofollow" title="Github" target="_blank">
+			    	<i class="git fa fa-git"></i>
+			    </a>
+            
+        </div>
+    </div>
+
+
+        
+        
+    <div class="widget">
+        <h3 class="title">分类</h3>
+        <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/Android/"><i class="fa" aria-hidden="true">Android</i></a><span class="category-list-count">47</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Ionic/"><i class="fa" aria-hidden="true">Ionic</i></a><span class="category-list-count">7</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/工具/"><i class="fa" aria-hidden="true">工具</i></a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/我/"><i class="fa" aria-hidden="true">我</i></a><span class="category-list-count">6</span></li></ul>
+    </div>
+
+
+        
+        
+  <div class="widget">
+    <h3 class="title">标签云</h3>
+    <div class="content tag-cloud">
+        <a href="/tags/Android/" style="font-size: 20px;">Android</a> <a href="/tags/AndroidStudio/" style="font-size: 12px;">AndroidStudio</a> <a href="/tags/Git/" style="font-size: 10px;">Git</a> <a href="/tags/Ionic/" style="font-size: 18px;">Ionic</a> <a href="/tags/Java/" style="font-size: 12px;">Java</a> <a href="/tags/Java-Java基础/" style="font-size: 10px;">Java Java基础</a> <a href="/tags/工具/" style="font-size: 16px;">工具</a> <a href="/tags/异常/" style="font-size: 12px;">异常</a> <a href="/tags/我/" style="font-size: 14px;">我</a> <a href="/tags/模拟器/" style="font-size: 10px;">模拟器</a> <a href="/tags/自定义View/" style="font-size: 12px;">自定义View</a>
+    </div>
+  </div>
+
+
+        
+        
+    <div class="widget notification">
+        <h3 class="title">网站公告</h3>
+        <div>
+            <p>暂无公告~ <br/>
+        </div>
+    </div>
+
+        
+        
+    <div class="widget">
+      <h3 class="title">归档</h3>
+        <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/04/"><i class="fa" aria-hidden="true">四月 2018</i></a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/03/"><i class="fa" aria-hidden="true">三月 2018</i></a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/02/"><i class="fa" aria-hidden="true">二月 2018</i></a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/01/"><i class="fa" aria-hidden="true">一月 2018</i></a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/12/"><i class="fa" aria-hidden="true">十二月 2017</i></a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/09/"><i class="fa" aria-hidden="true">九月 2017</i></a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/08/"><i class="fa" aria-hidden="true">八月 2017</i></a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/07/"><i class="fa" aria-hidden="true">七月 2017</i></a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/05/"><i class="fa" aria-hidden="true">五月 2017</i></a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/04/"><i class="fa" aria-hidden="true">四月 2017</i></a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/03/"><i class="fa" aria-hidden="true">三月 2017</i></a><span class="archive-list-count">7</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/02/"><i class="fa" aria-hidden="true">二月 2017</i></a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/01/"><i class="fa" aria-hidden="true">一月 2017</i></a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/12/"><i class="fa" aria-hidden="true">十二月 2016</i></a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/11/"><i class="fa" aria-hidden="true">十一月 2016</i></a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/10/"><i class="fa" aria-hidden="true">十月 2016</i></a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/09/"><i class="fa" aria-hidden="true">九月 2016</i></a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/08/"><i class="fa" aria-hidden="true">八月 2016</i></a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/06/"><i class="fa" aria-hidden="true">六月 2016</i></a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/04/"><i class="fa" aria-hidden="true">四月 2016</i></a><span class="archive-list-count">10</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/03/"><i class="fa" aria-hidden="true">三月 2016</i></a><span class="archive-list-count">3</span></li></ul>
+    </div>
+
+
+        
+        
+    <div class="widget">
+        <h3 class="title">友链</h3>
+        <div class="content friends-link">
+        
+            <a href="http://www.shenliyang.com" class="fa" target="_blank">个人博客</a>
+        
+        </div>
+    </div>
+
+
+        
+    </aside>
+
+            </div>
+        </div>
+    </section>
+    <footer class="main-footer">
+    <div class="container">
+        <div class="row">
+        </div>
+    </div>
+</footer>
+
+<a id="back-to-top" class="hide">
+	<i class="fa fa-chevron-up"></i>
+</a>
+
+
+
+
+    <div class="copyright">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12"> 
+                <span>Copyright &copy; 2018
+                </span> | 
+                <span>
+                    Powered by <a href="//hexo.io" class="copyright-links" target="_blank" rel="nofollow">Hexo</a>
+                </span> | 
+                <span>
+                    Theme by <a href="//github.com/shenliyang/hexo-theme-snippet.git" class="copyright-links" target="_blank" rel="nofollow">Snippet</a>
+                </span>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+	<script src="/js/search.js?rev=@@hash"></script>
+
+
+<script src="/js/app.js?rev=@@hash"></script>
+
+
+</body>
+</html>

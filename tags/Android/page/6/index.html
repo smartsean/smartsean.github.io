@@ -24,7 +24,7 @@
     <!--Title-->
 
 
-<title>Android 使用CheckBox实现好看的开关按钮 | SmartSean的小站</title>
+<title>标签: Android | SmartSean的小站</title>
 
 
     <link rel="alternate" href="/atom.xml" title="SmartSean的小站" type="application/atom+xml">
@@ -113,93 +113,47 @@
     <section class="content-wrap">
         <div class="container">
             <div class="row">
-                <main class="col-md-8 main-content m-post">
-                    <p id="process"></p>
-<article class="post">
-    <div class="post-head">
-        <h1 id="Android 使用CheckBox实现好看的开关按钮">
-            
-	            Android 使用CheckBox实现好看的开关按钮
-            
-        </h1>
-        <div class="post-meta">
+                <main class="col-md-8 main-content ">
+                    <h3> 
+    
+        Android 
     
     
-    <span class="categories-meta fa-wrap">
-        <i class="fa fa-folder-open-o"></i>
-        <span>Android</span>
-    </span>
-    
-    
-    <span class="fa-wrap">
-        <i class="fa fa-tags"></i>
-        <span class="tags-meta">
-            
-            Android
-            
-        </span>
-    </span>
-    
-    
-    <span class="fa-wrap">
-        <i class="fa fa-clock-o"></i>
-        <span class="date-meta">2016/11/20</span>
-    </span>
-</div>
+</h3>
 
-            
-            
-    </div>
-    
-    <div class="post-body post-content">
-        <p>近期项目中需要使用到开关按钮，就是有两个选项，实现是否接受新消息的功能，首先想到的就是使用CheckBox，把ui给的图片设置成开关的样式就可以了。</p>
-<h4 id="效果展示："><a href="#效果展示：" class="headerlink" title="效果展示："></a>效果展示：</h4><p><img src="http://img.blog.csdn.net/20161120180117386" alt="这里写图片描述"></p>
-<h4 id="这里使用的是ToggleButton"><a href="#这里使用的是ToggleButton" class="headerlink" title="这里使用的是ToggleButton"></a>这里使用的是<code>ToggleButton</code></h4><p>在xml布局文件里面设置如下：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">&lt;ToggleButton</span><br><span class="line">            android:id=&quot;@+id/account_receive_new_message_explain_label_tb&quot;</span><br><span class="line">            android:layout_width=&quot;38dp&quot;</span><br><span class="line">            android:layout_height=&quot;22dp&quot;</span><br><span class="line">            android:layout_alignParentRight=&quot;true&quot;</span><br><span class="line">            android:layout_centerVertical=&quot;true&quot;</span><br><span class="line">            android:layout_marginRight=&quot;16dp&quot;</span><br><span class="line">            android:button=&quot;@drawable/account_message_select&quot;</span><br><span class="line">            android:checked=&quot;true&quot;</span><br><span class="line">            android:text=&quot;&quot;</span><br><span class="line">            android:textOff=&quot;&quot;</span><br><span class="line">            android:textOn=&quot;&quot; /&gt;</span><br></pre></td></tr></table></figure></p>
-<h4 id="说明"><a href="#说明" class="headerlink" title="说明"></a>说明</h4><p>1.这里只用把button属性设置成自己定义的文件就行了，我的selector（account_message_select.xml）文件如下：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">&lt;?xml version=&quot;1.0&quot; encoding=&quot;utf-8&quot;?&gt;</span><br><span class="line">&lt;selector xmlns:android=&quot;http://schemas.android.com/apk/res/android&quot;&gt;</span><br><span class="line">    &lt;!--按下状态的显示图片--&gt;</span><br><span class="line">    &lt;item android:state_checked=&quot;true&quot; android:drawable=&quot;@drawable/account_message_sel&quot;&gt;&lt;/item&gt;</span><br><span class="line">    &lt;!--平时状态的显示图片--&gt;</span><br><span class="line">    &lt;item android:state_checked=&quot;false&quot; android:drawable=&quot;@drawable/account_message_no_sel&quot;&gt;&lt;/item&gt;</span><br><span class="line">&lt;/selector&gt;</span><br></pre></td></tr></table></figure></p>
-<p>2.这里是不用显示文字的，所以把Text属性、TextOn属性、TextOff属性都设置为空，就不会有文字显示了。</p>
-
-    </div>
-
-    <div class="post-footer">   
-        <div>
-            
-                转载声明：商业转载请联系作者获得授权,非商业转载请注明出处 © <a href="" target="_blank">smartsean</a>
-            
-        </div>
-        <div>
-            
-        </div>  
-    </div>
-</article>
-
-<div class="article-nav prev-next-wrap clearfix">
-    
-        <a href="/2016/11/20/Android-主界面多个Tab栏的实现/" class="pre-post btn btn-default"><i class="fa fa-angle-left fa-fw"></i>上一篇</a>
-    
-    
-        <a href="/2016/10/16/Android-验证码倒计时的简单实现/" class="next-post btn btn-default">下一篇<i class="fa fa-angle-right fa-fw"></i></a>
-    
-</div>
-
-
-    <div id="comments">
+    <article class="post">
         
-	
-<div id="lv-container" data-id="city" data-uid="MTAyMC8zMzA1MS85NjEz">
-  <script type="text/javascript">
-     (function(d, s) {
-         var j, e = d.getElementsByTagName(s)[0];
-         if (typeof LivereTower === 'function') { return; }
-         j = d.createElement(s);
-         j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
-         j.async = true;
-         e.parentNode.insertBefore(j, e);
-     })(document, 'script');
-  </script>
-</div>
+        <div class="post-content">
+            <div class="post-head home-post-head">
+                <h1 class="post-title"> 
+                    <a href="/2016/03/29/Android-UI模板设计-TopBar-标题栏/">Android UI模板设计---TopBar(标题栏)</a>
+                </h1>
+                <div class="post-meta">  &bull;
+                    <time class="post-date" datetime="" title="">
+                        2016年03月29日
+                    </time>
+                </div>
+            </div>
+            <p class="brief">
+                之前在郭神的书上看到了自定义控件这个概念，今天在慕课网又接触了自定义模板，今天就把学习到的自定义TopBar模板的总结写在这里。
+自定义主要分为三步：
 
 
-    </div>
+设置自定义模板需要的属性
+在java代码中实现我们的自定义模板
+在布局文件中引...
+            </p> 
+        </div>
+    </article>
+ 
+
+
+    <nav class="pagination" role="navigation">
+        <div id="page-nav">
+            <a class="extend prev" rel="prev" href="/tags/Android/page/5/"><i class='fa fa-angle-left'></i></a><a class="page-number" href="/tags/Android/">1</a><span class="space">&hellip;</span><a class="page-number" href="/tags/Android/page/4/">4</a><a class="page-number" href="/tags/Android/page/5/">5</a><span class="page-number current">6</span>
+        </div>
+    </nav>
+
 
 
 

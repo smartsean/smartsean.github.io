@@ -1,0 +1,426 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+    <!--Setting-->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+    <meta http-equiv="Cache-Control" content="no-siteapp">
+    <meta name="renderer" content="webkit|ie-comp|ie-stand">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="format-detection" content="telephone=no,email=no,adress=no">
+    <meta name="browsermode" content="application">
+    <meta name="screen-orientation" content="portrait">
+    <link rel="dns-prefetch" href="https://github.com/smartsean/smartsean.github.io">
+    <!--SEO-->
+
+
+
+<meta name="robots" content="all" />
+<meta name="google" content="all" />
+<meta name="googlebot" content="all" />
+<meta name="verify" content="all" />
+    <!--Title-->
+
+
+<title>Handler系列---源码分析 | SmartSean的小站</title>
+
+
+    <link rel="alternate" href="/atom.xml" title="SmartSean的小站" type="application/atom+xml">
+
+
+    <link rel="icon" href="/favicon.ico">
+
+    
+
+
+
+<link rel="stylesheet" href="//cdn.bootcss.com/bootstrap/3.3.4/css/bootstrap.min.css?rev=3.3.4">
+<link rel="stylesheet" href="//cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.min.css">
+<link rel="stylesheet" href="/css/style.css?rev=@@hash">
+
+
+
+
+    
+    <div class="hide">
+    	<script src="https://s4.cnzz.com/z_stat.php?id=1263868967&web_id=1263868967" language="JavaScript"></script>
+    </div>
+
+
+
+
+
+
+    
+</head>
+
+
+<!--[if lte IE 8]>
+<style>
+    html{ font-size: 1em }
+</style>
+<![endif]-->
+<!--[if lte IE 9]>
+<div style="ie">你使用的浏览器版本过低，为了你更好的阅读体验，请更新浏览器的版本或者使用其他现代浏览器，比如Chrome、Firefox、Safari等。</div>
+<![endif]-->
+
+<body>
+    <header class="main-header"  style="background-image:url(http://7xpw2b.com1.z0.glb.clouddn.com/hexo-sinppet/img/banner2.jpg)"  >
+    <div class="main-header-box">
+        <a class="header-avatar" href="/" title="">
+            <img src="/img/avatar.jpg" alt="logo头像">
+        </a>
+        <div class="branding">
+        	<!--<h2 class="text-hide">Snippet主题,从未如此简单有趣</h2>-->
+            
+                <h2> 仰望星空，脚踏实地。 </h2>
+             
+    	</div>
+    </div>
+</header>
+    <nav class="main-navigation">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="navbar-header"><span class="nav-toggle-button collapsed" data-toggle="collapse" data-target="#main-menu" id="mnav">
+                    <span class="sr-only">Toggle navigation</span>
+                    <i class="fa fa-bars"></i>
+                    </span>
+                </div>
+                <div class="collapse navbar-collapse" id="main-menu">
+                    <ul class="menu">
+                        
+                            <li role="presentation"><a href="/"><i class="fa fa-fw "></i>首页</a>
+                            </li>
+                        
+                            <li role="presentation"><a href="/categories/Android/"><i class="fa fa-fw "></i>Android</a>
+                            </li>
+                        
+                            <li role="presentation"><a href="/categories/工具/"><i class="fa fa-fw "></i>工具</a>
+                            </li>
+                        
+                            <li role="presentation"><a href="/categories/我/"><i class="fa fa-fw "></i>我</a>
+                            </li>
+                        
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</nav>
+    <section class="content-wrap">
+        <div class="container">
+            <div class="row">
+                <main class="col-md-8 main-content m-post">
+                    <p id="process"></p>
+<article class="post">
+    <div class="post-head">
+        <h1 id="Handler系列---源码分析">
+            
+	            Handler系列---源码分析
+            
+        </h1>
+        <div class="post-meta">
+    
+    
+    <span class="categories-meta fa-wrap">
+        <i class="fa fa-folder-open-o"></i>
+        <span>Android</span>
+    </span>
+    
+    
+    <span class="fa-wrap">
+        <i class="fa fa-tags"></i>
+        <span class="tags-meta">
+            
+            Android
+            
+        </span>
+    </span>
+    
+    
+    <span class="fa-wrap">
+        <i class="fa fa-clock-o"></i>
+        <span class="date-meta">2018/04/08</span>
+    </span>
+</div>
+
+            
+            
+    </div>
+    
+    <div class="post-body post-content">
+        <p>[toc]</p>
+<h1 id="Handler系列—基本使用"><a href="#Handler系列—基本使用" class="headerlink" title="Handler系列—基本使用"></a>Handler系列—基本使用</h1><h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>记得刚开始学习 Android 那会，我是使用的 Bmob 作为后端服务的，那个时候进行网络请求的时候，使用的是 Bmob 的 SDK，在回调里面不像现在的 OKHTTP 请求直接回调的是主线程，当初 Bmob 的回调是在子线程的，我就经常遇到下面的异常：</p>
+<p><img src="http://p2oza5z62.bkt.clouddn.com/2018-03-31-15224640793559.jpg" alt="CalledFromWrongThreadException"></p>
+<p>相信很多人在刚学习 Android 的时候都遇到过这个异常，出现这个异常的原因就是在子线程中进行了 UI 界面更新的操作。</p>
+<p>后来我了解到：</p>
+<ul>
+<li>Android 不能在 UI 线程做耗时操作</li>
+<li>Android 不能在子线程中更新 UI</li>
+</ul>
+<p>Android 是单线程模型，UI 操作并不是线程安全的，并且这些操作必须在 UI 线程执行。但是我们的有些操作必须是在子线程中进行。</p>
+<p>比如我们需要加载一个很大的文件，然后显示在主线程上，如果直接在主线程中进行，你会遇到 Android 中大名鼎鼎的 ANR （Android Not Response）异常的。</p>
+<p>解决办法就是在自子下线程中加载文件，然后让子线程通知子线程更新 UI 就可以了。</p>
+<p>那怎么在子线程中通知主线程呢？这就用到了 Android 中的消息机制。</p>
+<p>这里先来讲下 Handler 的基本用法，以及一些特殊的小知识，下篇文章我们再详细的讲 Andoroid 的消息机制。</p>
+<p>如果了解 Handler 使用的可以直接不用往下看了，直接去看 </p>
+<p><a href="https://blog.csdn.net/Sean_css/article/details/79767196" target="_blank" rel="noopener">Handler系列—源码分析</a></p>
+<h2 id="Handler-使用"><a href="#Handler-使用" class="headerlink" title="Handler 使用"></a>Handler 使用</h2><p>下面通过几个实例来讲下 Handler 的使用：</p>
+<ol>
+<li>使用 Handler 的 post() 方法更新 UI</li>
+<li>使用 Handler 的 sendMessage() 方法更新 UI</li>
+<li>使用 runOnUiThread() 方法更新 UI</li>
+<li>使用 View 的 post() 方法更新 UI</li>
+<li>子线程中创建 Handler（handler1）发送消息，在子线程中的Handler（handler1） 中处理,然后发送给主线程（mHandler） 去更新 UI</li>
+<li>在子线程中更新 UI （对的，你没看错，就是在子线程中更新 UI ）</li>
+<li>消除使用 Handler 的过程中出现内存泄漏</li>
+</ol>
+<p>你可能看到第3、4 都没 Handler 字样，少年别急，具体的原理会在后面的文章中讲到，先继续往下看。</p>
+<p>现在 Activity 中创建 Handler：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">TextView mShow;</span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 主线程中的Handler</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">private</span> Handler mHandler = <span class="keyword">new</span> Handler() &#123;</span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">handleMessage</span><span class="params">(Message msg)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">super</span>.handleMessage(msg);</span><br><span class="line">        mShow.setText(<span class="string">"msg.what = "</span> + msg.what + <span class="string">" 的时候 ： \n\n"</span> + <span class="string">"msg.obj = "</span> + msg.obj.toString());</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<p>篇幅有限，下面仅仅是部分关键代码，需要看完整代码的请到这里看<br><a href="https://github.com/smartsean/AndroidCode/blob/master/app/src/main/java/com/sean/demo/ui/a/activity/HandlerTestActivity.java">地址</a></p>
+<h3 id="1、使用-Handler-的-post-方法更新-UI"><a href="#1、使用-Handler-的-post-方法更新-UI" class="headerlink" title="1、使用 Handler 的 post() 方法更新 UI"></a>1、使用 Handler 的 post() 方法更新 UI</h3><p>使用 Handler 的 post() 方法更新 UI，是通过 post 出一个 Runnable 的方式，代码如下：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//使用post方法直接更新ui线程</span></span><br><span class="line"><span class="keyword">new</span> Thread(<span class="keyword">new</span> Runnable() &#123;</span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">run</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        mHandler.post(<span class="keyword">new</span> Runnable() &#123;</span><br><span class="line">            <span class="meta">@Override</span></span><br><span class="line">            <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">run</span><span class="params">()</span> </span>&#123;</span><br><span class="line">                mShow.setText(<span class="string">"使用post方法直接更新ui线程"</span>);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;).start();</span><br></pre></td></tr></table></figure>
+<p>界面展示：<br><img src="http://p2oza5z62.bkt.clouddn.com/2018-03-31-15224673423153.jpg" alt=""></p>
+<h3 id="2、使用-Handler-的-sendMessage-方法更新-UI"><a href="#2、使用-Handler-的-sendMessage-方法更新-UI" class="headerlink" title="2、使用 Handler 的 sendMessage() 方法更新 UI"></a>2、使用 Handler 的 sendMessage() 方法更新 UI</h3><p>这种方式主要是通过 Handler 对象发送出去了一个 Message 对象的方式更新 UI。</p>
+<p>使用方法如下：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">new</span> Thread(<span class="keyword">new</span> Runnable() &#123;</span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">run</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        Message message = mHandler.obtainMessage(<span class="number">7</span>, <span class="string">"子线程中发布消息，更新主线程"</span>);</span><br><span class="line">        mHandler.sendMessage(message);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;).start();</span><br></pre></td></tr></table></figure>
+<p>运行结果如下：</p>
+<p><img src="http://p2oza5z62.bkt.clouddn.com/2018-03-31-15224676553552.jpg" alt=""></p>
+<h3 id="3、使用-runOnUiThread-方法更新-UI"><a href="#3、使用-runOnUiThread-方法更新-UI" class="headerlink" title="3、使用 runOnUiThread() 方法更新 UI"></a>3、使用 runOnUiThread() 方法更新 UI</h3><p>这种方式很简单，可以直接在 runOnUiThread() 方法里面更新 UI:</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">new</span> Thread(<span class="keyword">new</span> Runnable() &#123;</span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">run</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        runOnUiThread(<span class="keyword">new</span> Runnable() &#123;</span><br><span class="line">            <span class="meta">@Override</span></span><br><span class="line">            <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">run</span><span class="params">()</span> </span>&#123;</span><br><span class="line">                mShow.setText(<span class="string">"使用runOnUiThread更新ui线程"</span>);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;).start();</span><br></pre></td></tr></table></figure>
+<p>运行结果：<br><img src="http://p2oza5z62.bkt.clouddn.com/2018-03-31-15224677867633.jpg" alt=""></p>
+<h3 id="4、使用-View-的-post-方法更新-UI"><a href="#4、使用-View-的-post-方法更新-UI" class="headerlink" title="4、使用 View 的 post() 方法更新 UI"></a>4、使用 View 的 post() 方法更新 UI</h3><p>这种事利用我们界面上的 View 的 post() 方法来更新 UI：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">new</span> Thread(<span class="keyword">new</span> Runnable() &#123;</span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">run</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        mButton5.post(<span class="keyword">new</span> Runnable() &#123;</span><br><span class="line">            <span class="meta">@Override</span></span><br><span class="line">            <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">run</span><span class="params">()</span> </span>&#123;</span><br><span class="line">                mShow.setText(<span class="string">"通过View的post方法更新ui"</span>);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;);</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+<p>运行结果：</p>
+<p><img src="http://p2oza5z62.bkt.clouddn.com/2018-03-31-15224678748264.jpg" alt=""></p>
+<h3 id="5、子线程中创建-Handler（handler1）发送消息，在子线程中的Handler（handler1）-中处理-然后发送给主线程（mHandler）-去更新-UI"><a href="#5、子线程中创建-Handler（handler1）发送消息，在子线程中的Handler（handler1）-中处理-然后发送给主线程（mHandler）-去更新-UI" class="headerlink" title="5、子线程中创建 Handler（handler1）发送消息，在子线程中的Handler（handler1） 中处理,然后发送给主线程（mHandler） 去更新 UI"></a>5、子线程中创建 Handler（handler1）发送消息，在子线程中的Handler（handler1） 中处理,然后发送给主线程（mHandler） 去更新 UI</h3><p>这个例子我们在子线程中创建了一个 Handler 对象（threadHandler），然后通过子线程的 threadHandler 对象发送 Message，在子线程中接收 Message ，然后再用主线程的 mHandler 发送消息到主线程显示，代码如下：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">new</span> Thread(<span class="keyword">new</span> Runnable() &#123;</span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">run</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        Looper.prepare();</span><br><span class="line">        Handler threadHandler;</span><br><span class="line">        threadHandler = <span class="keyword">new</span> Handler() &#123;</span><br><span class="line">            <span class="meta">@Override</span></span><br><span class="line">            <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">handleMessage</span><span class="params">(Message msg)</span> </span>&#123;</span><br><span class="line">                <span class="keyword">super</span>.handleMessage(msg);</span><br><span class="line">                <span class="keyword">if</span> (msg.what == <span class="number">1</span>) &#123;</span><br><span class="line">                    mHandler.sendMessage(mHandler.obtainMessage(<span class="number">1</span>, <span class="string">"子线程中创建Handler（handler1）发送消息，在子线程中的Handler（handler1）中处理,然后发送给主线程（mHandler）去更新ui"</span>));</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;;</span><br><span class="line">        threadHandler.sendEmptyMessage(<span class="number">1</span>);</span><br><span class="line">        Looper.loop();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;).start();</span><br></pre></td></tr></table></figure>
+<p>结果：</p>
+<p><img src="http://p2oza5z62.bkt.clouddn.com/2018-03-31-15224740039258.jpg" alt=""></p>
+<h3 id="6、在子线程中更新-UI-（对的，你没看错，就是在子线程中更新-UI-）"><a href="#6、在子线程中更新-UI-（对的，你没看错，就是在子线程中更新-UI-）" class="headerlink" title="6、在子线程中更新 UI （对的，你没看错，就是在子线程中更新 UI ）"></a>6、在子线程中更新 UI （对的，你没看错，就是在子线程中更新 UI ）</h3><p>前面我们说了 Android 是单线程模型，更新 UI 界面需要在主线程进行，为什么这里又说可以在子线程更新呢？</p>
+<p>在子线程更新 UI 是有附加条件的：<br>必须在 Activity 的 onResume 方法之前进行更新 UI 操作，也就是必须在 onResume 之前完成 View 的绑定，然后在子线程中更新 View，下面我们通过例子看一下：</p>
+<p>我们先定义一个 Button 叫 mButton4，继续用上面的 TextView(mShow) 。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">HandlerTestActivity</span> <span class="keyword">extends</span> <span class="title">BaseActivity</span> </span>&#123;</span><br><span class="line">    TextView mShow;</span><br><span class="line">    Button mButton4;</span><br><span class="line"> </span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">protected</span> <span class="keyword">void</span> <span class="title">onCreate</span><span class="params">(Bundle savedInstanceState)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">super</span>.onCreate(savedInstanceState);</span><br><span class="line">        setContentLayout(R.layout.a_activity_handler_test);</span><br><span class="line">        mShow = findViewById(R.id.show);</span><br><span class="line">        mButton4 = findViewById(R.id.button4);</span><br><span class="line">        mButton4.setOnClickListener(<span class="keyword">new</span> View.OnClickListener() &#123;</span><br><span class="line">            <span class="meta">@Override</span></span><br><span class="line">            <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onClick</span><span class="params">(View v)</span> </span>&#123;</span><br><span class="line">            beforeOnResumeClick();</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;);</span><br><span class="line">        <span class="comment">// 写在OnResume之前执行点击事件的话，可以在子线程更新UI线程</span></span><br><span class="line">        mButton4.performClick();</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">    * 测试在onResume之前调用Thread更新ui</span></span><br><span class="line"><span class="comment">    */</span></span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">beforeOnResumeClick</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">new</span> Thread() &#123;</span><br><span class="line">            <span class="meta">@Override</span></span><br><span class="line">            <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">run</span><span class="params">()</span> </span>&#123;</span><br><span class="line">                <span class="keyword">super</span>.run();</span><br><span class="line">                mShow.setText(<span class="string">"测试在onResume之前调用Thread更新ui"</span>);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;.start(); </span><br><span class="line">    &#125;  </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>运行结果如图所示：</p>
+<p><img src="http://p2oza5z62.bkt.clouddn.com/2018-03-31-15224744540638.jpg" alt=""></p>
+<p>上面结果成功证明了可以在子线程中进行更新 UI 操作，只不过需要特定的条件：<strong>必须在onResume之前进行</strong>，具体原理是什么？我会在下篇文章进行讲解。</p>
+<h3 id="7、消除使用-Handler-的过程中出现内存泄漏"><a href="#7、消除使用-Handler-的过程中出现内存泄漏" class="headerlink" title="7、消除使用 Handler 的过程中出现内存泄漏"></a>7、消除使用 Handler 的过程中出现内存泄漏</h3><p>可能有的小伙伴在使用 Handler 的过程中，会遇到内存泄漏的情况，下面就来讲下 Handler 中的内存泄漏是怎么产生的，以及解决内存泄漏的几种方法。</p>
+<h4 id="7-1-使用-Handler-时，内存泄漏是怎么产生的："><a href="#7-1-使用-Handler-时，内存泄漏是怎么产生的：" class="headerlink" title="7.1 使用 Handler 时，内存泄漏是怎么产生的："></a>7.1 使用 Handler 时，内存泄漏是怎么产生的：</h4><p>我们文章刚开始的时候，有这样一段代码：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 主线程中的Handler</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">private</span> Handler mHandler = <span class="keyword">new</span> Handler() &#123;</span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">handleMessage</span><span class="params">(Message msg)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">super</span>.handleMessage(msg);</span><br><span class="line">        mShow.setText(<span class="string">"msg.what = "</span> + msg.what + <span class="string">" 的时候 ： \n\n"</span> + <span class="string">"msg.obj = "</span> + msg.obj.toString());</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<p>可以看到，我们在 Activity 中生成了 Handler 对象 mHandler，但是这和内存泄漏有什么关系呢？下面来慢慢分析：</p>
+<p>由于在 Java 中的<strong>非静态内部类</strong>和<strong>匿名内部类</strong>都会隐式的持有当前类的外部引用，上面我们使用的 Handler 是非静态内部类，所以其对象 mHandler 会持有当前 Activity 的引用。</p>
+<p>如果这个时候退出当前 Activity ，但是 mHandler 因为一些耗时操作没有被回收，也就导致已经退出的 Activity 没有被回收，本应该被回收的 Activity 对象仍然存在于堆内存中，这就产生了内存泄漏，如果这种情况多发生几次，就会发生 OOM(Out Of Memory)，从而使我们的应用崩溃。</p>
+<h4 id="7-2-使用-Handler-时，避免内存泄漏"><a href="#7-2-使用-Handler-时，避免内存泄漏" class="headerlink" title="7.2 使用 Handler 时，避免内存泄漏"></a>7.2 使用 Handler 时，避免内存泄漏</h4><p>避免使用 Handler 时发生内存泄漏大概有三种方法来解决：</p>
+<h5 id="7-2-1-把-Handler-对象声明成静态的"><a href="#7-2-1-把-Handler-对象声明成静态的" class="headerlink" title="7.2.1 把 Handler 对象声明成静态的"></a>7.2.1 把 Handler 对象声明成静态的</h5><p>比如把上面的改写成：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 主线程中的Handler</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">private</span> <span class="keyword">static</span> Handler mHandler = <span class="keyword">new</span> Handler() &#123;</span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">handleMessage</span><span class="params">(Message msg)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">super</span>.handleMessage(msg);</span><br><span class="line">        mShow.setText(<span class="string">"msg.what = "</span> + msg.what + <span class="string">" 的时候 ： \n\n"</span> + <span class="string">"msg.obj = "</span> + msg.obj.toString());</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<h5 id="7-2-2-使用弱引用"><a href="#7-2-2-使用弱引用" class="headerlink" title="7.2.2 使用弱引用"></a>7.2.2 使用弱引用</h5><p>如果我们在 Handler 中需要持有 Activity 或者 Context 对象，那么我们可以通过使用弱引用(WeakReference)来解决</p>
+<blockquote>
+<p>弱引用和强引用（我们平时说的对象的引用）相对，有如下特点：GC 在回收时会忽略掉弱引用，就算弱引用指向了某对象，但是只要该对象没有被强引用指向，那么该对象就会被 GC 检查的时候回收掉。<br>具体可参考：<a href="https://blog.csdn.net/mazhimazh/article/details/19752475" target="_blank" rel="noopener">强引用、弱引用、软引用、虚引用</a></p>
+</blockquote>
+<p>比如我们有个这样的 Handler ：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 主线程中的Handler</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">private</span> Handler mHandler = <span class="keyword">new</span> Handler() &#123;</span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">handleMessage</span><span class="params">(Message msg)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">super</span>.handleMessage(msg);</span><br><span class="line">        Toast.makeText(activity, <span class="string">"测试内存泄漏"</span>, Toast.LENGTH_SHORT).show();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<p>mHandler 不是静态的，并且在 Handler 内部我们持有了一个 activity 的引用，如果我们这个时候 关闭当前的 activity ，但是 mHandler 在执行一个耗时操作，导致 mHandler 对象没有被释放， mHandler 持有 activity 的引用，导致 activity 对象也没有被释放，那么就会导致内存泄漏。</p>
+<p>我们可以通过以下使用弱引用的方法解决：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="keyword">private</span> MyHandler mMyHandler;</span><br><span class="line"><span class="meta">@Override</span></span><br><span class="line"><span class="function"><span class="keyword">protected</span> <span class="keyword">void</span> <span class="title">onCreate</span><span class="params">(Bundle savedInstanceState)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">super</span>.onCreate(savedInstanceState);</span><br><span class="line">    setContentView(R.layout.activity_safe_handler_demo);</span><br><span class="line">    mMyHandler = <span class="keyword">new</span> MyHandler(<span class="keyword">this</span>);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">private</span> <span class="keyword">static</span> <span class="class"><span class="keyword">class</span> <span class="title">MyHandler</span> <span class="keyword">extends</span> <span class="title">Handler</span> </span>&#123;</span><br><span class="line">    WeakReference&lt;SafeHandlerDemoActivity&gt; mWeakReference;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">MyHandler</span><span class="params">(SafeHandlerDemoActivity activity)</span> </span>&#123;</span><br><span class="line">        mWeakReference = <span class="keyword">new</span> WeakReference&lt;&gt;(activity);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">handleMessage</span><span class="params">(Message msg)</span> </span>&#123;</span><br><span class="line">        SafeHandlerDemoActivity activity = mWeakReference.get();</span><br><span class="line">        <span class="keyword">if</span> (activity != <span class="keyword">null</span>) &#123;</span><br><span class="line">            Toast.makeText(activity, <span class="string">"测试内存泄漏"</span>, Toast.LENGTH_SHORT).show();</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>这样就算在 mHandler 有耗时操作，并且关闭当前 Activity 的情况下也不会导致内存泄漏，因为 mHandler 持有的 activity 的弱引用，当 GC 检查到 弱引用时，弱引用会被回收掉。从而也就释放了 Activity ，但是这种方法有个缺点，就是虽然 GC 会来回收 弱引用，但是并不是立即回收的，可能会有延迟，导致对象仍然在内存中，性能比较低。</p>
+<h5 id="7-2-3-在-onDestory-的时候销毁-Handler-的对象"><a href="#7-2-3-在-onDestory-的时候销毁-Handler-的对象" class="headerlink" title="7.2.3 在 onDestory() 的时候销毁 Handler 的对象"></a>7.2.3 在 onDestory() 的时候销毁 Handler 的对象</h5><p>这个就很简单了，我们在 onDestory() 的代码里面添加：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Override</span></span><br><span class="line"><span class="function"><span class="keyword">protected</span> <span class="keyword">void</span> <span class="title">onDestroy</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="keyword">super</span>.onDestroy();</span><br><span class="line">    <span class="comment">// 移除所有消息</span></span><br><span class="line">    mMyHandler.removeCallbacksAndMessages(<span class="keyword">null</span>);</span><br><span class="line">    <span class="comment">// 也可移除指定的单条消息 what就是message中的what</span></span><br><span class="line">    <span class="comment">// mMyHandler.removeMessages(what);</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h5 id="7-2-4-Handler-内存泄漏小结"><a href="#7-2-4-Handler-内存泄漏小结" class="headerlink" title="7.2.4 Handler 内存泄漏小结"></a>7.2.4 Handler 内存泄漏小结</h5><p> 原因：</p>
+<p> 当 Activity 销毁的时候，如果 Handler 对象持有 Activity 的引用，导致 Activity 对象不能被销毁，一直存留在内存中，导致内存越来越大，导致 OOM ；</p>
+<p> 解决办法：<br> 1、通过设置 Handler 对象为静态的<br> 2、使用弱引用解决内存泄漏，但是需要等到 Handler 对象中的任务都执行完，才会释放 activity 内存，不如直接 static 释放的快<br> 3、在 onDestory() 方法里面移除所有未执行的任务</p>
+<p> 其中第一种和第二种是通过 Java 垃圾回收方面来解决的</p>
+<p> 而第三种是则是从业务层面解决问题，当我退出的时候，我要清理掉所有任务。</p>
+<h2 id="最后"><a href="#最后" class="headerlink" title="最后"></a>最后</h2><p> 好了，Handler 的使用就先介绍到这里，源码已经上传到 <a href="https://github.com/smartsean/AndroidCode/blob/master/app/src/main/java/com/sean/demo/ui/a/activity/HandlerTestActivity.java">Github</a>有兴趣的可以去看看。</p>
+<p> 下面我们来看下第二篇 <a href="https://blog.csdn.net/Sean_css/article/details/79767196" target="_blank" rel="noopener">Handler系列—源码分析</a></p>
+
+    </div>
+
+    <div class="post-footer">   
+        <div>
+            
+                转载声明：商业转载请联系作者获得授权,非商业转载请注明出处 © <a href="" target="_blank">smartsean</a>
+            
+        </div>
+        <div>
+            
+        </div>  
+    </div>
+</article>
+
+<div class="article-nav prev-next-wrap clearfix">
+    
+        <a href="/2018/04/08/Handler系列-源码分析/" class="pre-post btn btn-default"><i class="fa fa-angle-left fa-fw"></i>上一篇</a>
+    
+    
+        <a href="/2018/03/29/Java常用集合框架-一/" class="next-post btn btn-default">下一篇<i class="fa fa-angle-right fa-fw"></i></a>
+    
+</div>
+
+
+    <div id="comments">
+        
+	
+<div id="lv-container" data-id="city" data-uid="MTAyMC8zMzA1MS85NjEz">
+  <script type="text/javascript">
+     (function(d, s) {
+         var j, e = d.getElementsByTagName(s)[0];
+         if (typeof LivereTower === 'function') { return; }
+         j = d.createElement(s);
+         j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+         j.async = true;
+         e.parentNode.insertBefore(j, e);
+     })(document, 'script');
+  </script>
+</div>
+
+
+    </div>
+
+
+
+
+
+                </main>
+                
+    <aside class="col-md-4 sidebar">
+        
+        
+    <div class="widget">    
+        <h3 class="title">搜索</h3>
+        <div id="search-form">
+            <div id="result-mask" class="hide"></div>
+            <div class="search-area">
+                
+                    <input id="search-key" type="search" autocomplete="off" placeholder="搜点什么呢?">
+                    <button type="button" class="search-form-submit" id="search-local">站内搜索</button>
+                
+                
+            </div>
+            <div id="result-wrap" class="hide">
+                <div id="search-result"></div>
+            </div>
+            <div class="hide">
+                <template id="search-tpl">
+                    <div class="item">
+                        <a href="/{path}" title="{title}">
+                            <div class="title">{title}</div>
+                            <div class="content">{content}</div>
+                        </a>
+                    </div>
+                </template>
+            </div>
+        </div>
+    </div>
+
+        
+        
+    <div class="widget">
+      <h3 class="title">社交</h3> 
+        <div class="content social">
+            
+	            <a href="https://github.com/smartsean" rel="external nofollow" title="Github" target="_blank">
+			    	<i class="git fa fa-git"></i>
+			    </a>
+            
+        </div>
+    </div>
+
+
+        
+        
+    <div class="widget">
+        <h3 class="title">分类</h3>
+        <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/Android/"><i class="fa" aria-hidden="true">Android</i></a><span class="category-list-count">47</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Ionic/"><i class="fa" aria-hidden="true">Ionic</i></a><span class="category-list-count">7</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/工具/"><i class="fa" aria-hidden="true">工具</i></a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/我/"><i class="fa" aria-hidden="true">我</i></a><span class="category-list-count">6</span></li></ul>
+    </div>
+
+
+        
+        
+  <div class="widget">
+    <h3 class="title">标签云</h3>
+    <div class="content tag-cloud">
+        <a href="/tags/Android/" style="font-size: 20px;">Android</a> <a href="/tags/AndroidStudio/" style="font-size: 12px;">AndroidStudio</a> <a href="/tags/Git/" style="font-size: 10px;">Git</a> <a href="/tags/Ionic/" style="font-size: 18px;">Ionic</a> <a href="/tags/Java/" style="font-size: 12px;">Java</a> <a href="/tags/Java-Java基础/" style="font-size: 10px;">Java Java基础</a> <a href="/tags/工具/" style="font-size: 16px;">工具</a> <a href="/tags/异常/" style="font-size: 12px;">异常</a> <a href="/tags/我/" style="font-size: 14px;">我</a> <a href="/tags/模拟器/" style="font-size: 10px;">模拟器</a> <a href="/tags/自定义View/" style="font-size: 12px;">自定义View</a>
+    </div>
+  </div>
+
+
+        
+        
+    <div class="widget notification">
+        <h3 class="title">网站公告</h3>
+        <div>
+            <p>暂无公告~ <br/>
+        </div>
+    </div>
+
+        
+        
+    <div class="widget">
+      <h3 class="title">归档</h3>
+        <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/04/"><i class="fa" aria-hidden="true">四月 2018</i></a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/03/"><i class="fa" aria-hidden="true">三月 2018</i></a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/02/"><i class="fa" aria-hidden="true">二月 2018</i></a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/01/"><i class="fa" aria-hidden="true">一月 2018</i></a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/12/"><i class="fa" aria-hidden="true">十二月 2017</i></a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/09/"><i class="fa" aria-hidden="true">九月 2017</i></a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/08/"><i class="fa" aria-hidden="true">八月 2017</i></a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/07/"><i class="fa" aria-hidden="true">七月 2017</i></a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/05/"><i class="fa" aria-hidden="true">五月 2017</i></a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/04/"><i class="fa" aria-hidden="true">四月 2017</i></a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/03/"><i class="fa" aria-hidden="true">三月 2017</i></a><span class="archive-list-count">7</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/02/"><i class="fa" aria-hidden="true">二月 2017</i></a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/01/"><i class="fa" aria-hidden="true">一月 2017</i></a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/12/"><i class="fa" aria-hidden="true">十二月 2016</i></a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/11/"><i class="fa" aria-hidden="true">十一月 2016</i></a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/10/"><i class="fa" aria-hidden="true">十月 2016</i></a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/09/"><i class="fa" aria-hidden="true">九月 2016</i></a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/08/"><i class="fa" aria-hidden="true">八月 2016</i></a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/06/"><i class="fa" aria-hidden="true">六月 2016</i></a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/04/"><i class="fa" aria-hidden="true">四月 2016</i></a><span class="archive-list-count">10</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/03/"><i class="fa" aria-hidden="true">三月 2016</i></a><span class="archive-list-count">3</span></li></ul>
+    </div>
+
+
+        
+        
+    <div class="widget">
+        <h3 class="title">友链</h3>
+        <div class="content friends-link">
+        
+            <a href="http://www.shenliyang.com" class="fa" target="_blank">个人博客</a>
+        
+        </div>
+    </div>
+
+
+        
+    </aside>
+
+            </div>
+        </div>
+    </section>
+    <footer class="main-footer">
+    <div class="container">
+        <div class="row">
+        </div>
+    </div>
+</footer>
+
+<a id="back-to-top" class="hide">
+	<i class="fa fa-chevron-up"></i>
+</a>
+
+
+
+
+    <div class="copyright">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12"> 
+                <span>Copyright &copy; 2018
+                </span> | 
+                <span>
+                    Powered by <a href="//hexo.io" class="copyright-links" target="_blank" rel="nofollow">Hexo</a>
+                </span> | 
+                <span>
+                    Theme by <a href="//github.com/shenliyang/hexo-theme-snippet.git" class="copyright-links" target="_blank" rel="nofollow">Snippet</a>
+                </span>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+	<script src="/js/search.js?rev=@@hash"></script>
+
+
+<script src="/js/app.js?rev=@@hash"></script>
+
+
+</body>
+</html>
