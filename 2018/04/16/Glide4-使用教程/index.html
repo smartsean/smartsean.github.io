@@ -1,0 +1,525 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+    <!--Setting-->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+    <meta http-equiv="Cache-Control" content="no-siteapp">
+    <meta name="renderer" content="webkit|ie-comp|ie-stand">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="format-detection" content="telephone=no,email=no,adress=no">
+    <meta name="browsermode" content="application">
+    <meta name="screen-orientation" content="portrait">
+    <link rel="dns-prefetch" href="https://github.com/smartsean/smartsean.github.io">
+    <!--SEO-->
+
+
+
+<meta name="robots" content="all" />
+<meta name="google" content="all" />
+<meta name="googlebot" content="all" />
+<meta name="verify" content="all" />
+    <!--Title-->
+
+
+<title>Glide4 使用教程 | SmartSean的小站</title>
+
+
+    <link rel="alternate" href="/atom.xml" title="SmartSean的小站" type="application/atom+xml">
+
+
+    <link rel="icon" href="/favicon.ico">
+
+    
+
+
+
+<link rel="stylesheet" href="//cdn.bootcss.com/bootstrap/3.3.4/css/bootstrap.min.css?rev=3.3.4">
+<link rel="stylesheet" href="//cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.min.css">
+<link rel="stylesheet" href="/css/style.css?rev=@@hash">
+
+
+
+
+    
+    <div class="hide">
+    	<script src="https://s4.cnzz.com/z_stat.php?id=1263868967&web_id=1263868967" language="JavaScript"></script>
+    </div>
+
+
+
+
+
+
+    
+</head>
+
+
+<!--[if lte IE 8]>
+<style>
+    html{ font-size: 1em }
+</style>
+<![endif]-->
+<!--[if lte IE 9]>
+<div style="ie">你使用的浏览器版本过低，为了你更好的阅读体验，请更新浏览器的版本或者使用其他现代浏览器，比如Chrome、Firefox、Safari等。</div>
+<![endif]-->
+
+<body>
+    <header class="main-header"  style="background-image:url(http://7xpw2b.com1.z0.glb.clouddn.com/hexo-sinppet/img/banner2.jpg)"  >
+    <div class="main-header-box">
+        <a class="header-avatar" href="/" title="">
+            <img src="/img/avatar.jpg" alt="logo头像">
+        </a>
+        <div class="branding">
+        	<!--<h2 class="text-hide">Snippet主题,从未如此简单有趣</h2>-->
+            
+                <h2> 仰望星空，脚踏实地。 </h2>
+             
+    	</div>
+    </div>
+</header>
+    <nav class="main-navigation">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="navbar-header"><span class="nav-toggle-button collapsed" data-toggle="collapse" data-target="#main-menu" id="mnav">
+                    <span class="sr-only">Toggle navigation</span>
+                    <i class="fa fa-bars"></i>
+                    </span>
+                </div>
+                <div class="collapse navbar-collapse" id="main-menu">
+                    <ul class="menu">
+                        
+                            <li role="presentation"><a href="/"><i class="fa fa-fw "></i>首页</a>
+                            </li>
+                        
+                            <li role="presentation"><a href="/categories/Android/"><i class="fa fa-fw "></i>Android</a>
+                            </li>
+                        
+                            <li role="presentation"><a href="/categories/工具/"><i class="fa fa-fw "></i>工具</a>
+                            </li>
+                        
+                            <li role="presentation"><a href="/categories/我/"><i class="fa fa-fw "></i>我</a>
+                            </li>
+                        
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</nav>
+    <section class="content-wrap">
+        <div class="container">
+            <div class="row">
+                <main class="col-md-8 main-content m-post">
+                    <p id="process"></p>
+<article class="post">
+    <div class="post-head">
+        <h1 id="Glide4 使用教程">
+            
+	            Glide4 使用教程
+            
+        </h1>
+        <div class="post-meta">
+    
+    
+    <span class="categories-meta fa-wrap">
+        <i class="fa fa-folder-open-o"></i>
+        <span>Android</span>
+    </span>
+    
+    
+    <span class="fa-wrap">
+        <i class="fa fa-tags"></i>
+        <span class="tags-meta">
+            
+            Android
+            
+        </span>
+    </span>
+    
+    
+    <span class="fa-wrap">
+        <i class="fa fa-clock-o"></i>
+        <span class="date-meta">2018/04/16</span>
+    </span>
+</div>
+
+            
+            
+    </div>
+    
+    <div class="post-body post-content">
+        <p>[toc]</p>
+<h1 id="Glide4-使用教程"><a href="#Glide4-使用教程" class="headerlink" title="Glide4 使用教程"></a>Glide4 使用教程</h1><h2 id="一、前言"><a href="#一、前言" class="headerlink" title="一、前言"></a>一、前言</h2><p>记得我刚开始学习 Android 那会，还不懂三方框架，比如 Picasso、Glide、Fresco 等图片加载框架，为了加载一个网络图片老费劲了（也可能是萌新，懂的少），首先要通过网络请求得到一个输入流，然后再通过 BitmapFactory.decodeStream()  方法获取 Bitmap 对象，最后在设置给 ImageView。</p>
+<p>时不时还会出现点 OOM 异常给点惊喜，也是很崩溃了==。</p>
+<p>后来慢慢了解了三方框架之后，知道了 Google 出品的 Glide。</p>
+<p>看下官网的介绍：</p>
+<blockquote>
+<p>Glide 是一个快速高效的 Android 图片加载库，注重于平滑的滚动。Glide 提供了易用的 API，高性能、可扩展的图片解码管道（decode pipeline），以及自动的资源池技术。<br>Glide 支持拉取，解码和展示视频快照，图片，和GIF动画。Glide的Api是如此的灵活，开发者甚至可以插入和替换成自己喜爱的任何网络栈。默认情况下，Glide使用的是一个定制化的基于HttpUrlConnection的栈，但同时也提供了与Google Volley和Square OkHttp快速集成的工具库。</p>
+<p>虽然Glide 的主要目标是让任何形式的图片列表的滚动尽可能地变得更快、更平滑，但实际上，Glide几乎能满足你对远程图片的拉取/缩放/显示的一切需求</p>
+</blockquote>
+<p>Glide 可以很方便的加载图片，方便到只需要一行代码：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Glide.with(mContext).load(url).into(mImageView);</span><br></pre></td></tr></table></figure>
+<p>至此之后，我就一直在使用 Glide ，虽然在项目中使用过很多 Glide 提供的特性来方便开发，但是过一段时间容易忘记。一直打算写篇文章介绍下 Glide。</p>
+<p>正好最近我把 Glide 的版本升级到了 4.0，就决定来写一篇文章来讲下 Glide 的使用，以及在项目中遇到的问题的解决办法。</p>
+<h2 id="二、Glide-基本使用"><a href="#二、Glide-基本使用" class="headerlink" title="二、Glide 基本使用"></a>二、Glide 基本使用</h2><p>Glide 的 Github 地址：<a href="https://github.com/bumptech/glide">glide</a></p>
+<p>如果你想使用,只需要下面的代码就可以很方便的引入到项目中：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">implementation &apos;com.github.bumptech.glide:glide:4.7.0&apos;</span><br><span class="line">annotationProcessor &apos;com.github.bumptech.glide:compiler:4.7.0&apos;</span><br></pre></td></tr></table></figure>
+<p>对了，Glide 是需要使用网络的，别忘了添加网络权限</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;uses-permission android:name=&quot;android.permission.CAMERA&quot; /&gt;</span><br></pre></td></tr></table></figure>
+<h3 id="1、简单用法"><a href="#1、简单用法" class="headerlink" title="1、简单用法"></a>1、简单用法</h3><p>比如加载一个地址为 url 的图片到 mImageView 中：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Glide.with(mContext).load(url).into(mImageView);</span><br></pre></td></tr></table></figure>
+<h3 id="2、占位图"><a href="#2、占位图" class="headerlink" title="2、占位图"></a>2、占位图</h3><h4 id="2-1-加载占位图"><a href="#2-1-加载占位图" class="headerlink" title="2.1 加载占位图"></a>2.1 加载占位图</h4><p>如果你要加载的图片比较大，需要的时间比较长，那么你可以设置一个默认的图片 default_picture，在真正的图片没加载的时候显示,你可以这样做：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">RequestOptions options = new RequestOptions()</span><br><span class="line">        .placeholder(R.drawable.a);</span><br><span class="line">Glide.with(this).load(url).apply(options).into(mImageView);</span><br></pre></td></tr></table></figure>
+<h4 id="2-2-错误占位图"><a href="#2-2-错误占位图" class="headerlink" title="2.2 错误占位图"></a>2.2 错误占位图</h4><p>如果你不确定图片能不能成功，想在加载错误的时候显示特定的图片，来表示加载失败，你可以这样做：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">RequestOptions options = new RequestOptions()</span><br><span class="line">        .placeholder(R.drawable.a)</span><br><span class="line">        .error(R.drawable.d);</span><br><span class="line">Glide.with(this).load(url).apply(options).into(mImageView);</span><br></pre></td></tr></table></figure>
+<p>此外，从 Glide 4.3.0 开始，你现在可以使用 error API 来指定一个 RequestBuilder，以在主请求失败时开始一次新的加载，</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">String errorUrl  =&quot;失败要加载的地址&quot;;</span><br><span class="line">        Glide.with(this)</span><br><span class="line">                .load(url)</span><br><span class="line">                .error(Glide.with(this).load(errorUrl))</span><br><span class="line">                .into(mImageView);</span><br></pre></td></tr></table></figure>
+<p>这样的话，如果我们加载 url 失败，则会去重新加载 errorUrl。</p>
+<h4 id="2-3-null-占位图（后备回调符）"><a href="#2-3-null-占位图（后备回调符）" class="headerlink" title="2.3 null 占位图（后备回调符）"></a>2.3 null 占位图（后备回调符）</h4><p>正常情况下，我们的 load() 方法里面的 url 应该不是 null 的，但是如果有可能为 null 的情况，你可以通过设置 fallback（） 方法来显示 url 为 null 的情况，代码如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">RequestOptions options = new RequestOptions()</span><br><span class="line">        .placeholder(R.drawable.a)</span><br><span class="line">        .error(R.drawable.d)</span><br><span class="line">        .fallback(R.drawable.e)</span><br><span class="line">        .override(com.bumptech.glide.request.target.Target.SIZE_ORIGINAL);</span><br><span class="line">Glide.with(this).load(url).apply(options).into(mImageView);</span><br></pre></td></tr></table></figure>
+<p>图片显示流程为</p>
+<ol>
+<li>正在加载 url 的时候，页面上显示图片 a</li>
+<li>加载成功显示 url 指向的图片</li>
+<li>加载失败显示 图片 e</li>
+<li>如果 url 为 null（一定得是 null ），则显示 图片 e</li>
+</ol>
+<h3 id="3、加载指定大小的图片"><a href="#3、加载指定大小的图片" class="headerlink" title="3、加载指定大小的图片"></a>3、加载指定大小的图片</h3><p>如果你要加载的图片尺寸是 1080<em>1920 的，但是你要显示的 ImageView 的大小却是 100 </em> 100的，这个时候，我们是不用做什么操作的，因为 Glide 会自动的根据 ImageView 的大小来决定加载图片的大小</p>
+<p>但是如果你的 ImageView 是 100 <em> 100 的，而你却要加载的图片大小为 88 </em> 88，那么你就可以这样写来指定加载的尺寸：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">RequestOptions options = new RequestOptions()</span><br><span class="line">        .placeholder(R.drawable.a)</span><br><span class="line">        .error(R.drawable.d)</span><br><span class="line">        .override(88, 88);</span><br><span class="line">Glide.with(this).load(url).apply(options).into(mImageView);</span><br></pre></td></tr></table></figure>
+<p>这里需要注意的是，虽然设置了要加载图片的大小，但是设置的 placeholder 和 error 的尺寸是不会变的，还是通过 Glide 根据我们的 ImageView 自动计算的。</p>
+<p>当然，你可能说，我不想让 Glide 帮我计算并压缩要加载的图片，我就要加载原始图片大小，当然也是可以的，你可以这样写：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">RequestOptions options = new RequestOptions()</span><br><span class="line">        .placeholder(R.drawable.a)</span><br><span class="line">        .error(R.drawable.d)</span><br><span class="line">        .override(com.bumptech.glide.request.target.Target.SIZE_ORIGINAL);</span><br><span class="line">Glide.with(this).load(url).apply(options).into(mImageView);</span><br></pre></td></tr></table></figure>
+<p>不过我不建议这样做，因为比如你的原始图片大小 1024 <em> 1024 的，而你的 ImageView 是 128 </em> 128 的，那么两种加载方式占用的内存可能会相差几十倍。</p>
+<h3 id="4、加载不同格式-Gif、Bitmap、Drawable、File"><a href="#4、加载不同格式-Gif、Bitmap、Drawable、File" class="headerlink" title="4、加载不同格式 Gif、Bitmap、Drawable、File"></a>4、加载不同格式 Gif、Bitmap、Drawable、File</h3><p>在 Glide4.0 中有一个 RequestBuilders<transcodetype> 的泛型类，用于指定加载资源的格式，可以通过下面四种方法指定，得到不同的 RequestBuilders 对象：</transcodetype></p>
+<ol>
+<li>asDrawable()   得到 RequestBuilders<drawable></drawable></li>
+<li>asGif()   得到 RequestBuilders<gifdrawable></gifdrawable></li>
+<li>asBitmap()   得到 RequestBuilders<bitmap></bitmap></li>
+<li>asFile()   得到 RequestBuilders<file></file></li>
+</ol>
+<p>默认情况下，如果我们不指定，则是得到一个 RequestBuilders<drawable> 对象。</drawable></p>
+<p>比如我们加载 Gif 时可以使用：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">RequestOptions options = new RequestOptions()</span><br><span class="line">        .placeholder(R.drawable.a)</span><br><span class="line">        .error(R.drawable.d)</span><br><span class="line">        .override(com.bumptech.glide.request.target.Target.SIZE_ORIGINAL);</span><br><span class="line">// 加载 gif</span><br><span class="line">Glide.with(this).asGif().load(url).apply(options).into(mImageView);</span><br><span class="line">// 加载 bitmap</span><br><span class="line">Glide.with(this).asBitmap().load(url).apply(options).into(mImageView);</span><br><span class="line">// 加载 drawable</span><br><span class="line">Glide.with(this).asDrawable().load(url).apply(options).into(mImageView);</span><br></pre></td></tr></table></figure>
+<p>asFile() 和后面要讲的有关系，后面再讲。</p>
+<h3 id="5、缩略图的使用"><a href="#5、缩略图的使用" class="headerlink" title="5、缩略图的使用"></a>5、缩略图的使用</h3><p>如果在开发中，你要加载的图片很大，并且你要加载的图片有高分辨率版本和低分辨率版本，我们知道，高分辨路意味着图片较大，加载耗时，所以 Glide  给我们提供了 thumbnail 方法来加载缩略图。</p>
+<p>thumbnail 方法的参数主要有以下两种：</p>
+<ol>
+<li>RequestBuilder<transcodetype> thumbnailRequest</transcodetype></li>
+<li>float sizeMultiplier</li>
+</ol>
+<p>来看下第一种 参数为 RequestBuilder 的：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">String highQualityImageUrl = &quot;...&quot;;</span><br><span class="line">String lowQualityImageUrl = &quot;...&quot;;</span><br><span class="line">Glide.with(this)</span><br><span class="line">        .load(highQualityImageUrl)</span><br><span class="line">        .thumbnail(Glide.with(this)</span><br><span class="line">                .load(lowQualityImageUrl))</span><br><span class="line">        .into(mImageView);</span><br></pre></td></tr></table></figure>
+<p>这种情况下会先加载并显示 lowQualityImageUrl 指向的图片，等到 highQualityImageUrl 指向的图片加载完成之后，则显示 highQualityImageUrl 指向的图片。</p>
+<p>第二种，参数为 float 的：</p>
+<p>看下源码：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">public RequestBuilder&lt;TranscodeType&gt; thumbnail(float sizeMultiplier) &#123;</span><br><span class="line">  if (sizeMultiplier &lt; 0f || sizeMultiplier &gt; 1f) &#123;</span><br><span class="line">    throw new IllegalArgumentException(&quot;sizeMultiplier must be between 0 and 1&quot;);</span><br><span class="line">  &#125;</span><br><span class="line">  this.thumbSizeMultiplier = sizeMultiplier;</span><br><span class="line">  return this;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>看到我们只能传入 0 到 1 之间的 float 值。用法如下</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">Glide.with(this)</span><br><span class="line">        .load(highQualityImageUrl)</span><br><span class="line">        .thumbnail(0.5f)</span><br><span class="line">        .into(mImageView);</span><br></pre></td></tr></table></figure>
+<p>这种情况下会直接 highQualityImageUrl 指向的图片的一般分辨率的图片，等到 highQualityImageUrl 指向的图片完全加载之后，再显示 highQualityImageUrl 指向的完整图片。</p>
+<h3 id="6、Glide-预加载、缓存到硬盘、以及加载监听"><a href="#6、Glide-预加载、缓存到硬盘、以及加载监听" class="headerlink" title="6、Glide 预加载、缓存到硬盘、以及加载监听"></a>6、Glide 预加载、缓存到硬盘、以及加载监听</h3><h4 id="6-1-换一种方式加载图片"><a href="#6-1-换一种方式加载图片" class="headerlink" title="6.1 换一种方式加载图片"></a>6.1 换一种方式加载图片</h4><p>正常情况下我们都是用下面这行代码加载图片的：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Glide.with(mContext).load(url).into(mImageView);</span><br></pre></td></tr></table></figure>
+<p>我们最后的 into() 方法传入了一个 ImageView，实际上这只是 Glide 为我们提供的一个封装，封装成一个 Target 或者 Target 的子类，看下 Glide 的定义：</p>
+<p>看下 into(mImageView) 的实现：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">@NonNull</span><br><span class="line">public ViewTarget&lt;ImageView, TranscodeType&gt; into(@NonNull ImageView view) &#123;</span><br><span class="line">  // 。。。省略部分代码</span><br><span class="line">  return into(</span><br><span class="line">      glideContext.buildImageViewTarget(view, transcodeClass),</span><br><span class="line">      /*targetListener=*/ null,</span><br><span class="line">      requestOptions);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>前面省去的代码是对一些对象的拼装，最终调用的 into 方法：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">private &lt;Y extends Target&lt;TranscodeType&gt;&gt; Y into(</span><br><span class="line">      @NonNull Y target,</span><br><span class="line">      @Nullable RequestListener&lt;TranscodeType&gt; targetListener,</span><br><span class="line">      @NonNull RequestOptions options) &#123;</span><br></pre></td></tr></table></figure>
+<p>而这里的 TranscodeType 指的就是 设置的 asBitmap（）、asDrawable（）等之后设置的类型。</p>
+<p>实际上一个常规的加载图片的代码可以这样写：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">//Target&lt;R&gt; 是一个接口，所以使用其实现类 SimpleTarget 来实现</span><br><span class="line">Glide.with(this).load(url).into(new SimpleTarget&lt;Drawable&gt;() &#123;</span><br><span class="line">    @Override</span><br><span class="line">    public void onResourceReady(@NonNull Drawable resource, @Nullable Transition&lt;? super Drawable&gt; transition) &#123;</span><br><span class="line">        mImageView.setImageDrawable(resource);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+<p>当然 Target 还有其他的实现类，有兴趣的可以去研究下。</p>
+<h4 id="6-2-预加载图片到缓存"><a href="#6-2-预加载图片到缓存" class="headerlink" title="6.2 预加载图片到缓存"></a>6.2 预加载图片到缓存</h4><p>如果说我们有两个页面A（当前页面） 和 B（跳转页面），在 B 页面中要使用 Glide 显示一个很大的图片，我们可以在 A 页面的时候就可以先把 B 页面中要加载的图片缓存下来，等到 B 页面的时候，就可以直接从换从中读取了。</p>
+<p>示例代码：</p>
+<p>下面的 url 均指向相同的地址</p>
+<p>在页面 A 中：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">Glide.with(this)</span><br><span class="line">        .load(url)</span><br><span class="line">        .listener(new RequestListener&lt;Drawable&gt;() &#123;</span><br><span class="line">            @Override</span><br><span class="line">            public boolean onLoadFailed(@Nullable GlideException e, Object model, com.bumptech.glide.request.target.Target&lt;Drawable&gt; target, boolean isFirstResource) &#123;</span><br><span class="line">                Toast.makeText(GlideActivity.this, &quot;加载失败，下个页面从网络取&quot;, Toast.LENGTH_SHORT).show();</span><br><span class="line">                return false;</span><br><span class="line">            &#125;</span><br><span class="line"></span><br><span class="line">            @Override</span><br><span class="line">            public boolean onResourceReady(Drawable resource, Object model, com.bumptech.glide.request.target.Target&lt;Drawable&gt; target, DataSource dataSource, boolean isFirstResource) &#123;</span><br><span class="line">                Toast.makeText(GlideActivity.this, &quot;加载成功，下个页面从缓存中取&quot;, Toast.LENGTH_SHORT).show();</span><br><span class="line">                return false;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;).preload();</span><br></pre></td></tr></table></figure>
+<p>在页面 B 中：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Glide.with(this).load(url).into(mImageView);</span><br></pre></td></tr></table></figure>
+<p>这样当在 A 中提示 “加载成功，下个页面从缓存中取” 的时候，跳转到页面 B ，就可以很快的显示图片了。</p>
+<h4 id="6-3-下载图片到指定地址"><a href="#6-3-下载图片到指定地址" class="headerlink" title="6.3 下载图片到指定地址"></a>6.3 下载图片到指定地址</h4><p>除了上面的预加载之外，我们也可以先把图片下载到硬盘上，得到一个 File 文件，这个时候要用到 submit() 方法。</p>
+<p>源码如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">@NonNull</span><br><span class="line">/**</span><br><span class="line"> * Returns a future that can be used to do a blocking get on a background thread.</span><br><span class="line"> *</span><br><span class="line"> * &lt;p&gt;This method defaults to &#123;@link Target#SIZE_ORIGINAL&#125; for the width and the height. However,</span><br><span class="line"> * since the width and height will be overridden by values passed to &#123;@link</span><br><span class="line"> * RequestOptions#override(int, int)&#125;, this method can be used whenever &#123;@link RequestOptions&#125;</span><br><span class="line"> * with override values are applied, or whenever you want to retrieve the image in its original</span><br><span class="line"> * size.</span><br><span class="line"> *</span><br><span class="line"> * @see #submit(int, int)</span><br><span class="line"> * @see #into(Target)</span><br><span class="line"> */</span><br><span class="line">@NonNull</span><br><span class="line">public FutureTarget&lt;TranscodeType&gt; submit() &#123;</span><br><span class="line">  return submit(Target.SIZE_ORIGINAL, Target.SIZE_ORIGINAL);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>从源码上的注释来看，这个方法是要会阻塞线程的，所以要在子线程中执行</p>
+<blockquote>
+<p>当调用了submit()方法后会立即返回一个FutureTarget对象，然后Glide会在后台开始下载图片文件。接下来我们调用FutureTarget的get()方法就可以去获取下载好的图片文件了，如果此时图片还没有下载完，那么get()方法就会阻塞住，一直等到图片下载完成才会有值返回</p>
+</blockquote>
+<p>示例代码：</p>
+<p>我们使用 AsyncTask 来实现：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br></pre></td><td class="code"><pre><span class="line">class MyAsyncTask extends AsyncTask&lt;String, Void, File&gt; &#123;</span><br><span class="line"></span><br><span class="line">    @Override</span><br><span class="line">    protected File doInBackground(String... strings) &#123;</span><br><span class="line"></span><br><span class="line">        FutureTarget&lt;File&gt; target = Glide.with(GlideSecondActivity.this)</span><br><span class="line">                .asFile()</span><br><span class="line">                .load(strings[0])</span><br><span class="line">                .submit();</span><br><span class="line"></span><br><span class="line">        try &#123;</span><br><span class="line">            return target.get();</span><br><span class="line">        &#125; catch (InterruptedException e) &#123;</span><br><span class="line">            e.printStackTrace();</span><br><span class="line">        &#125; catch (ExecutionException e) &#123;</span><br><span class="line">            e.printStackTrace();</span><br><span class="line">        &#125;</span><br><span class="line">        return null;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    @Override</span><br><span class="line">    protected void onPreExecute() &#123;</span><br><span class="line">        super.onPreExecute();</span><br><span class="line">        Toast.makeText(GlideSecondActivity.this, &quot;Glide开始下载图片&quot;, Toast.LENGTH_SHORT).show();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    @Override</span><br><span class="line">    protected void onPostExecute(File file) &#123;</span><br><span class="line">        super.onPostExecute(file);</span><br><span class="line">        Log.d(TAG, &quot;图片下载完成，地址为&quot; + file.getAbsolutePath());</span><br><span class="line">        Toast.makeText(GlideSecondActivity.this, &quot;图片下载完成，地址为&quot; + file.getAbsolutePath(), Toast.LENGTH_SHORT).show();</span><br><span class="line">        try &#123;</span><br><span class="line">            FileInputStream inputStream = new FileInputStream(file);</span><br><span class="line">            Bitmap bitmap = BitmapFactory.decodeStream(inputStream);</span><br><span class="line">            mImageView.setImageBitmap(bitmap);</span><br><span class="line">            inputStream.close();</span><br><span class="line">        &#125; catch (FileNotFoundException e) &#123;</span><br><span class="line">            e.printStackTrace();</span><br><span class="line">        &#125; catch (IOException e) &#123;</span><br><span class="line">            e.printStackTrace();</span><br><span class="line">        &#125; finally &#123;</span><br><span class="line"></span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">//然后在主线程中调用：</span><br><span class="line"></span><br><span class="line">new MyAsyncTask().execute(url);</span><br></pre></td></tr></table></figure>
+<p>这里就用到了我们前面提到的 asFile() 方法了。指定返回一个 File 类型。<br>可以看到缓存的地址为：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">图片下载完成，地址为/data/user/0/com.sean.demo/cache/image_manager_disk_cache/12fd3b7072800c1ef45fce86fb47393e7bfc37b3f19b2b3694132ba9105359a6.0</span><br></pre></td></tr></table></figure>
+<h4 id="6-4-加载监听"><a href="#6-4-加载监听" class="headerlink" title="6.4 加载监听"></a>6.4 加载监听</h4><p>其实加载监听，上面已经使用过了，就是设置 .listener()方法，传入 Listener 对象。</p>
+<p>比如：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">Glide.with(this)</span><br><span class="line">        .load(url)</span><br><span class="line">        .listener(new RequestListener&lt;Drawable&gt;() &#123;</span><br><span class="line">            @Override</span><br><span class="line">            public boolean onLoadFailed(@Nullable GlideException e, Object model, com.bumptech.glide.request.target.Target&lt;Drawable&gt; target, boolean isFirstResource) &#123;</span><br><span class="line">                Toast.makeText(GlideActivity.this, &quot;加载失败，下个页面从网络取&quot;, Toast.LENGTH_SHORT).show();</span><br><span class="line">                return false;</span><br><span class="line">            &#125;</span><br><span class="line"></span><br><span class="line">            @Override</span><br><span class="line">            public boolean onResourceReady(Drawable resource, Object model, com.bumptech.glide.request.target.Target&lt;Drawable&gt; target, DataSource dataSource, boolean isFirstResource) &#123;</span><br><span class="line">                Toast.makeText(GlideActivity.this, &quot;加载成功，下个页面从缓存中取&quot;, Toast.LENGTH_SHORT).show();</span><br><span class="line">                return false;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;).preload();</span><br></pre></td></tr></table></figure>
+<ul>
+<li>onLoadFailed 方法就是加载失败</li>
+<li>onResourceReady 就是加载成功</li>
+</ul>
+<blockquote>
+<p>onResourceReady() 方法和 onLoadFailed() 方法都有一个布尔值的返回值，返回 false 就表示这个事件没有被处理，还会继续向下传递，返回 true 就表示这个事件已经被处理掉了，从而不会再继续向下传递。举个简单点的例子，如果我们在 RequestListener 的 onResourceReady() 方法中返回了 true，那么就不会再回调 Target的onResourceReady() 方法了。</p>
+</blockquote>
+<h3 id="7、图片变换"><a href="#7、图片变换" class="headerlink" title="7、图片变换"></a>7、图片变换</h3><h4 id="7-1-单次变换"><a href="#7-1-单次变换" class="headerlink" title="7.1 单次变换"></a>7.1 单次变换</h4><blockquote>
+<p>在Glide中，Transformations 可以获取资源并修改它，然后返回被修改后的资源。通常变换操作是用来完成剪裁或对位图应用过滤器，但它也可以用于转换GIF动画，甚至自定义的资源类型。</p>
+</blockquote>
+<p>Glide 内置了几种变换，比如 ：</p>
+<ul>
+<li>CenterCrop</li>
+<li>FitCenter</li>
+<li>CircleCrop</li>
+</ul>
+<p>比如我们显示圆形图片，我们可以这样做：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">RequestOptions options = new RequestOptions().circleCrop();</span><br><span class="line">Glide.with(this).load(url).apply(options).into(mImageView);</span><br></pre></td></tr></table></figure>
+<p>显示效果:</p>
+<p><img src="http://p2oza5z62.bkt.clouddn.com/2018-04-16-15234605362109.jpg" alt=""></p>
+<p>你也可以这样写：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Glide.with(this).load(url).apply(com.bumptech.glide.request.RequestOptions.circleCropTransform()).into(mImageView);</span><br></pre></td></tr></table></figure>
+<p>和上面的效果是一样的。</p>
+<p>需要注意的的，如果你按照下面的写法：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">Glide.with(this)</span><br><span class="line">        .load(url)</span><br><span class="line">        .apply(RequestOptions.centerCropTransform())</span><br><span class="line">        .apply(RequestOptions.circleCropTransform())</span><br><span class="line">        .into(mImageView);</span><br></pre></td></tr></table></figure>
+<p>Glide 只会执行后面的变换，业技术 RequestOptions.circleCropTransform 变换。</p>
+<p>如果你想一次加载中变换多次，那么你可以这样使用 MultiTransformation。</p>
+<h4 id="7-2-多次变换"><a href="#7-2-多次变换" class="headerlink" title="7.2 多次变换"></a>7.2 多次变换</h4><p>以下代码可以实现多次变换：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">RequestOptions options = new RequestOptions()</span><br><span class="line">        .transform(new MultiTransformation&lt;Bitmap&gt;(new CenterCrop(),new CircleCrop()));</span><br><span class="line">Glide.with(this)</span><br><span class="line">        .load(url)</span><br><span class="line">        .apply(options)</span><br><span class="line">        .into(mImageView);</span><br></pre></td></tr></table></figure>
+<p>除了上面介绍的两种变换，你可以自己定义变换，这里推荐一个开源库，就是做 Glide 变换的，有兴趣的可以去看下：<br><a href="https://github.com/wasabeef/glide-transformations">GitHub地址</a></p>
+<h3 id="8、使用-Generated-API"><a href="#8、使用-Generated-API" class="headerlink" title="8、使用 Generated API"></a>8、使用 Generated API</h3><h4 id="GlideModule"><a href="#GlideModule" class="headerlink" title="GlideModule"></a>GlideModule</h4><p>如果你不喜欢在使用 Glide4 的时候创建 RequestBuilder、RequestOptions 等对象，而是喜欢 Glide4 之前的链式调用，那么你可以使用 Generated API。</p>
+<p>使用 Generated API 必须要先引入以下依赖：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">annotationProcessor &apos;com.github.bumptech.glide:compiler:4.6.1&apos;</span><br></pre></td></tr></table></figure>
+<p>这是 Glide 为我们提供的注解处理器，通过这个注解处理器，在 Application 模块中可使用该流式 API 一次性调用到 RequestBuilder， RequestOptions 和集成库中所有的选项，为我们提供类似 Glide3 那样的流式 API。</p>
+<blockquote>
+<p>Generated API 模式的设计出于以下两个目的：</p>
+</blockquote>
+<ol>
+<li>集成库可以为 Generated API 扩展自定义选项。</li>
+<li>在 Application 模块中可将常用的选项组打包成一个选项在 Generated API 中使用</li>
+</ol>
+<p>下面来简单使用下：</p>
+<p>首先创建 MyAppGlideModule 继承于 AppGlideModule，并给类添加 @GlideModule 注解：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">@GlideModule</span><br><span class="line">public class MyAppGlideModule extends AppGlideModule &#123;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>然后执行 Rebuild Project操作。</p>
+<p>就这样，很简单的你就能使用类似 Glide4 之前的链式调用了。比如：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">GlideApp.with(this)</span><br><span class="line">        .load(url)</span><br><span class="line">        .placeholder(R.drawable.a)</span><br><span class="line">        .error(R.drawable.b)</span><br><span class="line">        .into(mImageView);</span><br></pre></td></tr></table></figure>
+<p>对比下 Glide4 的用法：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">RequestOptions options = new RequestOptions()</span><br><span class="line">        .placeholder(R.drawable.a)</span><br><span class="line">        .error(R.drawable.b);</span><br><span class="line">Glide.with(this)</span><br><span class="line">        .load(url)</span><br><span class="line">        .apply(options)</span><br><span class="line">        .into(mImageView);</span><br></pre></td></tr></table></figure>
+<p>使用 Generated API 可以使我们不用去创建 RequestOptions 就可以直接使用 placeholder、error 等方法。</p>
+<h4 id="使用GlideExtension"><a href="#使用GlideExtension" class="headerlink" title="使用GlideExtension"></a>使用GlideExtension</h4><p>除此之外，Generated API 还支持定制自己的 API 来使用。</p>
+<p>比如我项目中的所有使用 Glide 加载动画是不使用动画的，我们就要使用 dontAnimate() 方法，同时还要设置默认的加载错误图片，可以这样写：</p>
+<p>新建一个 MyGlideExtension 类，加上 @GlideExtension 注解：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">@GlideExtension</span><br><span class="line">public class MyGlideExtension &#123;</span><br><span class="line">    private MyGlideExtension() &#123;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    /**</span><br><span class="line">     * 设置默认error 图片，并禁止动画</span><br><span class="line">     *</span><br><span class="line">     * @param options</span><br><span class="line">     */</span><br><span class="line">    @GlideOption</span><br><span class="line">    public static void defaultError(RequestOptions options) &#123;</span><br><span class="line">        options.placeholder(R.drawable.c)</span><br><span class="line">                .dontAnimate();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>然后执行 Rebuild Project操作。</p>
+<p>这样用的时候就可以这样使用：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">GlideApp.with(this)</span><br><span class="line">        .load(url)</span><br><span class="line">        .defaultError()</span><br><span class="line">        .into(mImageView);</span><br></pre></td></tr></table></figure>
+<p>当然， 如果你有其他的需求，完全可以在被 @GlideOption 注解的方法里面加上。赶紧去动手定制你想用的 API 吧。</p>
+<h4 id="GlideType"><a href="#GlideType" class="headerlink" title="GlideType"></a>GlideType</h4><blockquote>
+<p>被 @GlideType 注解的方法允许你添加对新的资源类型的支持，包括指定默认选项</p>
+</blockquote>
+<p>这个在日常开发中一般是用不上的，如果有需求可以去了解下相关内容。</p>
+<h2 id="三、遇到的问题以及解决方法"><a href="#三、遇到的问题以及解决方法" class="headerlink" title="三、遇到的问题以及解决方法"></a>三、遇到的问题以及解决方法</h2><h3 id="1、Glide-和-RecyclerView-结合使用出现卡顿"><a href="#1、Glide-和-RecyclerView-结合使用出现卡顿" class="headerlink" title="1、Glide 和 RecyclerView 结合使用出现卡顿"></a>1、Glide 和 RecyclerView 结合使用出现卡顿</h3><p>我们经常会遇到在一个 RecyclerView 中加载图片的情况，正常情况下使用的话，在 RecyclerView 滑动的时候，item 回去加载图片，可能 会造成卡顿，那么怎么让 RecyclerView 的滑动更加顺滑呢？</p>
+<p>思路基本就是：</p>
+<p>在 RecyclerView 滑动的时候，不加载图片，等到 RecyclerView 滑动停止的时候再去执行加载图片的操作。</p>
+<p>怎么实现呢？</p>
+<p>其实很简单， 我们只要监听 RecyclerView 的滑动就可以了。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br></pre></td><td class="code"><pre><span class="line">// 声明RecyclerView.OnScrollListener</span><br><span class="line">private RecyclerView.OnScrollListener mOnScrollListener;</span><br><span class="line">// RecyclerView 是否在滑动</span><br><span class="line">private boolean sIsScrolling;</span><br><span class="line"></span><br><span class="line">/**</span><br><span class="line"> * SCROLL_STATE_DRAGGING      正在滚动</span><br><span class="line"> * SCROLL_STATE_SETTLING      手指做了抛的动作（手指离开屏幕前，用力滑了一下）</span><br><span class="line"> * SCROLL_STATE_IDLE          停止滚动</span><br><span class="line"> */</span><br><span class="line">mOnScrollListener = new RecyclerView.OnScrollListener() &#123;</span><br><span class="line">    @Override</span><br><span class="line">    public void onScrollStateChanged(RecyclerView recyclerView, int newState) &#123;</span><br><span class="line">        super.onScrollStateChanged(recyclerView, newState);</span><br><span class="line">        if (newState == RecyclerView.SCROLL_STATE_DRAGGING || newState == RecyclerView.SCROLL_STATE_SETTLING) &#123;</span><br><span class="line">            sIsScrolling = true;</span><br><span class="line">            Glide.with(RecyclerDemoActivity.this).pauseRequests();</span><br><span class="line">        &#125; else if (newState == RecyclerView.SCROLL_STATE_IDLE) &#123;</span><br><span class="line">            if (sIsScrolling) &#123;</span><br><span class="line">                Glide.with(RecyclerDemoActivity.this).resumeRequests();</span><br><span class="line">            &#125;</span><br><span class="line">            sIsScrolling = false;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    @Override</span><br><span class="line">    public void onScrolled(RecyclerView recyclerView, int dx, int dy) &#123;</span><br><span class="line">        super.onScrolled(recyclerView, dx, dy);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line">recyclerDemo.addOnScrollListener(mOnScrollListener);</span><br><span class="line"></span><br><span class="line">@Override</span><br><span class="line">protected void onPause() &#123;</span><br><span class="line">    super.onPause();</span><br><span class="line">    recyclerDemo.removeOnScrollListener(mOnScrollListener);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>首先定义对 RecyclerView 滑动的监听 mOnScrollListener，以及 RecyclerView 是否在滑动的变量。</p>
+<p>然后初始化 mOnScrollListener，并给 RecyclerView 添加此监听。</p>
+<p>然后在 Activity 的 onPause 方法中移除对 RecyclerView 滑动监听。</p>
+<p>这样，在 RecyclerView 滑动的时候，Glide 就不会去加载图片，只有当滑动完全停止的时候，Glide 才回去加载 item 上的图片。</p>
+<h3 id="2、对于指向同一地址的图片显示"><a href="#2、对于指向同一地址的图片显示" class="headerlink" title="2、对于指向同一地址的图片显示"></a>2、对于指向同一地址的图片显示</h3><p>假如你要显示的图片，一直指向一个地址，比如 <code>http://www.smartsean.cn/image1</code>，但是这个地址里面的图片可能会有变化，那么，你可能需要禁用 Glide 为我们提供的缓存功能</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">RequestOptions options = new RequestOptions()</span><br><span class="line">        //禁用磁盘缓存</span><br><span class="line">        .diskCacheStrategy(DiskCacheStrategy.NONE)</span><br><span class="line">        //禁用内存缓存</span><br><span class="line">        .skipMemoryCache(true);</span><br></pre></td></tr></table></figure>
+<h3 id="3、Glide的OOM"><a href="#3、Glide的OOM" class="headerlink" title="3、Glide的OOM"></a>3、Glide的OOM</h3><p>如果设置 ImageView 的 ScaleType 是 fitxy ，Glide 会默认按照图片实际大小加载。而其他的模式按照的 ImageView 的大小。</p>
+<p>如果非要设置 fitxy，那么使用 </p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Glide.with(context).load().centerCrop().into();</span><br></pre></td></tr></table></figure>
+<p>或者使用 </p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Glide.with(context).load().fitCenter().into()</span><br></pre></td></tr></table></figure>
+<p>后面如果有一些问题，会持续更新</p>
+<h2 id="四、总结"><a href="#四、总结" class="headerlink" title="四、总结"></a>四、总结</h2><p>从上面的文章可以看出， Glide4 提供的功能还是很强大的，帮助我们做了很多事情，但是我们使用的时候，也不能掉以轻心。</p>
+<p>这篇算是我对使用 Glide4 的总结，后续如果有内容会持续更新。</p>
+
+    </div>
+
+    <div class="post-footer">   
+        <div>
+            
+                转载声明：商业转载请联系作者获得授权,非商业转载请注明出处 © <a href="" target="_blank">smartsean</a>
+            
+        </div>
+        <div>
+            
+        </div>  
+    </div>
+</article>
+
+<div class="article-nav prev-next-wrap clearfix">
+    
+    
+        <a href="/2018/04/09/从一个异常认识Android中的-commit-和-commitAllowingStateLoss/" class="next-post btn btn-default">下一篇<i class="fa fa-angle-right fa-fw"></i></a>
+    
+</div>
+
+
+    <div id="comments">
+        
+	
+<div id="lv-container" data-id="city" data-uid="MTAyMC8zMzA1MS85NjEz">
+  <script type="text/javascript">
+     (function(d, s) {
+         var j, e = d.getElementsByTagName(s)[0];
+         if (typeof LivereTower === 'function') { return; }
+         j = d.createElement(s);
+         j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+         j.async = true;
+         e.parentNode.insertBefore(j, e);
+     })(document, 'script');
+  </script>
+</div>
+
+
+    </div>
+
+
+
+
+
+                </main>
+                
+    <aside class="col-md-4 sidebar">
+        
+        
+    <div class="widget">    
+        <h3 class="title">搜索</h3>
+        <div id="search-form">
+            <div id="result-mask" class="hide"></div>
+            <div class="search-area">
+                
+                    <input id="search-key" type="search" autocomplete="off" placeholder="搜点什么呢?">
+                    <button type="button" class="search-form-submit" id="search-local">站内搜索</button>
+                
+                
+            </div>
+            <div id="result-wrap" class="hide">
+                <div id="search-result"></div>
+            </div>
+            <div class="hide">
+                <template id="search-tpl">
+                    <div class="item">
+                        <a href="/{path}" title="{title}">
+                            <div class="title">{title}</div>
+                            <div class="content">{content}</div>
+                        </a>
+                    </div>
+                </template>
+            </div>
+        </div>
+    </div>
+
+        
+        
+    <div class="widget">
+      <h3 class="title">社交</h3> 
+        <div class="content social">
+            
+	            <a href="https://github.com/smartsean" rel="external nofollow" title="Github" target="_blank">
+			    	<i class="git fa fa-git"></i>
+			    </a>
+            
+        </div>
+    </div>
+
+
+        
+        
+    <div class="widget">
+        <h3 class="title">分类</h3>
+        <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/Android/"><i class="fa" aria-hidden="true">Android</i></a><span class="category-list-count">48</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Ionic/"><i class="fa" aria-hidden="true">Ionic</i></a><span class="category-list-count">7</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/工具/"><i class="fa" aria-hidden="true">工具</i></a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/我/"><i class="fa" aria-hidden="true">我</i></a><span class="category-list-count">6</span></li></ul>
+    </div>
+
+
+        
+        
+  <div class="widget">
+    <h3 class="title">标签云</h3>
+    <div class="content tag-cloud">
+        <a href="/tags/Android/" style="font-size: 20px;">Android</a> <a href="/tags/AndroidStudio/" style="font-size: 12px;">AndroidStudio</a> <a href="/tags/Git/" style="font-size: 10px;">Git</a> <a href="/tags/Ionic/" style="font-size: 18px;">Ionic</a> <a href="/tags/Java/" style="font-size: 12px;">Java</a> <a href="/tags/Java-Java基础/" style="font-size: 10px;">Java Java基础</a> <a href="/tags/工具/" style="font-size: 16px;">工具</a> <a href="/tags/异常/" style="font-size: 12px;">异常</a> <a href="/tags/我/" style="font-size: 14px;">我</a> <a href="/tags/模拟器/" style="font-size: 10px;">模拟器</a> <a href="/tags/自定义View/" style="font-size: 12px;">自定义View</a>
+    </div>
+  </div>
+
+
+        
+        
+    <div class="widget notification">
+        <h3 class="title">网站公告</h3>
+        <div>
+            <p>暂无公告~ <br/>
+        </div>
+    </div>
+
+        
+        
+    <div class="widget">
+      <h3 class="title">归档</h3>
+        <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/04/"><i class="fa" aria-hidden="true">四月 2018</i></a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/03/"><i class="fa" aria-hidden="true">三月 2018</i></a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/02/"><i class="fa" aria-hidden="true">二月 2018</i></a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/01/"><i class="fa" aria-hidden="true">一月 2018</i></a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/12/"><i class="fa" aria-hidden="true">十二月 2017</i></a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/09/"><i class="fa" aria-hidden="true">九月 2017</i></a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/08/"><i class="fa" aria-hidden="true">八月 2017</i></a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/07/"><i class="fa" aria-hidden="true">七月 2017</i></a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/05/"><i class="fa" aria-hidden="true">五月 2017</i></a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/04/"><i class="fa" aria-hidden="true">四月 2017</i></a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/03/"><i class="fa" aria-hidden="true">三月 2017</i></a><span class="archive-list-count">7</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/02/"><i class="fa" aria-hidden="true">二月 2017</i></a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/01/"><i class="fa" aria-hidden="true">一月 2017</i></a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/12/"><i class="fa" aria-hidden="true">十二月 2016</i></a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/11/"><i class="fa" aria-hidden="true">十一月 2016</i></a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/10/"><i class="fa" aria-hidden="true">十月 2016</i></a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/09/"><i class="fa" aria-hidden="true">九月 2016</i></a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/08/"><i class="fa" aria-hidden="true">八月 2016</i></a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/06/"><i class="fa" aria-hidden="true">六月 2016</i></a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/04/"><i class="fa" aria-hidden="true">四月 2016</i></a><span class="archive-list-count">10</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/03/"><i class="fa" aria-hidden="true">三月 2016</i></a><span class="archive-list-count">3</span></li></ul>
+    </div>
+
+
+        
+        
+    <div class="widget">
+        <h3 class="title">友链</h3>
+        <div class="content friends-link">
+        
+            <a href="http://www.shenliyang.com" class="fa" target="_blank">个人博客</a>
+        
+        </div>
+    </div>
+
+
+        
+    </aside>
+
+            </div>
+        </div>
+    </section>
+    <footer class="main-footer">
+    <div class="container">
+        <div class="row">
+        </div>
+    </div>
+</footer>
+
+<a id="back-to-top" class="hide">
+	<i class="fa fa-chevron-up"></i>
+</a>
+
+
+
+
+    <div class="copyright">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12"> 
+                <span>Copyright &copy; 2018
+                </span> | 
+                <span>
+                    Powered by <a href="//hexo.io" class="copyright-links" target="_blank" rel="nofollow">Hexo</a>
+                </span> | 
+                <span>
+                    Theme by <a href="//github.com/shenliyang/hexo-theme-snippet.git" class="copyright-links" target="_blank" rel="nofollow">Snippet</a>
+                </span>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+	<script src="/js/search.js?rev=@@hash"></script>
+
+
+<script src="/js/app.js?rev=@@hash"></script>
+
+
+</body>
+</html>

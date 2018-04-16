@@ -24,7 +24,7 @@
     <!--Title-->
 
 
-<title>Git常用操作、提交到GitHub等 | SmartSean的小站</title>
+<title>归档：2018 | SmartSean的小站</title>
 
 
     <link rel="alternate" href="/atom.xml" title="SmartSean的小站" type="application/atom+xml">
@@ -113,119 +113,27 @@
     <section class="content-wrap">
         <div class="container">
             <div class="row">
-                <main class="col-md-8 main-content m-post">
-                    <p id="process"></p>
-<article class="post">
-    <div class="post-head">
-        <h1 id="Git常用操作、提交到GitHub等">
-            
-	            Git常用操作、提交到GitHub等
-            
-        </h1>
-        <div class="post-meta">
-    
-    
-    <span class="categories-meta fa-wrap">
-        <i class="fa fa-folder-open-o"></i>
-        <span>工具</span>
-    </span>
-    
-    
-    <span class="fa-wrap">
-        <i class="fa fa-tags"></i>
-        <span class="tags-meta">
-            
-            Git
-            
-        </span>
-    </span>
-    
-    
-    <span class="fa-wrap">
-        <i class="fa fa-clock-o"></i>
-        <span class="date-meta">2017/03/19</span>
-    </span>
-</div>
-
-            
-            
-    </div>
-    
-    <div class="post-body post-content">
-        <blockquote>
-<p>用了git好长时间了，但是很多命令不是经常用，容易忘掉，想了想还是记录下来，建立自己的git知识库，以后用的时候找起来也方便，会持续更新这个博客的。</p>
-</blockquote>
-<h2 id="一、初始化"><a href="#一、初始化" class="headerlink" title="一、初始化"></a>一、初始化</h2><h4 id="clone的时候直接切换到指定的分支："><a href="#clone的时候直接切换到指定的分支：" class="headerlink" title="clone的时候直接切换到指定的分支："></a>clone的时候直接切换到指定的分支：</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git clone 地址 -b 分支名称</span><br></pre></td></tr></table></figure>
-<h4 id="配置全局的Git："><a href="#配置全局的Git：" class="headerlink" title="配置全局的Git："></a>配置全局的Git：</h4><pre><code>git config --global user.name &quot;你的名字&quot;
-git config --global user.email &quot;你的邮箱地址&quot;
-</code></pre><h4 id="初始化本地Git仓库："><a href="#初始化本地Git仓库：" class="headerlink" title="初始化本地Git仓库："></a>初始化本地Git仓库：</h4><pre><code>git init
-</code></pre><h4 id="查看仓库状态"><a href="#查看仓库状态" class="headerlink" title="查看仓库状态"></a>查看仓库状态</h4><pre><code>git status
-</code></pre><h4 id="撤销所有本地更改"><a href="#撤销所有本地更改" class="headerlink" title="撤销所有本地更改"></a>撤销所有本地更改</h4><pre><code>git reset --hard$HEAD
-</code></pre><h4 id="把文件改动手动添加到【暂存区】"><a href="#把文件改动手动添加到【暂存区】" class="headerlink" title="把文件改动手动添加到【暂存区】"></a>把文件改动手动添加到【暂存区】</h4><pre><code>git add .
-</code></pre><h4 id="提交本次修改的代码-1"><a href="#提交本次修改的代码-1" class="headerlink" title="提交本次修改的代码(1)"></a>提交本次修改的代码(1)</h4><pre><code>git commit -a
-</code></pre><p>输入i之后输入本次提交的描述，然后点击Esc，输入:wq保存</p>
-<h4 id="提交本次修改的代码-1-1"><a href="#提交本次修改的代码-1-1" class="headerlink" title="提交本次修改的代码(1)"></a>提交本次修改的代码(1)</h4><pre><code>git commit -m &quot;输入提交描述&quot;
-</code></pre><h4 id="获取网络端最新的代码"><a href="#获取网络端最新的代码" class="headerlink" title="获取网络端最新的代码"></a>获取网络端最新的代码</h4><pre><code>git pull
-</code></pre><h4 id="向网络端提交本地仓库代码"><a href="#向网络端提交本地仓库代码" class="headerlink" title="向网络端提交本地仓库代码"></a>向网络端提交本地仓库代码</h4><pre><code>git push
-</code></pre><h3 id="二、分支"><a href="#二、分支" class="headerlink" title="二、分支"></a>二、分支</h3><h4 id="新建a分支"><a href="#新建a分支" class="headerlink" title="新建a分支"></a>新建a分支</h4><pre><code>git branch a
-</code></pre><h4 id="切换到a分支"><a href="#切换到a分支" class="headerlink" title="切换到a分支"></a>切换到a分支</h4><pre><code>git checkout a
-</code></pre><h4 id="新建分支a并切换到a分支"><a href="#新建分支a并切换到a分支" class="headerlink" title="新建分支a并切换到a分支"></a>新建分支a并切换到a分支</h4><pre><code>git checkout -b a
-</code></pre><h4 id="删除a分支"><a href="#删除a分支" class="headerlink" title="删除a分支"></a>删除a分支</h4><pre><code>git branch -d a
-</code></pre><h4 id="强制删除a分支"><a href="#强制删除a分支" class="headerlink" title="强制删除a分支"></a>强制删除a分支</h4><pre><code>git branch -D a
-</code></pre><h4 id="查看分支"><a href="#查看分支" class="headerlink" title="查看分支"></a>查看分支</h4><pre><code>git branch
-</code></pre><h4 id="合并分支"><a href="#合并分支" class="headerlink" title="合并分支"></a>合并分支</h4><p>比如我们要把a分支的代码合并到b分支上，<br>首先需要切换到b分支<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git checkout b</span><br></pre></td></tr></table></figure></p>
-<p>然后<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git merge a</span><br></pre></td></tr></table></figure></p>
-<p>这样就可以合并a分支的内容到b分支了</p>
-<h2 id="三、远程上传操作"><a href="#三、远程上传操作" class="headerlink" title="三、远程上传操作"></a>三、远程上传操作</h2><h4 id="1-本地不存在git仓库，同步到GitHub"><a href="#1-本地不存在git仓库，同步到GitHub" class="headerlink" title="1. 本地不存在git仓库，同步到GitHub"></a>1. 本地不存在git仓库，同步到GitHub</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">git init</span><br><span class="line">git add .</span><br><span class="line">git commit -a</span><br><span class="line">git remote add origin github地址</span><br><span class="line">git pull --rebase origin master</span><br><span class="line">git push -u origin master</span><br></pre></td></tr></table></figure>
-<h4 id="2-本地存在git仓库，并且没有绑定远程地址，同步到GitHub"><a href="#2-本地存在git仓库，并且没有绑定远程地址，同步到GitHub" class="headerlink" title="2. 本地存在git仓库，并且没有绑定远程地址，同步到GitHub"></a>2. 本地存在git仓库，并且没有绑定远程地址，同步到GitHub</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git remote add origin github地址</span><br></pre></td></tr></table></figure>
-<h4 id="3-本地存在git仓库，并且已经绑定远程地址，需要修改地址并同步到GitHub"><a href="#3-本地存在git仓库，并且已经绑定远程地址，需要修改地址并同步到GitHub" class="headerlink" title="3. 本地存在git仓库，并且已经绑定远程地址，需要修改地址并同步到GitHub"></a>3. 本地存在git仓库，并且已经绑定远程地址，需要修改地址并同步到GitHub</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">git remote set-url origin 新github地址</span><br><span class="line">或者</span><br><span class="line">git remote rm origin</span><br><span class="line">git remote add origin 新github地址</span><br></pre></td></tr></table></figure>
-<p>如果是代码拉下来之后需要新建一个分支，在本地执行git branch -dev，这个时候就建立好了另外一个分支，如果把这个分支提交到github上，需要执行git push -u origin dev,这个时候dev下面的代码就可以提交到github上了</p>
-<h3 id="2017-8-18更新"><a href="#2017-8-18更新" class="headerlink" title="2017-8-18更新"></a>2017-8-18更新</h3><p>今天在gitlab上面看到了给的提示，这里也贴一下吧：</p>
-<h4 id="一、Create-a-new-repository"><a href="#一、Create-a-new-repository" class="headerlink" title="一、Create a new repository"></a>一、Create a new repository</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">git clone git地址</span><br><span class="line">cd i5oncall</span><br><span class="line">touch README.md</span><br><span class="line">git add README.md</span><br><span class="line">git commit -m &quot;add README&quot;</span><br><span class="line">git push -u origin master</span><br></pre></td></tr></table></figure>
-<h4 id="2、Existing-folder-or-Git-repository"><a href="#2、Existing-folder-or-Git-repository" class="headerlink" title="2、Existing folder or Git repository"></a>2、Existing folder or Git repository</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">cd existing_folder</span><br><span class="line">git init</span><br><span class="line">git remote add origin git地址</span><br><span class="line">git add .</span><br><span class="line">git commit</span><br><span class="line">git push -u origin master</span><br></pre></td></tr></table></figure>
-
-    </div>
-
-    <div class="post-footer">   
-        <div>
-            
-                转载声明：商业转载请联系作者获得授权,非商业转载请注明出处 © <a href="" target="_blank">smartsean</a>
-            
-        </div>
-        <div>
-            
-        </div>  
-    </div>
-</article>
-
-<div class="article-nav prev-next-wrap clearfix">
-    
-        <a href="/2017/03/21/写给新手的Android环境配置/" class="pre-post btn btn-default"><i class="fa fa-angle-left fa-fw"></i>上一篇</a>
-    
-    
-        <a href="/2017/03/13/一个项目，一个Toolbar/" class="next-post btn btn-default">下一篇<i class="fa fa-angle-right fa-fw"></i></a>
-    
-</div>
-
-
-    <div id="comments">
+                <main class="col-md-8 main-content ">
+                    <div id="main">
+  <div id="post-list">
+    <ul class="archives-post-list">
+    	<h1 class="info">2018年 月</h1>
         
-	
-<div id="lv-container" data-id="city" data-uid="MTAyMC8zMzA1MS85NjEz">
-  <script type="text/javascript">
-     (function(d, s) {
-         var j, e = d.getElementsByTagName(s)[0];
-         if (typeof LivereTower === 'function') { return; }
-         j = d.createElement(s);
-         j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
-         j.async = true;
-         e.parentNode.insertBefore(j, e);
-     })(document, 'script');
-  </script>
+          <li class="post-items" _href="/2018/01/17/清晰的Retrofit使用案例/">
+            <h3 class="post-item-title">
+            	<a href="/2018/01/17/清晰的Retrofit使用案例/"> 清晰的Retrofit使用案例 </a>
+            </h3>  
+          </li>
+        
+    </ul>
+  </div>
 </div>
 
-
-    </div>
+    <nav class="pagination" role="navigation">
+        <div id="page-nav">
+            <a class="extend prev" rel="prev" href="/archives/2018/"><i class='fa fa-angle-left'></i></a><a class="page-number" href="/archives/2018/">1</a><span class="page-number current">2</span>
+        </div>
+    </nav>
 
 
 
