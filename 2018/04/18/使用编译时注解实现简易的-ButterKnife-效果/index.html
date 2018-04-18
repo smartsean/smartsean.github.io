@@ -1,0 +1,376 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+    <!--Setting-->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+    <meta http-equiv="Cache-Control" content="no-siteapp">
+    <meta name="renderer" content="webkit|ie-comp|ie-stand">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="format-detection" content="telephone=no,email=no,adress=no">
+    <meta name="browsermode" content="application">
+    <meta name="screen-orientation" content="portrait">
+    <link rel="dns-prefetch" href="https://github.com/smartsean/smartsean.github.io">
+    <!--SEO-->
+
+
+
+<meta name="robots" content="all" />
+<meta name="google" content="all" />
+<meta name="googlebot" content="all" />
+<meta name="verify" content="all" />
+    <!--Title-->
+
+
+<title>使用编译时注解实现简易的 ButterKnife 效果 | SmartSean的小站</title>
+
+
+    <link rel="alternate" href="/atom.xml" title="SmartSean的小站" type="application/atom+xml">
+
+
+    <link rel="icon" href="/favicon.ico">
+
+    
+
+
+
+<link rel="stylesheet" href="//cdn.bootcss.com/bootstrap/3.3.4/css/bootstrap.min.css?rev=3.3.4">
+<link rel="stylesheet" href="//cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.min.css">
+<link rel="stylesheet" href="/css/style.css?rev=@@hash">
+
+
+
+
+    
+    <div class="hide">
+    	<script src="https://s4.cnzz.com/z_stat.php?id=1263868967&web_id=1263868967" language="JavaScript"></script>
+    </div>
+
+
+
+
+
+
+    
+</head>
+
+
+<!--[if lte IE 8]>
+<style>
+    html{ font-size: 1em }
+</style>
+<![endif]-->
+<!--[if lte IE 9]>
+<div style="ie">你使用的浏览器版本过低，为了你更好的阅读体验，请更新浏览器的版本或者使用其他现代浏览器，比如Chrome、Firefox、Safari等。</div>
+<![endif]-->
+
+<body>
+    <header class="main-header"  style="background-image:url(http://7xpw2b.com1.z0.glb.clouddn.com/hexo-sinppet/img/banner2.jpg)"  >
+    <div class="main-header-box">
+        <a class="header-avatar" href="/" title="">
+            <img src="/img/avatar.jpg" alt="logo头像">
+        </a>
+        <div class="branding">
+        	<!--<h2 class="text-hide">Snippet主题,从未如此简单有趣</h2>-->
+            
+                <h2> 仰望星空，脚踏实地。 </h2>
+             
+    	</div>
+    </div>
+</header>
+    <nav class="main-navigation">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="navbar-header"><span class="nav-toggle-button collapsed" data-toggle="collapse" data-target="#main-menu" id="mnav">
+                    <span class="sr-only">Toggle navigation</span>
+                    <i class="fa fa-bars"></i>
+                    </span>
+                </div>
+                <div class="collapse navbar-collapse" id="main-menu">
+                    <ul class="menu">
+                        
+                            <li role="presentation"><a href="/"><i class="fa fa-fw "></i>首页</a>
+                            </li>
+                        
+                            <li role="presentation"><a href="/categories/Android/"><i class="fa fa-fw "></i>Android</a>
+                            </li>
+                        
+                            <li role="presentation"><a href="/categories/工具/"><i class="fa fa-fw "></i>工具</a>
+                            </li>
+                        
+                            <li role="presentation"><a href="/categories/我/"><i class="fa fa-fw "></i>我</a>
+                            </li>
+                        
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</nav>
+    <section class="content-wrap">
+        <div class="container">
+            <div class="row">
+                <main class="col-md-8 main-content m-post">
+                    <p id="process"></p>
+<article class="post">
+    <div class="post-head">
+        <h1 id="使用编译时注解实现简易的 ButterKnife 效果">
+            
+	            使用编译时注解实现简易的 ButterKnife 效果
+            
+        </h1>
+        <div class="post-meta">
+    
+    
+    <span class="categories-meta fa-wrap">
+        <i class="fa fa-folder-open-o"></i>
+        <span>Android</span>
+    </span>
+    
+    
+    <span class="fa-wrap">
+        <i class="fa fa-tags"></i>
+        <span class="tags-meta">
+            
+            Android
+            
+        </span>
+    </span>
+    
+    
+    <span class="fa-wrap">
+        <i class="fa fa-clock-o"></i>
+        <span class="date-meta">2018/04/18</span>
+    </span>
+</div>
+
+            
+            
+    </div>
+    
+    <div class="post-body post-content">
+        <p>[toc]</p>
+<h1 id="使用编译时注解实现简易的-ButterKnife-效果"><a href="#使用编译时注解实现简易的-ButterKnife-效果" class="headerlink" title="使用编译时注解实现简易的 ButterKnife 效果"></a>使用编译时注解实现简易的 ButterKnife 效果</h1><h2 id="一、前言"><a href="#一、前言" class="headerlink" title="一、前言"></a>一、前言</h2><p>现在有太多了关于注解的三方框架供我们使用，比如 ButterKnife、Dagger2 等，我们不仅要会使用，还要知道其中的大致原理。接下来就通过一个小的实例来熟悉下编译时注解。</p>
+<p>关于注解的基础知识就不介绍的，有兴趣的可以去看看<a href="https://blog.csdn.net/briblue/article/details/73824058#comments" target="_blank" rel="noopener">这篇文章</a>，写的挺好的。</p>
+<p>另外本例子中的代码已经传到我的 <a href="https://github.com/smartsean/BindView">Github</a>,有兴趣的可以去看下。</p>
+<h2 id="二、准备"><a href="#二、准备" class="headerlink" title="二、准备"></a>二、准备</h2><p>1、 新建项目 BindView</p>
+<p>2、 新建 Module，命名为 annotation，类型选择为 Java Library。</p>
+<p>3、 新建 Module，命名为 compile，类型选择为 Java Library。<br>在该 Module 的 build.gradle 中添加:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">compile project(&apos;:annotation&apos;)</span><br><span class="line">compile &apos;com.google.auto.service:auto-service:1.0-rc3&apos;</span><br></pre></td></tr></table></figure>
+<p>4、 新建 Module，命名为 api，类型选择为 Android Library。<br>在该 Module 的 build.gradle 中添加 ：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">compile project(&apos;:annotation&apos;)</span><br></pre></td></tr></table></figure>
+<p>5、 在 app Module的 build.gradle 中添加：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">compile project(&apos;:api&apos;)</span><br><span class="line">annotationProcessor project(&apos;:compile&apos;)</span><br></pre></td></tr></table></figure>
+<h2 id="三、编码实现"><a href="#三、编码实现" class="headerlink" title="三、编码实现"></a>三、编码实现</h2><h3 id="3-1-编写注解"><a href="#3-1-编写注解" class="headerlink" title="3.1 编写注解"></a>3.1 编写注解</h3><p>在 annotation 模块中新建注解如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">@Target(ElementType.FIELD)</span><br><span class="line">@Retention(RetentionPolicy.CLASS)</span><br><span class="line">public @interface BindView &#123;</span><br><span class="line">    int value();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="3-2-编写注解处理器"><a href="#3-2-编写注解处理器" class="headerlink" title="3.2 编写注解处理器"></a>3.2 编写注解处理器</h3><p>在 compile 模块中新建类 BindViewProcessor 继承于 AbstractProcessor，并添加 @AutoService(Processor.class) 注解。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@AutoService</span>(Processor.class)</span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">BindViewProcessor</span> <span class="keyword">extends</span> <span class="title">AbstractProcessor</span> </span>&#123;</span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 代码写入工具</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="keyword">private</span> Filer mFiler;</span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 日志打印</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="keyword">private</span> Messager mMessager;</span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 跟元素相关的辅助类，帮助我们去获取一些元素相关的信息。</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="keyword">private</span> Elements mElementUtils;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> Map&lt;String, ProxyInfo&gt; mProxyInfoCacheMap = <span class="keyword">new</span> HashMap&lt;&gt;();</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">synchronized</span> <span class="keyword">void</span> <span class="title">init</span><span class="params">(ProcessingEnvironment processingEnvironment)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">super</span>.init(processingEnvironment);</span><br><span class="line">        <span class="comment">//获取日志打印工具</span></span><br><span class="line">        mMessager = processingEnv.getMessager();</span><br><span class="line">        <span class="comment">//获取元素辅助类</span></span><br><span class="line">        mElementUtils = processingEnvironment.getElementUtils();</span><br><span class="line">        <span class="comment">//获取代码写入工具</span></span><br><span class="line">        mFiler = processingEnvironment.getFiler();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> Set&lt;String&gt; <span class="title">getSupportedAnnotationTypes</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="comment">// 新建 LinkedHashMap 用于存储有序的注解名称集合</span></span><br><span class="line">        Set&lt;String&gt; annotationTypes = <span class="keyword">new</span> LinkedHashSet&lt;&gt;();</span><br><span class="line">        <span class="comment">// 添加我们的BindView到集合中</span></span><br><span class="line">        annotationTypes.add(BindView.class.getCanonicalName());</span><br><span class="line">        <span class="keyword">return</span> annotationTypes;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> SourceVersion <span class="title">getSupportedSourceVersion</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="comment">// 指定Java版本，一般返回 latestSupported();</span></span><br><span class="line">        <span class="keyword">return</span> SourceVersion.latestSupported();</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">process</span><span class="params">(Set&lt;? extends TypeElement&gt; set, RoundEnvironment roundEnvironment)</span> </span>&#123;</span><br><span class="line">        <span class="comment">//...</span></span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">false</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>前面是准备工作，接下来就要编写最重要的 process 方法：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br></pre></td><td class="code"><pre><span class="line">@Override</span><br><span class="line">public boolean process(Set&lt;? extends TypeElement&gt; set, RoundEnvironment roundEnvironment) &#123;</span><br><span class="line">    // 每次清除缓存</span><br><span class="line">    mProxyInfoCacheMap.clear();</span><br><span class="line">    // 返回被BindView注释的元素</span><br><span class="line">    Set&lt;? extends Element&gt; elementsWithBindView = roundEnvironment.getElementsAnnotatedWith(BindView.class);</span><br><span class="line">    //遍历被BindView注解的元素</span><br><span class="line">    for (Element element : elementsWithBindView) &#123;</span><br><span class="line">        // 检查注解有效性</span><br><span class="line">        checkAnnotationValid(element, BindView.class);</span><br><span class="line">        // 获取成员变量元素</span><br><span class="line">        VariableElement variableElement = (VariableElement) element;</span><br><span class="line">        // 获取成员变量元素所在类元素</span><br><span class="line">        TypeElement classElement = (TypeElement) variableElement.getEnclosingElement();</span><br><span class="line">        // 获取类的全称</span><br><span class="line">        String fullClassName = classElement.getQualifiedName().toString();</span><br><span class="line">        // 从缓存中取出编译生成类信息</span><br><span class="line">        ProxyInfo proxyInfo  = mProxyInfoCacheMap.get(fullClassName);</span><br><span class="line">        // 如果缓存中没有，就新建，然后添加到缓存中</span><br><span class="line">        if (proxyInfo == null)&#123;</span><br><span class="line">            proxyInfo = new ProxyInfo(mElementUtils,classElement);</span><br><span class="line">            mProxyInfoCacheMap.put(fullClassName,proxyInfo);</span><br><span class="line">        &#125;</span><br><span class="line">        // 获取注解类对象</span><br><span class="line">        BindView bindViewAnnotation = variableElement.getAnnotation(BindView.class);</span><br><span class="line">        // 获取注解的中value的值</span><br><span class="line">        int id = bindViewAnnotation.value();</span><br><span class="line">        // 在编译生成类中存储元素</span><br><span class="line">        proxyInfo.injectVariables.put(id,variableElement);</span><br><span class="line">    &#125;</span><br><span class="line">    // 遍历缓存中的所有元素生成编译类</span><br><span class="line">    for (String s : mProxyInfoCacheMap.keySet()) &#123;</span><br><span class="line">        // 缓存中取出ProxyInfo</span><br><span class="line">        ProxyInfo proxyInfo = mProxyInfoCacheMap.get(s);</span><br><span class="line">        try &#123;</span><br><span class="line">            // 生成代码</span><br><span class="line">            JavaFileObject jfo = mFiler.createSourceFile(proxyInfo.getProxyClassFullName(),proxyInfo.getTypeElement());</span><br><span class="line">            Writer writer = jfo.openWriter();</span><br><span class="line">            writer.write(proxyInfo.generatedJavaCode());</span><br><span class="line">            writer.flush();</span><br><span class="line">            writer.close();</span><br><span class="line">        &#125; catch (IOException e) &#123;</span><br><span class="line">            e.printStackTrace();</span><br><span class="line">            error(proxyInfo.getTypeElement(),&quot;Unable to write injector for type %s: %s&quot;,</span><br><span class="line">                    proxyInfo.getTypeElement(),e.getMessage());</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    return true;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">/**</span><br><span class="line"> * 检查注解是否可用</span><br><span class="line"> *</span><br><span class="line"> * @param annotatedElement</span><br><span class="line"> * @param clazz</span><br><span class="line"> * @return</span><br><span class="line"> */</span><br><span class="line">private boolean checkAnnotationValid(Element annotatedElement, Class clazz) &#123;</span><br><span class="line">    if (annotatedElement.getKind() != ElementKind.FIELD) &#123;</span><br><span class="line">        error(annotatedElement, &quot;%s must be declared on field.&quot;, clazz.getSimpleName());</span><br><span class="line">        return false;</span><br><span class="line">    &#125;</span><br><span class="line">    if (ClassUtils.isPrivate(annotatedElement)) &#123;</span><br><span class="line">        error(annotatedElement, &quot;%s() must can not be private.&quot;, annotatedElement.getSimpleName());</span><br><span class="line">        return false;</span><br><span class="line">    &#125;</span><br><span class="line">    return true;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">/**</span><br><span class="line"> * 错误日志打印</span><br><span class="line"> *</span><br><span class="line"> * @param element</span><br><span class="line"> * @param message</span><br><span class="line"> * @param args</span><br><span class="line"> */</span><br><span class="line">private void error(Element element, String message, Object... args) &#123;</span><br><span class="line">    if (args.length &gt; 0) &#123;</span><br><span class="line">        message = String.format(message, args);</span><br><span class="line">    &#125;</span><br><span class="line">    mMessager.printMessage(Diagnostic.Kind.NOTE, message, element);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>这里就不在说明了，注释已经很详细了。</p>
+<p>上面使用到的类如下：</p>
+<p>ProxyInfo ：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br></pre></td><td class="code"><pre><span class="line">public class ProxyInfo &#123;</span><br><span class="line">    /**</span><br><span class="line">     * 包名</span><br><span class="line">     */</span><br><span class="line">    private String mPackageName;</span><br><span class="line">    /**</span><br><span class="line">     * 类名</span><br><span class="line">     */</span><br><span class="line">    private String mClassName;</span><br><span class="line">    /**</span><br><span class="line">     * 类或接口程序元素</span><br><span class="line">     */</span><br><span class="line">    private TypeElement mTypeElement;</span><br><span class="line">    /**</span><br><span class="line">     * 用于存储id和元素的HashMap</span><br><span class="line">     */</span><br><span class="line">    public Map&lt;Integer, VariableElement&gt; injectVariables = new HashMap&lt;&gt;();</span><br><span class="line"></span><br><span class="line">    /**</span><br><span class="line">     * 构造方法中初始化成员变量</span><br><span class="line">     * @param elements</span><br><span class="line">     * @param classElement</span><br><span class="line">     */</span><br><span class="line">    public ProxyInfo(Elements elements, TypeElement classElement) &#123;</span><br><span class="line">        this.mTypeElement = classElement;</span><br><span class="line">        //获取包名</span><br><span class="line">        PackageElement packageElement = elements.getPackageOf(classElement);</span><br><span class="line">        String packageName = packageElement.getQualifiedName().toString();</span><br><span class="line">        //获取类名</span><br><span class="line">        String className = ClassUtils.getClassName(classElement, packageName);</span><br><span class="line">        this.mClassName = className+&quot;$$&quot;+Constants.SUFFIX;</span><br><span class="line">        this.mPackageName = packageName;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    /**</span><br><span class="line">     * 生成Java代码</span><br><span class="line">     * @return</span><br><span class="line">     */</span><br><span class="line">    public String generatedJavaCode() &#123;</span><br><span class="line">        StringBuilder builder = new StringBuilder();</span><br><span class="line">        builder.append(&quot;//Generated code,Do not modify!&quot;)</span><br><span class="line">                .append(&quot;\npackage &quot;).append(mPackageName).append(&quot;;\n\n&quot;)</span><br><span class="line">                .append(&quot;import cn.smartsean.api.*;\n\n&quot;)</span><br><span class="line">                .append(&quot;public class &quot;).append(mClassName).append(&quot; implements &quot; + Constants.SUFFIX + &quot;&lt;&quot; + mTypeElement.getQualifiedName() + &quot;&gt;&#123;\n\n&quot;);</span><br><span class="line">        generatedMethods(builder);</span><br><span class="line">        builder.append(&quot;\n&#125;\n&quot;);</span><br><span class="line">        return builder.toString();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    /**</span><br><span class="line">     * 生成方法</span><br><span class="line">     * @param builder</span><br><span class="line">     */</span><br><span class="line">    private void generatedMethods(StringBuilder builder) &#123;</span><br><span class="line">        builder.append(&quot;\t@Override\n&quot;)</span><br><span class="line">                .append(&quot;\tpublic void inject(&quot; + mTypeElement.getQualifiedName() + &quot; host,Object source) &#123; \n &quot;);</span><br><span class="line">        for (Integer integer : injectVariables.keySet()) &#123;</span><br><span class="line">            VariableElement element = injectVariables.get(integer);</span><br><span class="line">            String name = element.getSimpleName().toString();</span><br><span class="line">            String type = element.asType().toString();</span><br><span class="line">            builder.append(&quot;\t\tif (source instanceof android.app.Activity)&#123; \n&quot;)</span><br><span class="line">                    .append(&quot;\t\t\thost.&quot; + name + &quot; = (&quot; + type + &quot;)(((android.app.Activity)source).findViewById(&quot; + integer + &quot;));\n&quot;)</span><br><span class="line">                    .append(&quot;\t\t&#125;else &#123;\n&quot;)</span><br><span class="line">                    .append(&quot;\t\t\thost.&quot; + name + &quot; = (&quot; + type + &quot;)(((android.view.View)source).findViewById(&quot; + integer + &quot;));\n&quot;)</span><br><span class="line">                    .append(&quot;\t\t&#125;&quot;);</span><br><span class="line">        &#125;</span><br><span class="line">        builder.append(&quot;\n\t&#125;&quot;);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    /**</span><br><span class="line">     * 获取全称</span><br><span class="line">     * @return</span><br><span class="line">     */</span><br><span class="line">    public String getProxyClassFullName() &#123;</span><br><span class="line">        return this.mPackageName + &quot;.&quot; + this.mClassName;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    /**</span><br><span class="line">     * 获取类型元素</span><br><span class="line">     * @return</span><br><span class="line">     */</span><br><span class="line">    public TypeElement getTypeElement() &#123;</span><br><span class="line">        return mTypeElement;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>ClassUtils ：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">public class ClassUtils &#123;</span><br><span class="line">    /**</span><br><span class="line">     * 是否是私有的</span><br><span class="line">     * @param annotatedClass</span><br><span class="line">     * @return</span><br><span class="line">     */</span><br><span class="line">    public static boolean isPrivate(Element annotatedClass) &#123;</span><br><span class="line">        return annotatedClass.getModifiers().contains(PRIVATE);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    /**</span><br><span class="line">     * 类名</span><br><span class="line">     * @param type</span><br><span class="line">     * @param packageName</span><br><span class="line">     * @return</span><br><span class="line">     */</span><br><span class="line">    public static String getClassName(TypeElement type, String packageName) &#123;</span><br><span class="line">        int packageLen = packageName.length() + 1;</span><br><span class="line">        return type.getQualifiedName().toString().substring(packageLen)</span><br><span class="line">                .replace(&apos;.&apos;, &apos;$&apos;);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>Constants :</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">public class Constants &#123;</span><br><span class="line">    public static final String SUFFIX = &quot;ViewInject&quot;;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>至此，注解处理器已经完成了，接来下看看 api 模块</p>
+<h3 id="3-3-编写-api-模块"><a href="#3-3-编写-api-模块" class="headerlink" title="3.3 编写 api 模块"></a>3.3 编写 api 模块</h3><p>首先定义 注入接口：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">public interface ViewInject&lt;T&gt; &#123;</span><br><span class="line">    void inject(T t,Object o);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>然后编写注入工具类：BindView</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br></pre></td><td class="code"><pre><span class="line">public class BindView &#123;</span><br><span class="line">    public static final String SUFFIX = &quot;$$ViewInject&quot;;</span><br><span class="line">    /**</span><br><span class="line">     * 在Activity中使用</span><br><span class="line">     * @param activity</span><br><span class="line">     */</span><br><span class="line">    public static void bind(Activity activity) &#123;</span><br><span class="line">        //根据传入的activity得到viewInject对象，并注入</span><br><span class="line">        ViewInject viewInject = findProxyActivity(activity);</span><br><span class="line">        viewInject.inject(activity, activity);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    public static void bind(Object object, View view) &#123;</span><br><span class="line">        ViewInject viewInject = findProxyActivity(object);</span><br><span class="line">        viewInject.inject(object, view);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    /**</span><br><span class="line">     * 查找我们生成的类</span><br><span class="line">     * @param object</span><br><span class="line">     * @return</span><br><span class="line">     */</span><br><span class="line">    private static ViewInject findProxyActivity(Object object) &#123;</span><br><span class="line">        try &#123;</span><br><span class="line">            Class clz = object.getClass();</span><br><span class="line">            Class bindViewClass = Class.forName(clz.getName() + SUFFIX);</span><br><span class="line">            return (ViewInject) bindViewClass.newInstance();</span><br><span class="line">        &#125; catch (ClassNotFoundException e) &#123;</span><br><span class="line">            e.printStackTrace();</span><br><span class="line">        &#125; catch (IllegalAccessException e) &#123;</span><br><span class="line">            e.printStackTrace();</span><br><span class="line">        &#125; catch (InstantiationException e) &#123;</span><br><span class="line">            e.printStackTrace();</span><br><span class="line">        &#125;</span><br><span class="line">        throw new RuntimeException(String.format(&quot;can not find %s , something when compiler.&quot;, object.getClass().getSimpleName() + SUFFIX));</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="四、使用"><a href="#四、使用" class="headerlink" title="四、使用"></a>四、使用</h2><p>在 MainActivity 中使用：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">public class MainActivity extends AppCompatActivity &#123;</span><br><span class="line">    @BindView(R.id.test)</span><br><span class="line">    TextView mTest;</span><br><span class="line">    @Override</span><br><span class="line">    protected void onCreate(Bundle savedInstanceState) &#123;</span><br><span class="line">        super.onCreate(savedInstanceState);</span><br><span class="line">        setContentView(R.layout.activity_main);</span><br><span class="line">        cn.smartsean.api.BindView.bind(this);</span><br><span class="line">        mTest.setText(&quot;This is my first annotation processor test&quot;);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>效果图:</p>
+<p><img src="http://p2oza5z62.bkt.clouddn.com/2018-04-18-191524035752_.pic.jpg" alt="191524035752_.pi"></p>
+<p>本例子中的代码已经传到我的 <a href="https://github.com/smartsean/BindView">Github</a>,有兴趣的可以去看下。</p>
+
+    </div>
+
+    <div class="post-footer">   
+        <div>
+            
+                转载声明：商业转载请联系作者获得授权,非商业转载请注明出处 © <a href="" target="_blank">smartsean</a>
+            
+        </div>
+        <div>
+            
+        </div>  
+    </div>
+</article>
+
+<div class="article-nav prev-next-wrap clearfix">
+    
+    
+        <a href="/2018/04/16/Glide4-使用教程/" class="next-post btn btn-default">下一篇<i class="fa fa-angle-right fa-fw"></i></a>
+    
+</div>
+
+
+    <div id="comments">
+        
+	
+<div id="lv-container" data-id="city" data-uid="MTAyMC8zMzA1MS85NjEz">
+  <script type="text/javascript">
+     (function(d, s) {
+         var j, e = d.getElementsByTagName(s)[0];
+         if (typeof LivereTower === 'function') { return; }
+         j = d.createElement(s);
+         j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+         j.async = true;
+         e.parentNode.insertBefore(j, e);
+     })(document, 'script');
+  </script>
+</div>
+
+
+    </div>
+
+
+
+
+
+                </main>
+                
+    <aside class="col-md-4 sidebar">
+        
+        
+    <div class="widget">    
+        <h3 class="title">搜索</h3>
+        <div id="search-form">
+            <div id="result-mask" class="hide"></div>
+            <div class="search-area">
+                
+                    <input id="search-key" type="search" autocomplete="off" placeholder="搜点什么呢?">
+                    <button type="button" class="search-form-submit" id="search-local">站内搜索</button>
+                
+                
+            </div>
+            <div id="result-wrap" class="hide">
+                <div id="search-result"></div>
+            </div>
+            <div class="hide">
+                <template id="search-tpl">
+                    <div class="item">
+                        <a href="/{path}" title="{title}">
+                            <div class="title">{title}</div>
+                            <div class="content">{content}</div>
+                        </a>
+                    </div>
+                </template>
+            </div>
+        </div>
+    </div>
+
+        
+        
+    <div class="widget">
+      <h3 class="title">社交</h3> 
+        <div class="content social">
+            
+	            <a href="https://github.com/smartsean" rel="external nofollow" title="Github" target="_blank">
+			    	<i class="git fa fa-git"></i>
+			    </a>
+            
+        </div>
+    </div>
+
+
+        
+        
+    <div class="widget">
+        <h3 class="title">分类</h3>
+        <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/Android/"><i class="fa" aria-hidden="true">Android</i></a><span class="category-list-count">49</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Ionic/"><i class="fa" aria-hidden="true">Ionic</i></a><span class="category-list-count">7</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/工具/"><i class="fa" aria-hidden="true">工具</i></a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/我/"><i class="fa" aria-hidden="true">我</i></a><span class="category-list-count">6</span></li></ul>
+    </div>
+
+
+        
+        
+  <div class="widget">
+    <h3 class="title">标签云</h3>
+    <div class="content tag-cloud">
+        <a href="/tags/Android/" style="font-size: 20px;">Android</a> <a href="/tags/AndroidStudio/" style="font-size: 12px;">AndroidStudio</a> <a href="/tags/Git/" style="font-size: 10px;">Git</a> <a href="/tags/Ionic/" style="font-size: 18px;">Ionic</a> <a href="/tags/Java/" style="font-size: 12px;">Java</a> <a href="/tags/Java-Java基础/" style="font-size: 10px;">Java Java基础</a> <a href="/tags/工具/" style="font-size: 16px;">工具</a> <a href="/tags/异常/" style="font-size: 12px;">异常</a> <a href="/tags/我/" style="font-size: 14px;">我</a> <a href="/tags/模拟器/" style="font-size: 10px;">模拟器</a> <a href="/tags/自定义View/" style="font-size: 12px;">自定义View</a>
+    </div>
+  </div>
+
+
+        
+        
+    <div class="widget notification">
+        <h3 class="title">网站公告</h3>
+        <div>
+            <p>暂无公告~ <br/>
+        </div>
+    </div>
+
+        
+        
+    <div class="widget">
+      <h3 class="title">归档</h3>
+        <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/04/"><i class="fa" aria-hidden="true">四月 2018</i></a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/03/"><i class="fa" aria-hidden="true">三月 2018</i></a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/02/"><i class="fa" aria-hidden="true">二月 2018</i></a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/01/"><i class="fa" aria-hidden="true">一月 2018</i></a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/12/"><i class="fa" aria-hidden="true">十二月 2017</i></a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/09/"><i class="fa" aria-hidden="true">九月 2017</i></a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/08/"><i class="fa" aria-hidden="true">八月 2017</i></a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/07/"><i class="fa" aria-hidden="true">七月 2017</i></a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/05/"><i class="fa" aria-hidden="true">五月 2017</i></a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/04/"><i class="fa" aria-hidden="true">四月 2017</i></a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/03/"><i class="fa" aria-hidden="true">三月 2017</i></a><span class="archive-list-count">7</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/02/"><i class="fa" aria-hidden="true">二月 2017</i></a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/01/"><i class="fa" aria-hidden="true">一月 2017</i></a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/12/"><i class="fa" aria-hidden="true">十二月 2016</i></a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/11/"><i class="fa" aria-hidden="true">十一月 2016</i></a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/10/"><i class="fa" aria-hidden="true">十月 2016</i></a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/09/"><i class="fa" aria-hidden="true">九月 2016</i></a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/08/"><i class="fa" aria-hidden="true">八月 2016</i></a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/06/"><i class="fa" aria-hidden="true">六月 2016</i></a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/04/"><i class="fa" aria-hidden="true">四月 2016</i></a><span class="archive-list-count">10</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/03/"><i class="fa" aria-hidden="true">三月 2016</i></a><span class="archive-list-count">3</span></li></ul>
+    </div>
+
+
+        
+        
+    <div class="widget">
+        <h3 class="title">友链</h3>
+        <div class="content friends-link">
+        
+            <a href="http://www.shenliyang.com" class="fa" target="_blank">个人博客</a>
+        
+        </div>
+    </div>
+
+
+        
+    </aside>
+
+            </div>
+        </div>
+    </section>
+    <footer class="main-footer">
+    <div class="container">
+        <div class="row">
+        </div>
+    </div>
+</footer>
+
+<a id="back-to-top" class="hide">
+	<i class="fa fa-chevron-up"></i>
+</a>
+
+
+
+
+    <div class="copyright">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12"> 
+                <span>Copyright &copy; 2018
+                </span> | 
+                <span>
+                    Powered by <a href="//hexo.io" class="copyright-links" target="_blank" rel="nofollow">Hexo</a>
+                </span> | 
+                <span>
+                    Theme by <a href="//github.com/shenliyang/hexo-theme-snippet.git" class="copyright-links" target="_blank" rel="nofollow">Snippet</a>
+                </span>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+	<script src="/js/search.js?rev=@@hash"></script>
+
+
+<script src="/js/app.js?rev=@@hash"></script>
+
+
+</body>
+</html>
